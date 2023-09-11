@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Cadastro de Usuário</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Adicione o link para o seu arquivo CSS personalizado aqui -->
+    <link rel="stylesheet" href="caminho/para/seu/arquivo.css">
+    <style>
+        /* Estilos para o overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+        }
+
+        .overlay-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .overlay-button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Cadastro de Usuário</h2>
+        <form action="#" th:action="@{/usuario/view/cadastrar}" th:object="${usuario}" method="post">
+            <!-- Mensagens de sucesso e erro aqui -->
+            <div class="form-group">
+                <input type="hidden" th:field="*{id}" class="form-control" id="id">
+            </div>
+
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                <input type="text" th:field="*{nome}" class="form-control" id="nome">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" th:field="*{email}" class="form-control" id="email">
+            </div>
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                <input type="password" th:field="*{senha}" class="form-control" id="senha">
+            </div>
+            <div class="form-group">
+                <label for="cargo">Cargo</label>
+                <select th:field="*{cargo}" class="form-control" id="cargo">
+                    <option value="Técnico">Técnico</option>
+                    <option value="Gestor">Gestor</option>
+                </select>
+            </div>
+
+            <div class="mb-3 row">
+                <div class="col-12 d-grid">
+                    <button type="button" onclick="showSuccessOverlay()" class="mt-4 btn btn-primary">Cadastrar</button>
+                    <a th:href="@{/usuario/view/listar}" class="mt-4 btn btn-secondary">Voltar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Overlay para exibir a mensagem de sucesso -->
+    <div class="overlay" id="successOverlay">
+        <div class="overlay-content">
+            <p>Usuário cadastrado com sucesso!!</p>
+            <button class="btn btn-primary overlay-button" onclick="redirectToUsuarios()">OK</button>
+        </div>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        // Função para exibir o overlay de sucesso
+        function showSuccessOverlay() {
+            document.getElementById("successOverlay").style.display = "block";
+        }
+
+        // Função para redirecionar para a lista de usuários
+        function redirectToUsuarios() {
+            window.location.href = "/usuario/view/listar"; // Altere o URL conforme necessário
+        }
+    </script>
+</body>
+
+</html>

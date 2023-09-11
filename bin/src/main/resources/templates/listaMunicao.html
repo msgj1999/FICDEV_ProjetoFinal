@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Munições</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            padding-top: 30px;
+        }
+
+        .display-4 {
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .table {
+            background-color: #fff;
+            border-radius: 5px;
+        }
+
+        th,
+        td {
+            vertical-align: middle;
+        }
+
+        .btn {
+            border-radius: 5px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        .btn i {
+            margin-right: 5px;
+        }
+
+        .btn-primary i {
+            color: #fff;
+        }
+
+        .btn-danger i {
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="display-4 mt-5">Lista de Munições</h1>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Calibre</th>
+                    <th scope="col">Periculosidade</th>
+                    <th scope="col">Data de Fabricação</th>
+                    <th scope="col">Data de Validade</th>
+                    <th scope="col" colspan="2">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Inserir um bloco semelhante para cada munição -->
+                <tr th:each="municao : ${municoes}">
+                    <th scope="row" th:text="${municao.id}"></th>
+                    <td th:text="${municao.tipo}"></td>
+                    <td th:text="${municao.calibre}"></td>
+                    <td th:text="${municao.periculosidade}"></td>
+                    <td th:text="${municao.dataFabricacao}"></td>
+                    <td th:text="${municao.dataValidade}"></td>
+                    <td>
+                        <a th:href="@{/municao/view/atualizar/{id}(id=${municao.id})}" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> Atualizar
+                        </a>
+                        <a th:href="@{/municao/view/remover/{id}(id=${municao.id})}" th:method="delete"
+                            class="btn btn-danger">
+                            <i class="fas fa-trash-alt"></i> Deletar
+                        </a>
+                    </td>
+                </tr>
+                <!-- Fim do bloco para cada munição -->
+            </tbody>
+        </table>
+        <div class="mb-3 row">
+            <div class="col-12 d-grid">
+                <a th:href="@{/municao/view/cadastrar}" class="mt-4 btn btn-success">Cadastrar Nova Munição</a>
+                <a th:href="@{/inicio}" class="mt-4 btn btn-primary">Voltar</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
