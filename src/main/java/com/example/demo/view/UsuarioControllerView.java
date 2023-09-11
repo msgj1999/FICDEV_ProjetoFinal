@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,9 @@ import jakarta.validation.Validator;
 @RequestMapping("/usuario/view")
 public class UsuarioControllerView {
     
+	@Autowired
+    private PasswordEncoder passwordEncode;
+	
     @Autowired
     UsuarioService usuarioService;
     
@@ -56,7 +60,7 @@ public class UsuarioControllerView {
         if (!violations.isEmpty()) {
             problemas = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(" - "));
         } else {
-            // Não criptografar a senha
+        	usuario.setSenha(passwordEncode.encode(usuario.getSenha()));
             usuarioService.saveUsuario(usuario);
             mensagens = "Salvo com sucesso!";
         }
