@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Cadastro de Munição</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Adicione o link para o seu arquivo CSS personalizado aqui -->
+    <link rel="stylesheet" href="caminho/para/seu/arquivo.css">
+    <style>
+        /* Estilos para o overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+        }
+
+        .overlay-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .overlay-button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Cadastro de Munição</h2>
+        <form action="#" th:action="@{/municao/view/cadastrar}" th:object="${municao}" method="post">
+            <!-- Mensagens de sucesso e erro aqui -->
+            <div class="form-group">
+                <input type="hidden" th:field="*{id}" class="form-control" id="id">
+            </div>
+
+            <div class="form-group">
+                <label for="tipo">Tipo de Munição</label>
+                <input type="text" th:field="*{tipo}" class="form-control" id="tipo">
+            </div>
+            <div class="form-group">
+                <label for="calibre">Calibre</label>
+                <input type="text" th:field="*{calibre}" class="form-control" id="calibre">
+            </div>
+            <div class="form-group">
+                <label for="periculosidade">Periculosidade</label>
+                <select th:field="*{periculosidade}" class="form-control" id="periculosidade">
+                    <option value="baixa">Baixa</option>
+                    <option value="media">Média</option>
+                    <option value="alta">Alta</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="dataFabricacao">Data de Fabricação</label>
+                <input type="date" th:field="*{dataFabricacao}" class="form-control" id="dataFabricacao">
+            </div>
+            <div class="form-group">
+                <label for="dataValidade">Data de Validade</label>
+                <input type="date" th:field="*{dataValidade}" class="form-control" id="dataValidade">
+            </div>
+
+            <div class="mb-3 row">
+                <div class="col-12 d-grid">
+                    <button type="button" onclick="showSuccessOverlay()" class="mt-4 btn btn-primary">Cadastrar</button>
+                    <a th:href="@{/municao/view/listar}" class="mt-4 btn btn-secondary">Voltar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Overlay para exibir a mensagem de sucesso -->
+    <div class="overlay" id="successOverlay">
+        <div class="overlay-content">
+            <p>Munição cadastrada com sucesso!!</p>
+            <button class="btn btn-primary overlay-button" onclick="redirectToMunicoes()">OK</button>
+        </div>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        // Função para exibir o overlay de sucesso
+        function showSuccessOverlay() {
+            document.getElementById("successOverlay").style.display = "block";
+        }
+
+        // Função para redirecionar para a lista de munições
+        function redirectToMunicoes() {
+            window.location.href = "/municao/view/listar"; // Altere o URL conforme necessário
+        }
+    </script>
+</body>
+
+</html>
+

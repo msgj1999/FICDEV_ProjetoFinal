@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Cadastro de Entrega</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Adicione o link para o seu arquivo CSS personalizado aqui -->
+    <link rel="stylesheet" href="caminho/para/seu/arquivo.css">
+    <style>
+        /* Estilos para o overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+        }
+
+        .overlay-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .overlay-button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Cadastro de Entrega</h2>
+        <form action="#" th:action="@{/entrega/view/cadastrar}" th:object="${entrega}" method="post">
+            <!-- Mensagens de sucesso e erro aqui -->
+            <div class="form-group">
+                <input type="hidden" th:field="*{id}" class="form-control" id="id">
+            </div>
+
+            <div class="form-group">
+                <label for="nomePolicial">Nome do Policial</label>
+                <input type="text" th:field="*{nomePolicial}" class="form-control" id="nomePolicial">
+            </div>
+            <div class="form-group">
+                <label for="quantidade">Quantidade</label>
+                <input type="number" th:field="*{quantidade}" class="form-control" id="quantidade">
+            </div>
+            <div class="form-group">
+                <label for="dataEntrega">Data de Entrega</label>
+                <input type="date" th:field="*{dataEntrega}" class="form-control" id="dataEntrega">
+            </div>
+            <div class="form-group">
+                <label for="observacoes">Observações</label>
+                <textarea th:field="*{observacoes}" class="form-control" id="observacoes" rows="4"></textarea>
+            </div>
+
+            <div class="mb-3 row">
+                <div class="col-12 d-grid">
+                    <button type="button" onclick="showSuccessOverlay()" class="mt-4 btn btn-primary">Cadastrar</button>
+                    <a th:href="@{/entrega/view/listar}" class="mt-4 btn btn-secondary">Voltar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Overlay para exibir a mensagem de sucesso -->
+    <div class="overlay" id="successOverlay">
+        <div class="overlay-content">
+            <p>Entrega cadastrada com sucesso!!</p>
+            <button class="btn btn-primary overlay-button" onclick="redirectToEntregas()">OK</button>
+        </div>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        // Função para exibir o overlay de sucesso
+        function showSuccessOverlay() {
+            document.getElementById("successOverlay").style.display = "block";
+        }
+
+        // Função para redirecionar para a lista de entregas
+        function redirectToEntregas() {
+            window.location.href = "/entrega/view/listar"; // Altere o URL conforme necessário
+        }
+    </script>
+</body>
+
+</html>
