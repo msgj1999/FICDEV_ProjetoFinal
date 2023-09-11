@@ -23,15 +23,15 @@ public class SpringSecurity {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	/*@Bean
+	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity
 		.csrf(csrf -> csrf.disable())
 		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
 		.authorizeHttpRequests(authorize -> authorize
-				.requestMatchers(HttpMethod.GET, "/usuario/view/cadastrar").permitAll()
-				.requestMatchers(HttpMethod.POST, "/usuario/view/cadastrar").permitAll()
-				.requestMatchers(HttpMethod.GET, "/inicio").permitAll()
+				.requestMatchers(HttpMethod.GET, "/usuario/view/cadastrar").hasAnyAuthority(UserRole.GESTOR.toString(), UserRole.GESTOR.getRole(), "1")
+				.requestMatchers(HttpMethod.GET, "/login").permitAll()
+				/*.requestMatchers(HttpMethod.POST, "/usuario/view/cadastrar").permitAll()
 				.requestMatchers(HttpMethod.GET, "/error").permitAll()
 				.requestMatchers(HttpMethod.GET, "/livro/view/listar").hasAuthority("USER")
 				.requestMatchers(HttpMethod.GET, "/livro/**").hasAuthority("FUNCIONARIO")
@@ -40,11 +40,8 @@ public class SpringSecurity {
 				.requestMatchers(HttpMethod.POST, "/emprestimo/**").hasAuthority("FUNCIONARIO")
 				.requestMatchers(HttpMethod.GET, "/usuario/view/listar").hasAuthority("FUNCIONARIO")
 				.requestMatchers(HttpMethod.POST, "/**").hasAuthority("ADMIN")
-				.requestMatchers(HttpMethod.GET, "/**").hasAuthority("ADMIN")
-				
-				
-				
-					.anyRequest().authenticated());
+				.requestMatchers(HttpMethod.GET, "/**").hasAuthority("ADMIN")*/
+				.anyRequest().authenticated());
 		
 		httpSecurity.formLogin(form -> form
 				.defaultSuccessUrl("/inicio")
@@ -53,7 +50,7 @@ public class SpringSecurity {
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 				.permitAll());
 		return httpSecurity.build();
-	}*/
+	}
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
