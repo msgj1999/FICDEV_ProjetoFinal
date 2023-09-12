@@ -30,17 +30,8 @@ public class SpringSecurity {
 		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
 		.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers(HttpMethod.GET, "/usuario/view/cadastrar").hasAnyAuthority(UserRole.GESTOR.toString(), UserRole.GESTOR.getRole(), "1")
+				.requestMatchers(HttpMethod.POST, "/usuario/view/cadastrar").hasAnyAuthority(UserRole.GESTOR.toString(), UserRole.GESTOR.getRole(), "1")
 				.requestMatchers(HttpMethod.GET, "/login").permitAll()
-				/*.requestMatchers(HttpMethod.POST, "/usuario/view/cadastrar").permitAll()
-				.requestMatchers(HttpMethod.GET, "/error").permitAll()
-				.requestMatchers(HttpMethod.GET, "/livro/view/listar").hasAuthority("USER")
-				.requestMatchers(HttpMethod.GET, "/livro/**").hasAuthority("FUNCIONARIO")
-				.requestMatchers(HttpMethod.POST, "/livro/**").hasAuthority("FUNCIONARIO")
-				.requestMatchers(HttpMethod.GET, "/emprestimo/**").hasAuthority("FUNCIONARIO")
-				.requestMatchers(HttpMethod.POST, "/emprestimo/**").hasAuthority("FUNCIONARIO")
-				.requestMatchers(HttpMethod.GET, "/usuario/view/listar").hasAuthority("FUNCIONARIO")
-				.requestMatchers(HttpMethod.POST, "/**").hasAuthority("ADMIN")
-				.requestMatchers(HttpMethod.GET, "/**").hasAuthority("ADMIN")*/
 				.anyRequest().authenticated());
 		
 		httpSecurity.formLogin(form -> form

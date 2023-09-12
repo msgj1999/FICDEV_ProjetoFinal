@@ -2,7 +2,7 @@ package com.example.demo.view;
 
 import java.util.Set;
 import java.util.stream.Collectors;
-
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Controller;
@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.entities.*;
 import com.example.demo.entities.Armazem;
 import com.example.demo.service.ArmazemService;
+import com.example.demo.service.MunicaoService;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
@@ -24,6 +26,9 @@ public class ArmazemControllerView {
 
     @Autowired
     ArmazemService armazemService;
+    
+    @Autowired
+    MunicaoService municaoService;
     
 	@Autowired
 	private Validator validator;
@@ -44,7 +49,11 @@ public class ArmazemControllerView {
     @GetMapping("/cadastrar")
     public ModelAndView cadastrarArmazem() {
         var view = new ModelAndView("cadastroArmazem");
-        view.addObject("armazem", new Armazem(0, 0));
+        view.addObject("armazem", new Armazem(0, 0, null, null, null));
+        // Recupere a lista de munições disponíveis
+        List<Municao> municoes = municaoService.getAllMunicoes();
+        view.addObject("municoes", municoes);
+        
         return view;
     }
 
@@ -72,4 +81,5 @@ public class ArmazemControllerView {
         modelAndView.addObject("armazem", armazem);
         return modelAndView;
     }
+    
 }

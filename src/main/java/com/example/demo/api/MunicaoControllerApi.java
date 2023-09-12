@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entities.Municao;
@@ -64,5 +65,11 @@ public class MunicaoControllerApi {
         } catch (NotFoundException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+    
+    @GetMapping("/search")
+    public ResponseEntity<List<Municao>> searchMunicoes(@RequestParam String query) {
+        List<Municao> municoes = municaoService.searchMunicoes(query);
+        return ResponseEntity.ok(municoes);
     }
 }

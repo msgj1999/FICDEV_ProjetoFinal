@@ -2,9 +2,6 @@ package com.example.demo.entities;
 
 import java.time.LocalDate;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,7 +13,6 @@ import jakarta.validation.constraints.FutureOrPresent;
 
 @Entity
 public class Municao {
-	//teste git
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -24,11 +20,6 @@ public class Municao {
 	private String calibre;
 	private String periculosidade;
 	@FutureOrPresent
-	@DateTimeFormat (pattern="yyyy-MM-dd")
-	private LocalDate dataFabricacao;
-	@Future
-	@DateTimeFormat (pattern="yyyy-MM-dd")
-	private LocalDate dataValidade;
 	
 	@ManyToOne
 	@JoinColumn(name="id_armazem")
@@ -41,8 +32,6 @@ public class Municao {
 		this.tipo = tipo;
 		this.calibre = calibre;
 		this.periculosidade = periculosidade;
-		this.dataFabricacao = dataFabricacao;
-		this.dataValidade = dataValidade;
 		this.armazem = armazem;
 	}
 	
@@ -81,21 +70,6 @@ public class Municao {
 		this.periculosidade = periculosidade;
 	}
 
-	public LocalDate getDataFabricacao() {
-		return dataFabricacao;
-	}
-
-	public void setDataFabricacao(LocalDate dataFabricacao) {
-		this.dataFabricacao = dataFabricacao;
-	}
-
-	public LocalDate getDataValidade() {
-		return dataValidade;
-	}
-
-	public void setDataValidade(LocalDate dataValidade) {
-		this.dataValidade = dataValidade;
-	}
 
 	public Armazem getArmazem() {
 		return armazem;

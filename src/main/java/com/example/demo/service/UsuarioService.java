@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +43,16 @@ public class UsuarioService {
         Usuario deletado = usuarioRepository.findById(id).orElseThrow(NotFoundException::new);
         usuarioRepository.delete(deletado);
         return deletado;
+    }
+    
+    public List<Usuario> buscarUsuariosPorCampo(String campo, String termo) {
+        switch (campo) {
+            case "nome":
+                return usuarioRepository.findByNomeContainingIgnoreCase(termo);
+            case "email":
+                return usuarioRepository.findByEmailContainingIgnoreCase(termo);
+            default:
+                return Collections.emptyList();
+        }
     }
 }

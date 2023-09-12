@@ -1,5 +1,6 @@
 package com.example.demo.view;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.entities.Municao;
@@ -77,5 +79,22 @@ public class MunicaoControllerView {
         modelAndView.addObject("municao", municao);
         modelAndView.addObject("armazens", armazemService.getAllArmazens());
         return modelAndView;
+    }
+    
+    @GetMapping("/search")
+    public ModelAndView searchMunicoes(@RequestParam(required = false) String query) {
+        ModelAndView view = new ModelAndView("listaMunicao");
+        List<Municao> municoes;
+
+        if (query != null && !query.isEmpty()) {
+            // Realize a pesquisa apenas se a consulta não estiver vazia
+            municoes = municaoService.searchMunicoes(query);
+        } else {
+            // Se a consulta estiver vazia, liste todas as munições
+            municoes = municaoService.getAllMunicoes();
+        }
+
+        view.addObject("municoes", municoes);
+        return view;
     }
 }

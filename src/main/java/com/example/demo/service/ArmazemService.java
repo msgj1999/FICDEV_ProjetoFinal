@@ -31,6 +31,8 @@ public class ArmazemService {
         Armazem atualizado = armazemRepository.findById(id).orElseThrow(NotFoundException::new);
 
         atualizado.setQuantidade(armazem.getQuantidade());
+        atualizado.setDataFabricacao(armazem.getDataFabricacao());
+        atualizado.setDataValidade(armazem.getDataValidade());
 
         armazemRepository.save(atualizado);
         return atualizado;
@@ -41,4 +43,5 @@ public class ArmazemService {
         armazemRepository.delete(deletado);
         return deletado;
     }
+
 }

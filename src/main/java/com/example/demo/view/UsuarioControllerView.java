@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.entities.Usuario;
@@ -77,4 +78,12 @@ public class UsuarioControllerView {
         modelAndView.addObject("usuario", usuario);
         return modelAndView;
     }
+    
+    @GetMapping("/buscar")
+    public ModelAndView buscarUsuarios(@RequestParam("campo") String campo, @RequestParam("termo") String termo) {
+        var view = new ModelAndView("listaUsuario");
+        view.addObject("usuarios", usuarioService.buscarUsuariosPorCampo(campo, termo));
+        return view;
+    }
+
 }

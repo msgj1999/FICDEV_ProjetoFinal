@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entities.Usuario;
@@ -65,4 +66,17 @@ public class UsuarioControllerApi {
             return ResponseEntity.notFound().build();
         }
     }
+    
+    @GetMapping("/buscar")
+    public ResponseEntity<List<Usuario>> buscarUsuariosPorCampo(
+        @RequestParam(name = "campo") String campo,
+        @RequestParam(name = "termo") String termo) {
+        List<Usuario> usuarios = usuarioService.buscarUsuariosPorCampo(campo, termo);
+        if (usuarios.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok(usuarios);
+        }
+    }
+
 }
