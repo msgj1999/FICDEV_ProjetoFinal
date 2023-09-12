@@ -79,6 +79,7 @@
             <thead>
                 <tr>
                     <th scope="col">ID</th>
+                    <th scope="col">Munição</th>
                     <th scope="col">Quantidade</th>
                     <th scope="col">Data de Fabricação</th>
                     <th scope="col">Data de Validade</th>
@@ -89,6 +90,7 @@
                 <!-- Inserir um bloco semelhante para cada armazém -->
                 <tr th:each="armazem : ${armazens}">
                     <th scope="row" th:text="${armazem.id}"></th>
+                    <td th:text="${armazem.municao.tipo + ' - ' + armazem.municao.calibre}"></td>
                     <td th:text="${armazem.quantidade}"></td>
                     <td th:text="${armazem.dataFabricacao}"></td>
                     <td th:text="${armazem.dataValidade}"></td>

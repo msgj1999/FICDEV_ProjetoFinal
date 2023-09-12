@@ -63,18 +63,10 @@
                     <option value="alta">Alta</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label for="dataFabricacao">Data de Fabricação</label>
-                <input type="date" th:field="*{dataFabricacao}" class="form-control" id="dataFabricacao">
-            </div>
-            <div class="form-group">
-                <label for="dataValidade">Data de Validade</label>
-                <input type="date" th:field="*{dataValidade}" class="form-control" id="dataValidade">
-            </div>
 
             <div class="mb-3 row">
                 <div class="col-12 d-grid">
-                    <button type="button" onclick="showSuccessOverlay()" class="mt-4 btn btn-primary">Cadastrar</button>
+                    <button type="submit" onclick="showSuccessOverlay()" class="mt-4 btn btn-primary">Cadastrar</button>
                     <a th:href="@{/municao/view/listar}" class="mt-4 btn btn-secondary">Voltar</a>
                 </div>
             </div>

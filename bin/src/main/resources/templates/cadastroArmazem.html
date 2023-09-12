@@ -24,6 +24,24 @@
                 <input type="number" th:field="*{quantidade}" class="form-control" id="quantidade">
             </div>
 
+            <div class="form-group">
+                <label for="dataFabricacao">Data de Fabricação</label>
+                <input type="date" th:field="*{dataFabricacao}" class="form-control" id="dataFabricacao">
+            </div>
+
+            <div class="form-group">
+                <label for="dataValidade">Data de Validade</label>
+                <input type="date" th:field="*{dataValidade}" class="form-control" id="dataValidade">
+            </div>
+
+            <div class="form-group">
+                <label for="municao">Selecione uma Munição:</label>
+                <select class="form-control" id="municao" th:field="*{municao.id}">
+                    <!-- Popule as opções com as munições disponíveis -->
+                    <option th:each="municao : ${municoes}" th:value="${municao.id}" th:text="${municao.tipo + ' - ' + municao.calibre}"></option>
+                </select>
+            </div>
+
             <div class="mb-3 row">
                 <div class="col-12 d-grid">
                     <button type="submit" class="mt-4 btn btn-primary">Cadastrar</button>
@@ -36,3 +54,4 @@
 </body>
 
 </html>
+

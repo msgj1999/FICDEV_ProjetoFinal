@@ -50,7 +50,7 @@ public class MunicaoControllerView {
     @GetMapping("/cadastrar")
     public ModelAndView cadastrarMunicao() {
         var view = new ModelAndView("cadastroMunicao");
-        view.addObject("municao", new Municao(0, null, null, null, null, null, null));
+        view.addObject("municao", new Municao());
         view.addObject("armazens", armazemService.getAllArmazens());
         return view;
     }

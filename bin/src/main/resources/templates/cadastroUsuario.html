@@ -61,15 +61,15 @@
             </div>
             <div class="form-group">
                 <label for="cargo">Cargo</label>
-                <select th:field="*{cargo}" class="form-control" id="cargo">
-                    <option value="Técnico">Técnico</option>
-                    <option value="Gestor">Gestor</option>
+                <select th:field="*{role}" class="form-control" id="cargo">
+                    <option value="TECNICO">Técnico</option>
+                    <option value="GESTOR">Gestor</option>
                 </select>
             </div>
 
             <div class="mb-3 row">
                 <div class="col-12 d-grid">
-                    <button type="button" onclick="showSuccessOverlay()" class="mt-4 btn btn-primary">Cadastrar</button>
+                    <button type="submit" class="mt-4 btn btn-primary">Cadastrar</button>
                     <a th:href="@{/usuario/view/listar}" class="mt-4 btn btn-secondary">Voltar</a>
                 </div>
             </div>

@@ -75,6 +75,23 @@
     <div class="container">
         <h1 class="display-4 mt-5">Lista de Munições</h1>
 
+        <!-- Adicione este código para o campo de pesquisa -->
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <form class="form-inline mt-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Pesquisar Munição">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-primary" type="button" id="searchButton">
+                                <i class="fas fa-search"></i> Pesquisar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Fim do campo de pesquisa -->
+
         <table class="table">
             <thead>
                 <tr>
@@ -112,6 +129,32 @@
             </div>
         </div>
     </div>
+
+    <!-- Adicione este código JavaScript para a funcionalidade de pesquisa -->
+    <script>
+        document.getElementById("searchButton").addEventListener("click", function () {
+            // Obter o valor do campo de pesquisa
+            var searchTerm = document.getElementById("searchInput").value.toLowerCase();
+
+            // Loop através das linhas da tabela de munições
+            var rows = document.querySelectorAll("tbody tr");
+            rows.forEach(function (row) {
+                var tipo = row.querySelector("td:nth-child(2)").textContent.toLowerCase();
+                var calibre = row.querySelector("td:nth-child(3)").textContent.toLowerCase();
+                var periculosidade = row.querySelector("td:nth-child(4)").textContent.toLowerCase();
+
+                // Verificar se algum dos campos contém o termo de pesquisa
+                if (tipo.includes(searchTerm) || calibre.includes(searchTerm) || periculosidade.includes(searchTerm)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        });
+    </script>
+    <!-- Fim do código JavaScript de pesquisa -->
+
 </body>
 
 </html>
+

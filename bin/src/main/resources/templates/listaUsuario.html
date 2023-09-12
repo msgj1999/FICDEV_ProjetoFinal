@@ -17,6 +17,28 @@
     <div class="container">
         <h1 class="display-4 mt-5">Lista de Usuários</h1>
 
+        <!-- Adicione o campo de busca aqui -->
+        <div class="mb-3 row">
+            <div class="col-md-6">
+			<form th:action="@{/usuario/view/buscar}" method="get">
+    			<div class="input-group">
+        			<select class="form-select" name="campo">
+           				<option value="nome">Nome</option>
+            			<option value="email">Email</option>
+        			</select>
+        			<input type="text" class="form-control" placeholder="Digite a busca" name="termo">
+       			 	<button class="btn btn-outline-secondary" type="submit">Pesquisar</button>
+    			</div>
+			</form>
+
+            </div>
+
+            <!-- Mova o botão "Cadastrar Novo Usuário" para o lado direito -->
+            <div class="col-md-6 text-md-end">
+                <a th:href="@{/usuario/view/cadastrar}" class="mt-4 btn btn-success">Cadastrar Novo Usuário</a>
+            </div>
+        </div>
+
         <table class="table">
             <thead>
                 <tr>
@@ -24,7 +46,6 @@
                     <th scope="col">Nome</th>
                     <th scope="col">Cargo</th>
                     <th scope="col">Email</th>
-                    <th scope="col">Senha</th>
                     <th scope="col" colspan="2">Ações</th>
                 </tr>
             </thead>
@@ -33,9 +54,8 @@
                 <tr th:each="usuario : ${usuarios}">
                     <th scope="row" th:text="${usuario.id}"></th>
                     <td th:text="${usuario.nome}"></td>
-                    <td th:text="${usuario.cargo}"></td>
+                    <td th:text="${usuario.role}"></td>
                     <td th:text="${usuario.email}"></td>
-                    <td th:text="${usuario.senha}"></td>
                     <td>
                         <a th:href="@{/usuario/view/atualizar/{id}(id=${usuario.id})}" class="btn btn-primary">
                             <i class="fas fa-edit"></i> Atualizar
@@ -49,13 +69,8 @@
                 <!-- Fim do bloco para cada usuário -->
             </tbody>
         </table>
-        <div class="mb-3 row">
-            <div class="col-12 d-grid">
-                <a th:href="@{/usuario/view/cadastrar}" class="mt-4 btn btn-success">Cadastrar Novo Usuário</a>
-                <a th:href="@{/inicio}" class="mt-4 btn btn-primary">Voltar</a>
-            </div>
-        </div>
     </div>
 </body>
 
 </html>
+
