@@ -52,6 +52,14 @@
                 <input type="text" th:field="*{nomePolicial}" class="form-control" id="nomePolicial">
             </div>
             <div class="form-group">
+    			<label for="municao">Selecione a Munição:</label>
+    			<select class="form-control" id="municao" th:field="*{municao.id}">
+        			<!-- Popule as opções com as munições disponíveis -->
+        			<option th:each="municao : ${municoes}" th:value="${municao.id}" th:text="${municao.tipo + ' - ' + municao.calibre}"></option>
+    			</selec>
+			</div>
+			
+            <div class="form-group">
                 <label for="quantidade">Quantidade</label>
                 <input type="number" th:field="*{quantidade}" class="form-control" id="quantidade">
             </div>
@@ -66,7 +74,7 @@
 
             <div class="mb-3 row">
                 <div class="col-12 d-grid">
-                    <button type="button" onclick="showSuccessOverlay()" class="mt-4 btn btn-primary">Cadastrar</button>
+                    <button type="submit" onclick="showSuccessOverlay()" class="mt-4 btn btn-primary">Cadastrar</button>
                     <a th:href="@{/entrega/view/listar}" class="mt-4 btn btn-secondary">Voltar</a>
                 </div>
             </div>

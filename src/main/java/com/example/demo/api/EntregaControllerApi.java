@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entities.Entrega;
+import com.example.demo.service.ArmazemService;
 import com.example.demo.service.EntregaService;
 
 import jakarta.validation.Valid;
@@ -25,6 +26,9 @@ public class EntregaControllerApi {
 
     @Autowired
     private EntregaService entregaService;
+
+    @Autowired
+    private ArmazemService armazemService; // Certifique-se de que você injetou a classe ArmazemService corretamente
 
     @GetMapping
     public List<Entrega> listarEntregas() {
@@ -42,8 +46,13 @@ public class EntregaControllerApi {
     }
 
     @PostMapping
-    public void cadastrarEntrega(@RequestBody @Valid Entrega entrega) {
-        entregaService.saveEntrega(entrega);
+    public ResponseEntity<?> cadastrarEntrega(@RequestBody @Valid Entrega entrega) {
+        try {
+            entregaService.cadastrarEntrega(entrega);
+            return ResponseEntity.ok("Entrega cadastrada com sucesso!");
+        } catch (NotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")

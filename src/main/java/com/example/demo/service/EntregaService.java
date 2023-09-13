@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entities.Armazem;
 import com.example.demo.entities.Entrega;
+import com.example.demo.repository.ArmazemRepository;
 import com.example.demo.repository.EntregaRepository;
 
 @Service
@@ -14,6 +16,12 @@ public class EntregaService {
 
     @Autowired
     private EntregaRepository entregaRepository;
+    
+    @Autowired
+    private ArmazemRepository armazemRepository;
+    
+    @Autowired
+    private ArmazemService armazemService;
 
     public List<Entrega> getAllEntregas() {
         return entregaRepository.findAll();
@@ -43,5 +51,21 @@ public class EntregaService {
         Entrega deletada = entregaRepository.findById(id).orElseThrow(NotFoundException::new);
         entregaRepository.delete(deletada);
         return deletada;
+    }
+    
+    public void cadastrarEntrega(Entrega entrega) throws NotFoundException {
+        // Verificar se a quantidade selecionada é menor ou igual à quantidade disponível no armazém
+        Armazem armazem = armazemService.obterArmazemPorMunicao(entrega.getMunicao());
+        if (armazem != null && entrega.getQuantidade() <= armazem.getQuantidade()) {
+            // Atualizar a quantidade no armazém após a entrega
+            armazem.setQuantidade(armazem.getQuantidade() - entrega.getQuantidade());
+            // Atualize o armazém no repositório
+            armazemRepository.save(armazem);
+
+            // Salvar a entrega
+            entregaRepository.save(entrega);
+        } else {
+            throw new NotFoundException();
+        }
     }
 }

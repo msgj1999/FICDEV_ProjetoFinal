@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import com.example.demo.service.EntregaService;
 import com.example.demo.service.MunicaoService;
 
 import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 
 @Controller
@@ -29,9 +31,9 @@ public class EntregaControllerView {
     @Autowired
     MunicaoService municaoService;
 
-	@Autowired
-	private Validator validator;
-	
+    @Autowired
+    private Validator validator;
+
     @GetMapping("/listar")
     public ModelAndView listaEntregas() {
         var view = new ModelAndView("listaEntrega");
@@ -52,20 +54,25 @@ public class EntregaControllerView {
         view.addObject("municoes", municaoService.getAllMunicoes());
         return view;
     }
+
     @PostMapping("/cadastrar")
-    public ModelAndView saveEntrega(Entrega entrega) {
-        Set<ConstraintViolation<Entrega>> violations = validator.validate(entrega);
-        String problemas = "";
-        String mensagens = "";
-        if (!violations.isEmpty()) {
-            problemas = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(" - "));
+    public ModelAndView saveEntrega(@Valid Entrega entrega, BindingResult result) {
+        if (result.hasErrors()) {
+            // Lida com erros de validação aqui, se necessário
         } else {
-            entregaService.saveEntrega(entrega);
-            mensagens = "Salvo com sucesso!";
+            try {
+                entregaService.cadastrarEntrega(entrega);
+                return new ModelAndView("redirect:/entrega/view/listar");
+            } catch (NotFoundException e) {
+                // Trate a exceção de quantidade insuficiente no armazém aqui
+            }
         }
+
+        // Se algo der errado, retorne para a página de cadastro com mensagens de erro
         ModelAndView modelAndView = new ModelAndView("cadastroEntrega");
-        modelAndView.addObject("sucesso", mensagens);
-        modelAndView.addObject("error", problemas);
+        modelAndView.addObject("entrega", entrega);
+        modelAndView.addObject("municoes", municaoService.getAllMunicoes());
+        modelAndView.addObject("erro", "Erro ao cadastrar a entrega. Verifique a quantidade disponível no armazém.");
         return modelAndView;
     }
 

@@ -7,6 +7,7 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.Armazem;
+import com.example.demo.entities.Municao;
 import com.example.demo.repository.ArmazemRepository;
 
 @Service
@@ -14,7 +15,7 @@ public class ArmazemService {
 
     @Autowired
     private ArmazemRepository armazemRepository;
-
+    
     public List<Armazem> getAllArmazens() {
         return armazemRepository.findAll();
     }
@@ -43,5 +44,10 @@ public class ArmazemService {
         armazemRepository.delete(deletado);
         return deletado;
     }
+    
+    public Armazem obterArmazemPorMunicao(Municao municao) {
+        return armazemRepository.findByMunicao(municao);
+    }
+
 
 }
