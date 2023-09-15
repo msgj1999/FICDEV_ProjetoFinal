@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.entities.Municao;
-import com.example.demo.service.ArmazemService;
 import com.example.demo.service.MunicaoService;
 
 import jakarta.validation.ConstraintViolation;
@@ -27,9 +26,6 @@ public class MunicaoControllerView {
 
     @Autowired
     MunicaoService municaoService;
-
-    @Autowired
-    ArmazemService armazemService;
     
 	@Autowired
 	private Validator validator;
@@ -51,7 +47,6 @@ public class MunicaoControllerView {
     public ModelAndView cadastrarMunicao() {
         var view = new ModelAndView("cadastroMunicao");
         view.addObject("municao", new Municao());
-        view.addObject("armazens", armazemService.getAllArmazens());
         return view;
     }
 
@@ -77,7 +72,6 @@ public class MunicaoControllerView {
         ModelAndView modelAndView = new ModelAndView("cadastroMunicao");
         Municao municao = municaoService.getMunicao(id);
         modelAndView.addObject("municao", municao);
-        modelAndView.addObject("armazens", armazemService.getAllArmazens());
         return modelAndView;
     }
     
@@ -88,7 +82,7 @@ public class MunicaoControllerView {
 
         if (query != null && !query.isEmpty()) {
             // Realize a pesquisa apenas se a consulta não estiver vazia
-            municoes = municaoService.searchMunicoes(query);
+            municoes = municaoService.searchMunicoes(query, null, null, null, null);
         } else {
             // Se a consulta estiver vazia, liste todas as munições
             municoes = municaoService.getAllMunicoes();

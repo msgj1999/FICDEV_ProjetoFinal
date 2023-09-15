@@ -56,12 +56,24 @@
                 <input type="text" th:field="*{calibre}" class="form-control" id="calibre">
             </div>
             <div class="form-group">
-                <label for="periculosidade">Periculosidade</label>
-                <select th:field="*{periculosidade}" class="form-control" id="periculosidade">
-                    <option value="baixa">Baixa</option>
-                    <option value="media">Média</option>
-                    <option value="alta">Alta</option>
-                </select>
+                <label for="quantidade">Quantidade</label>
+                <input type="number" th:field="*{quantidade}" class="form-control" id="quantidade">
+            </div>
+            <div class="form-group">
+                <label for="peso">Peso (em gramas)</label>
+                <input type="number" th:field="*{peso}" class="form-control" id="peso">
+            </div>
+            <div class="form-group">
+                <label for="coeficienteBalistico">Coeficiente Balístico</label>
+                <input type="number" step="0.001" th:field="*{coeficienteBalistico}" class="form-control" id="coeficienteBalistico">
+            </div>
+            <div class="form-group">
+                <label for="dataFabricacao">Data de Fabricação</label>
+                <input type="date" th:field="*{dataFabricacao}" class="form-control" id="dataFabricacao">
+            </div>
+            <div class="form-group">
+                <label for="dataValidade">Data de Validade</label>
+                <input type="date" th:field="*{dataValidade}" class="form-control" id="dataValidade">
             </div>
 
             <div class="mb-3 row">
@@ -96,4 +108,5 @@
 </body>
 
 </html>
+
 

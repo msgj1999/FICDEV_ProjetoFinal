@@ -1,20 +1,25 @@
 package com.example.demo.view;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.entities.Manutencao;
-import com.example.demo.service.ArmazemService;
 import com.example.demo.service.ManutencaoService;
+import com.example.demo.service.MunicaoService;
 
 import jakarta.validation.*;
 
@@ -26,7 +31,7 @@ public class ManutencaoControllerView {
     ManutencaoService manutencaoService;
 
     @Autowired
-    ArmazemService armazemService;
+    MunicaoService municaoService;
     
 	@Autowired
 	private Validator validator;
@@ -48,7 +53,7 @@ public class ManutencaoControllerView {
     public ModelAndView cadastrarManutencao() {
         var view = new ModelAndView("cadastroManutencao");
         view.addObject("manutencao", new Manutencao(0, null, null, null));
-        view.addObject("armazens", armazemService.getAllArmazens());
+        view.addObject("municoes", municaoService.getAllMunicoes());
         return view;
     }
 
@@ -74,7 +79,29 @@ public class ManutencaoControllerView {
         ModelAndView modelAndView = new ModelAndView("cadastroManutencao");
         Manutencao manutencao = manutencaoService.getManutencao(id);
         modelAndView.addObject("manutencao", manutencao);
-        modelAndView.addObject("armazens", armazemService.getAllArmazens());
+        modelAndView.addObject("municoes", municaoService.getAllMunicoes());
         return modelAndView;
     }
+    
+    @GetMapping("/buscar")
+    public ModelAndView buscarManutencoes(@RequestParam(name = "busca", required = false) String busca) {
+        ModelAndView modelAndView = new ModelAndView("listaManutencao");
+        if (busca != null && !busca.isEmpty()) {
+            try {
+                LocalDate data = LocalDate.parse(busca); // Tente converter a string em LocalDate
+                List<Manutencao> manutencoes = manutencaoService.buscarPorDataManutencao(data);
+                modelAndView.addObject("manutencoes", manutencoes);
+            } catch (DateTimeParseException ex) {
+                // Tratar erro de formatação da data, pode ser um status ou data não válida
+                List<Manutencao> manutencoes = manutencaoService.buscarPorStatus(busca);
+                modelAndView.addObject("manutencoes", manutencoes);
+            }
+        } else {
+            modelAndView.addObject("manutencoes", manutencaoService.getAllManutencoes());
+        }
+        return modelAndView;
+    }
+
+
+
 }

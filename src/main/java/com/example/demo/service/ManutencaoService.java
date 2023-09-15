@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,18 @@ public class ManutencaoService {
         Manutencao deletada = manutencaoRepository.findById(id).orElseThrow(NotFoundException::new);
         manutencaoRepository.delete(deletada);
         return deletada;
+    }
+    
+    @Autowired
+    public ManutencaoService(ManutencaoRepository manutencaoRepository) {
+        this.manutencaoRepository = manutencaoRepository;
+    }
+    
+    public List<Manutencao> buscarPorStatus(String status) {
+        return manutencaoRepository.findByStatusContainingIgnoreCase(status);
+    }
+
+    public List<Manutencao> buscarPorDataManutencao(LocalDate data) {
+        return manutencaoRepository.findByDataManutencao(data);
     }
 }

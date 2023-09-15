@@ -69,7 +69,7 @@ public class MunicaoControllerApi {
     
     @GetMapping("/search")
     public ResponseEntity<List<Municao>> searchMunicoes(@RequestParam String query) {
-        List<Municao> municoes = municaoService.searchMunicoes(query);
+        List<Municao> municoes = municaoService.searchMunicoes(query, null, null, null, null);
         return ResponseEntity.ok(municoes);
     }
 }

@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entities.Entrega;
-import com.example.demo.service.ArmazemService;
 import com.example.demo.service.EntregaService;
 
 import jakarta.validation.Valid;
@@ -26,9 +26,6 @@ public class EntregaControllerApi {
 
     @Autowired
     private EntregaService entregaService;
-
-    @Autowired
-    private ArmazemService armazemService; // Certifique-se de que você injetou a classe ArmazemService corretamente
 
     @GetMapping
     public List<Entrega> listarEntregas() {
@@ -74,4 +71,11 @@ public class EntregaControllerApi {
             return ResponseEntity.notFound().build();
         }
     }
+    
+    @GetMapping("/buscar")
+    public ResponseEntity<List<Entrega>> buscarEntregas(@RequestParam(value = "termo", required = false) String termo) {
+        List<Entrega> entregas = entregaService.buscarEntregasPorFiltro(termo);
+        return ResponseEntity.ok(entregas);
+    }
+    
 }

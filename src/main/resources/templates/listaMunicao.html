@@ -72,12 +72,12 @@
 </head>
 
 <body>
-    <div class="container">
+<div class="container">
         <h1 class="display-4 mt-5">Lista de Munições</h1>
 
-        <!-- Adicione este código para o campo de pesquisa -->
+        <!-- Adicione este código para o campo de pesquisa e botão -->
         <div class="row">
-            <div class="col-md-6 offset-md-3">
+            <div class="col-md-6">
                 <form class="form-inline mt-3">
                     <div class="input-group">
                         <input type="text" class="form-control" id="searchInput" placeholder="Pesquisar Munição">
@@ -89,46 +89,52 @@
                     </div>
                 </form>
             </div>
-        </div>
-        <!-- Fim do campo de pesquisa -->
-
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Tipo</th>
-                    <th scope="col">Calibre</th>
-                    <th scope="col">Periculosidade</th>
-                    <th scope="col" colspan="2">Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Inserir um bloco semelhante para cada munição -->
-                <tr th:each="municao : ${municoes}">
-                    <th scope="row" th:text="${municao.id}"></th>
-                    <td th:text="${municao.tipo}"></td>
-                    <td th:text="${municao.calibre}"></td>
-                    <td th:text="${municao.periculosidade}"></td>
-                    <td>
-                        <a th:href="@{/municao/view/atualizar/{id}(id=${municao.id})}" class="btn btn-primary">
-                            <i class="fas fa-edit"></i> Atualizar
-                        </a>
-                        <a th:href="@{/municao/view/remover/{id}(id=${municao.id})}" th:method="delete"
-                            class="btn btn-danger">
-                            <i class="fas fa-trash-alt"></i> Deletar
-                        </a>
-                    </td>
-                </tr>
-                <!-- Fim do bloco para cada munição -->
-            </tbody>
-        </table>
-        <div class="mb-3 row">
-            <div class="col-12 d-grid">
+            <div class="col-md-6 text-md-end">
                 <a th:href="@{/municao/view/cadastrar}" class="mt-4 btn btn-success">Cadastrar Nova Munição</a>
-                <a th:href="@{/inicio}" class="mt-4 btn btn-primary">Voltar</a>
             </div>
         </div>
-    </div>
+
+        
+        <table class="table">
+    		<thead>
+        		<tr>
+            		<th scope="col">ID</th>
+            		<th scope="col">Tipo</th>
+            		<th scope="col">Calibre</th>
+            		<th scope="col">Quantidade</th> <!-- Adicione esta linha -->
+            		<th scope="col">Peso</th> <!-- Adicione esta linha -->
+            		<th scope="col">Coeficiente Balístico</th> <!-- Adicione esta linha -->
+            		<th scope="col">Data Fabricação</th> <!-- Adicione esta linha -->
+            		<th scope="col">Data Validade</th> <!-- Adicione esta linha -->
+            		<th scope="col" colspan="2">Ações</th>
+        		</tr>
+    		</thead>
+    		<tbody>
+        		<!-- Inserir um bloco semelhante para cada munição -->
+        		<tr th:each="municao : ${municoes}">
+            		<th scope="row" th:text="${municao.id}"></th>
+            		<td th:text="${municao.tipo}"></td>
+            		<td th:text="${municao.calibre}"></td>
+            		<td th:text="${municao.quantidade}"></td> <!-- Adicione esta linha -->
+            		<td th:text="${municao.peso}"></td> <!-- Adicione esta linha -->
+            		<td th:text="${municao.coeficienteBalistico}"></td> <!-- Adicione esta linha -->
+            		<td th:text="${municao.dataFabricacao}"></td>
+                    <td th:text="${municao.dataValidade}"></td>
+            		<!--td th:text="${#dates.format(municao.dataFabricacao, 'dd/MM/yyyy')}"></td> <! Adicione esta linha -->
+            		<!--td th:text="${#dates.format(municao.dataValidade, 'dd/MM/yyyy')}"></td> <! Adicione esta linha -->
+            		<td>
+                		<a th:href="@{/municao/view/atualizar/{id}(id=${municao.id})}" class="btn btn-primary">
+                    		<i class="fas fa-edit"></i> Editar
+                		</a>
+                		<a th:href="@{/municao/view/remover/{id}(id=${municao.id})}" th:method="delete"
+                    		class="btn btn-danger">
+                    		<i class="fas fa-trash-alt"></i> Deletar
+                		</a>
+            		</td>
+        		</tr>
+        		<!-- Fim do bloco para cada munição -->
+    		</tbody>
+		</table>
 
     <!-- Adicione este código JavaScript para a funcionalidade de pesquisa -->
     <script>
@@ -141,7 +147,7 @@
             rows.forEach(function (row) {
                 var tipo = row.querySelector("td:nth-child(2)").textContent.toLowerCase();
                 var calibre = row.querySelector("td:nth-child(3)").textContent.toLowerCase();
-                var periculosidade = row.querySelector("td:nth-child(4)").textContent.toLowerCase();
+
 
                 // Verificar se algum dos campos contém o termo de pesquisa
                 if (tipo.includes(searchTerm) || calibre.includes(searchTerm) || periculosidade.includes(searchTerm)) {

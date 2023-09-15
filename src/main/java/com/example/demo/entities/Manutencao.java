@@ -17,21 +17,21 @@ public class Manutencao {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private Boolean status = true;
+	private String status;
 	@FutureOrPresent
 	@DateTimeFormat (pattern="yyyy-MM-dd")
 	private LocalDate dataManutencao;
 	
 	@ManyToOne
-	@JoinColumn(name="id_armazem")
-	private Armazem armazem;
+	@JoinColumn(name="id_municao")
+	private Municao municao;
 
-	public Manutencao(int id, Boolean status, @FutureOrPresent LocalDate dataManutencao, Armazem armazem) {
+	public Manutencao(int id, String status, @FutureOrPresent LocalDate dataManutencao, Municao municao) {
 		super();
 		this.id = id;
 		this.status = status;
 		this.dataManutencao = dataManutencao;
-		this.armazem = armazem;
+		this.municao = municao;
 	}
 	
 	public Manutencao() {
@@ -45,11 +45,11 @@ public class Manutencao {
 		this.id = id;
 	}
 
-	public Boolean getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(Boolean status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 
@@ -61,12 +61,12 @@ public class Manutencao {
 		this.dataManutencao = dataManutencao;
 	}
 
-	public Armazem getArmazem() {
-		return armazem;
+	public Municao getMunicao() {
+		return municao;
 	}
 
-	public void setArmazem(Armazem armazem) {
-		this.armazem = armazem;
+	public void setMunicao(Municao municao) {
+		this.municao = municao;
 	}
 	
 	

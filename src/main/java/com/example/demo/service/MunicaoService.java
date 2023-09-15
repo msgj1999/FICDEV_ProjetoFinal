@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,10 +34,16 @@ public class MunicaoService {
 
         atualizada.setTipo(municao.getTipo());
         atualizada.setCalibre(municao.getCalibre());
-        atualizada.setPericulosidade(municao.getPericulosidade());
+        atualizada.setQuantidade(municao.getQuantidade());
+        atualizada.setPeso(municao.getPeso());
+        atualizada.setCoeficienteBalistico(municao.getCoeficienteBalistico());
+        atualizada.setDataFabricacao(municao.getDataFabricacao());
+        atualizada.setDataValidade(municao.getDataValidade());
+
         municaoRepository.save(atualizada);
         return atualizada;
     }
+
 
     public Municao deleteMunicao(int id) throws NotFoundException {
         Municao deletada = municaoRepository.findById(id).orElseThrow(NotFoundException::new);
@@ -44,20 +51,27 @@ public class MunicaoService {
         return deletada;
     }
     
-    public List<Municao> searchMunicoes(String query) {
+    public List<Municao> searchMunicoes(String query, LocalDate dataFabricacaoMin, LocalDate dataFabricacaoMax, LocalDate dataValidadeMin, LocalDate dataValidadeMax) {
         List<Municao> allMunicoes = municaoRepository.findAll();
 
-        // Filtrar a lista de todas as munições com base na consulta
         List<Municao> resultado = allMunicoes.stream()
                 .filter(municao -> 
                     containsIgnoreCase(municao.getTipo(), query) ||
                     containsIgnoreCase(municao.getCalibre(), query) ||
-                    containsIgnoreCase(municao.getPericulosidade(), query)
+                    Integer.toString(municao.getQuantidade()).contains(query) ||
+                    Float.toString(municao.getPeso()).contains(query) ||
+                    Float.toString(municao.getCoeficienteBalistico()).contains(query) ||
+                    (dataFabricacaoMin == null || municao.getDataFabricacao().compareTo(dataFabricacaoMin) >= 0) &&
+                    (dataFabricacaoMax == null || municao.getDataFabricacao().compareTo(dataFabricacaoMax) <= 0) &&
+                    (dataValidadeMin == null || municao.getDataValidade().compareTo(dataValidadeMin) >= 0) &&
+                    (dataValidadeMax == null || municao.getDataValidade().compareTo(dataValidadeMax) <= 0)
                 )
                 .collect(Collectors.toList());
 
         return resultado;
     }
+
+
 
     // Método auxiliar para verificar se uma string contém outra ignorando maiúsculas/minúsculas
     private boolean containsIgnoreCase(String source, String query) {

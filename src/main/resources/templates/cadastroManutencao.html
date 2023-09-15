@@ -19,13 +19,16 @@
                 <input type="hidden" th:field="*{id}" class="form-control" id="id">
             </div>
 
-            <div class="form-group">
-                <label for="status">Status</label>
-                <select th:field="*{status}" class="form-control" id="status">
-                    <option value="true">Concluída</option>
-                    <option value="false">Pendente</option>
-                </select>
-            </div>
+<div class="form-group">
+    <label for="status">Status</label>
+    <select th:field="*{status}" class="form-control" id="status">
+        <option th:selected="${manutencao.status == 'Concluída'}" th:text="Concluída" value="Concluída"></option>
+        <option th:selected="${manutencao.status == 'Pendente'}" th:text="Pendente" value="Pendente"></option>
+    </select>
+</div>
+
+
+
             <div class="form-group">
                 <label for="dataManutencao">Data de Manutenção</label>
                 <input type="date" th:field="*{dataManutencao}" class="form-control" id="dataManutencao">
@@ -34,7 +37,7 @@
             <div class="mb-3 row">
                 <div class="col-12 d-grid">
                     <button type="submit" class="mt-4 btn btn-primary">Cadastrar</button>
-                    <a th:href="@{/inicio}" class="mt-4 btn btn-secondary">Voltar</a>
+                    <a th:href="@{/manutencao/view/listar}" class="mt-4 btn btn-secondary">Voltar</a>
                 </div>
             </div>
         </form>

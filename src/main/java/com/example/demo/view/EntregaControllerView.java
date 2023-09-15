@@ -1,5 +1,6 @@
 package com.example.demo.view;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.entities.Entrega;
@@ -50,31 +52,29 @@ public class EntregaControllerView {
     @GetMapping("/cadastrar")
     public ModelAndView cadastrarEntrega() {
         var view = new ModelAndView("cadastroEntrega");
-        view.addObject("entrega", new Entrega(0, null, 0, null, null, null));
+        view.addObject("entrega", new Entrega());
         view.addObject("municoes", municaoService.getAllMunicoes());
         return view;
     }
 
     @PostMapping("/cadastrar")
-    public ModelAndView saveEntrega(@Valid Entrega entrega, BindingResult result) {
-        if (result.hasErrors()) {
-            // Lida com erros de validação aqui, se necessário
-        } else {
-            try {
-                entregaService.cadastrarEntrega(entrega);
-                return new ModelAndView("redirect:/entrega/view/listar");
-            } catch (NotFoundException e) {
-                // Trate a exceção de quantidade insuficiente no armazém aqui
-            }
-        }
+    public ModelAndView saveEntrega(Entrega entrega) {
+        Set<ConstraintViolation<Entrega>> violations = validator.validate(entrega);
+        String problemas = "";
+        String mensagens = "";
 
-        // Se algo der errado, retorne para a página de cadastro com mensagens de erro
+        if (!violations.isEmpty()) {
+            problemas = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(" - "));
+        } else {
+             entregaService.saveEntrega(entrega);
+            mensagens = "Salvo com sucesso!";
+        }
         ModelAndView modelAndView = new ModelAndView("cadastroEntrega");
-        modelAndView.addObject("entrega", entrega);
-        modelAndView.addObject("municoes", municaoService.getAllMunicoes());
-        modelAndView.addObject("erro", "Erro ao cadastrar a entrega. Verifique a quantidade disponível no armazém.");
+        modelAndView.addObject("sucesso", mensagens);
+        modelAndView.addObject("error", problemas);
         return modelAndView;
     }
+
 
     @GetMapping("/atualizar/{id}")
     public ModelAndView formUpdate(@PathVariable("id") int id) throws NotFoundException {
@@ -83,5 +83,13 @@ public class EntregaControllerView {
         modelAndView.addObject("entrega", entrega);
         modelAndView.addObject("municoes", municaoService.getAllMunicoes());
         return modelAndView;
+    }
+    
+    @GetMapping("/buscar")
+    public ModelAndView buscarEntregas(@RequestParam(value = "termo", required = false) String termo) {
+        ModelAndView view = new ModelAndView("listaEntrega");
+        List<Entrega> entregas = entregaService.buscarEntregasPorFiltro(termo);
+        view.addObject("entregas", entregas);
+        return view;
     }
 }

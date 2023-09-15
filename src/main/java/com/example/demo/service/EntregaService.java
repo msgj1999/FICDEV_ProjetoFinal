@@ -1,15 +1,21 @@
 package com.example.demo.service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entities.Armazem;
 import com.example.demo.entities.Entrega;
-import com.example.demo.repository.ArmazemRepository;
+import com.example.demo.entities.Municao;
 import com.example.demo.repository.EntregaRepository;
+
+import jakarta.persistence.criteria.Predicate;
 
 @Service
 public class EntregaService {
@@ -18,10 +24,7 @@ public class EntregaService {
     private EntregaRepository entregaRepository;
     
     @Autowired
-    private ArmazemRepository armazemRepository;
-    
-    @Autowired
-    private ArmazemService armazemService;
+    private MunicaoService municaoService;
 
     public List<Entrega> getAllEntregas() {
         return entregaRepository.findAll();
@@ -54,18 +57,64 @@ public class EntregaService {
     }
     
     public void cadastrarEntrega(Entrega entrega) throws NotFoundException {
-        // Verificar se a quantidade selecionada é menor ou igual à quantidade disponível no armazém
-        Armazem armazem = armazemService.obterArmazemPorMunicao(entrega.getMunicao());
-        if (armazem != null && entrega.getQuantidade() <= armazem.getQuantidade()) {
-            // Atualizar a quantidade no armazém após a entrega
-            armazem.setQuantidade(armazem.getQuantidade() - entrega.getQuantidade());
-            // Atualize o armazém no repositório
-            armazemRepository.save(armazem);
+        Municao municao = entrega.getMunicao();
+        
+        if (municao != null && entrega.getQuantidade() <= municao.getQuantidade()) {
+            try {
+                municao.setQuantidade(municao.getQuantidade() - entrega.getQuantidade()); // Deduza a quantidade de munição
+                municaoService.saveMunicao(municao); // Atualize a quantidade de munição
 
-            // Salvar a entrega
-            entregaRepository.save(entrega);
+                entregaRepository.save(entrega); // Salve a entrega
+            } catch (Exception e) {
+                // Lide com qualquer exceção de salvamento aqui
+                throw new NotFoundException();
+            }
         } else {
             throw new NotFoundException();
         }
     }
+    
+    public List<Entrega> buscarEntregasPorFiltro(String termo) {
+        Specification<Entrega> spec = (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            // Busca por munição (tipo + calibre)
+            predicates.add(cb.like(cb.lower(root.get("municao").get("tipo")), "%" + termo.toLowerCase() + "%"));
+            predicates.add(cb.like(cb.lower(root.get("municao").get("calibre")), "%" + termo.toLowerCase() + "%"));
+
+            // Busca por quantidade
+            try {
+                int quantidade = Integer.parseInt(termo);
+                predicates.add(cb.equal(root.get("quantidade"), quantidade));
+            } catch (NumberFormatException e) {
+                // Ignorar se o termo não for um número válido
+            }
+
+            // Busca por data de entrega
+            try {
+                LocalDate dataEntrega = LocalDate.parse(termo, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                predicates.add(cb.equal(root.get("dataEntrega"), dataEntrega));
+            } catch (DateTimeParseException e) {
+                // Ignorar se o termo não for uma data válida
+            }
+
+            // Busca por observações
+            predicates.add(cb.like(cb.lower(root.get("observacoes")), "%" + termo.toLowerCase() + "%"));
+
+            // Busca por ID
+            try {
+                int id = Integer.parseInt(termo);
+                predicates.add(cb.equal(root.get("id"), id));
+            } catch (NumberFormatException e) {
+                // Ignorar se o termo não for um número válido
+            }
+
+            return cb.or(predicates.toArray(new Predicate[0]));
+        };
+
+        return entregaRepository.findAll(spec);
+    }
+
+
+
 }

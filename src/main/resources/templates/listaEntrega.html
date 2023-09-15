@@ -37,6 +37,16 @@
             border-radius: 5px;
         }
 
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+
         .btn-primary {
             background-color: #007bff;
             border-color: #007bff;
@@ -68,6 +78,26 @@
         .btn-danger i {
             color: #fff;
         }
+
+        /* Estilo para o campo de busca e botão */
+        .search-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 70%;
+        }
+
+        .search-button {
+            width: 25%;
+        }
+
+        .create-button {
+            width: 25%; /* Alterado para ocupar o mesmo espaço do botão de pesquisa */
+        }
     </style>
 </head>
 
@@ -75,11 +105,22 @@
     <div class="container">
         <h1 class="display-4 mt-5">Lista de Entregas</h1>
 
+        <!-- Formulário de Busca e Botão de Cadastro -->
+        <div class="search-container">
+            <form action="/entrega/view/buscar" method="get">
+                <input type="text" class="form-control search-input" placeholder="Buscar Entrega" name="termo">
+                <button class="btn btn-outline-secondary search-button" type="submit">Buscar</button>
+            </form>
+            <a th:href="@{/entrega/view/cadastrar}" class="btn btn-success create-button">Cadastrar Nova Entrega</a>
+        </div>
+        <!-- Fim do Formulário de Busca e Botão de Cadastro -->
+
         <table class="table">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Nome do Policial</th>
+                    <th scope="col">Munição</th>
                     <th scope="col">Quantidade</th>
                     <th scope="col">Data de Entrega</th>
                     <th scope="col">Observações</th>
@@ -91,12 +132,13 @@
                 <tr th:each="entrega : ${entregas}">
                     <th scope="row" th:text="${entrega.id}"></th>
                     <td th:text="${entrega.nomePolicial}"></td>
+                    <td th:text="${entrega.municao.tipo + ' - ' + entrega.municao.calibre}"></td>
                     <td th:text="${entrega.quantidade}"></td>
                     <td th:text="${entrega.dataEntrega}"></td>
                     <td th:text="${entrega.observacoes}"></td>
                     <td>
                         <a th:href="@{/entrega/view/atualizar/{id}(id=${entrega.id})}" class="btn btn-primary">
-                            <i class="fas fa-edit"></i> Atualizar
+                            <i class="fas fa-edit"></i> Editar
                         </a>
                         <a th:href="@{/entrega/view/remover/{id}(id=${entrega.id})}" th:method="delete"
                             class="btn btn-danger">
@@ -107,12 +149,6 @@
                 <!-- Fim do bloco para cada entrega -->
             </tbody>
         </table>
-        <div class="mb-3 row">
-            <div class="col-12 d-grid">
-                <a th:href="@{/entrega/view/cadastrar}" class="mt-4 btn btn-success">Cadastrar Nova Entrega</a>
-                <a th:href="@{/inicio}" class="mt-4 btn btn-primary">Voltar</a>
-            </div>
-        </div>
     </div>
 </body>
 
