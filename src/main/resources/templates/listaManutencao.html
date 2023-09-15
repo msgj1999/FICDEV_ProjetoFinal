@@ -12,6 +12,21 @@
         body {
             background-color: #f8f9fa;
         }
+        
+        .sidebar {
+            width: 280px;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            padding: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .content {
+            margin-left: 280px; /* Largura da barra lateral */
+            padding: 30px;
+        }
 
         .container {
             padding-top: 30px;
@@ -78,28 +93,91 @@
             background-color: #218838;
             border-color: #1e7e34;
         }
+        
+                /* Estilo para o campo de busca e botão */
+        .search-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 70%;
+        }
+
+        .search-button {
+            width: 25%;
+        }
+
+        .create-button {
+            width: 25%; /* Alterado para ocupar o mesmo espaço do botão de pesquisa */
+        }
 
     </style>
 </head>
 
 <body>
+	<div class="sidebar">
+       <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+            <span class="fs-4">Gestão de Munições</span>
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <!-- Adicionando a guia "Dashboard" -->
+            <li class="nav-item">
+                <a th:href="@{/dashboard}" class="nav-link">
+                    Dashboard
+                </a>
+            </li>
+            <!-- Fim da nova guia "Dashboard" -->
+
+            <li class="nav-item">
+                <a th:href="@{/municao/view/listar}" class="nav-link">
+                    Munição
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/entrega/view/listar}" class="nav-link">
+                    Entrega
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/manutencao/view/listar}" class="nav-link active" aria-current="page">
+                    Manutenção
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/usuario/view/listar}" class="nav-link">
+                    Usuário
+                </a>
+            </li>
+        </ul>
+        <hr>
+        <div class="dropdown">
+            <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                <strong>Seu Nome</strong>
+            </a>
+            <ul class="dropdown-menu text-small shadow">
+                <li><a class="dropdown-item" href="#">New project...</a></li>
+                <li><a class="dropdown-item" href="#">Settings</a></li>
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Sign out</a></li>
+            </ul>
+        </div>
+    </div>
     <div class="container">
         <h1 class="display-4 mt-5">Lista de Manutenções</h1>
         
+        <div class="search-container">
             <form action="/manutencao/view/buscar" method="get">
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="busca">Buscar:</label>
-                <div class="input-group">
-                    <input type="text" id="busca" name="busca" class="form-control">
-                    <button type="submit" class="btn btn-primary">Buscar</button>
-                </div>
-            </div>
-            <div class="col-md-6 d-flex justify-content-end">
-                <a th:href="@{/manutencao/view/cadastrar}" class="mt-4 btn btn-success">Cadastrar Nova Manutenção</a>
-            </div>
+                <input type="text" class="form-control search-input" placeholder="Buscar Manutenção" name="termo">
+                <button class="btn btn-outline-secondary search-button" type="submit">Buscar</button>
+            </form>
+            <a th:href="@{/manutencao/view/cadastrar}" class="btn btn-success create-button">Cadastrar Nova Manutenção</a>
         </div>
-    </form>
 
 
         <!-- Tabela de Manutenções -->

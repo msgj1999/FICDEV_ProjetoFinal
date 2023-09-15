@@ -1,14 +1,11 @@
 package com.example.demo.view;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -84,24 +81,12 @@ public class ManutencaoControllerView {
     }
     
     @GetMapping("/buscar")
-    public ModelAndView buscarManutencoes(@RequestParam(name = "busca", required = false) String busca) {
-        ModelAndView modelAndView = new ModelAndView("listaManutencao");
-        if (busca != null && !busca.isEmpty()) {
-            try {
-                LocalDate data = LocalDate.parse(busca); // Tente converter a string em LocalDate
-                List<Manutencao> manutencoes = manutencaoService.buscarPorDataManutencao(data);
-                modelAndView.addObject("manutencoes", manutencoes);
-            } catch (DateTimeParseException ex) {
-                // Tratar erro de formatação da data, pode ser um status ou data não válida
-                List<Manutencao> manutencoes = manutencaoService.buscarPorStatus(busca);
-                modelAndView.addObject("manutencoes", manutencoes);
-            }
-        } else {
-            modelAndView.addObject("manutencoes", manutencaoService.getAllManutencoes());
-        }
-        return modelAndView;
+    public ModelAndView buscarManutencoes(@RequestParam(value = "termo", required = false) String termo) {
+        ModelAndView view = new ModelAndView("listaManutencao");
+        List<Manutencao> manutencoes = manutencaoService.buscarManutencoesPorFiltro(termo);
+        view.addObject("manutencoes", manutencoes);
+        return view;
     }
-
 
 
 }

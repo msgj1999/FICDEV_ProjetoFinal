@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +19,6 @@ import com.example.demo.service.EntregaService;
 import com.example.demo.service.MunicaoService;
 
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 
 @Controller

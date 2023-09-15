@@ -1,15 +1,19 @@
 package com.example.demo.service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.Municao;
 import com.example.demo.repository.MunicaoRepository;
+
+import jakarta.persistence.criteria.Predicate;
 
 @Service
 public class MunicaoService {
@@ -51,30 +55,63 @@ public class MunicaoService {
         return deletada;
     }
     
-    public List<Municao> searchMunicoes(String query, LocalDate dataFabricacaoMin, LocalDate dataFabricacaoMax, LocalDate dataValidadeMin, LocalDate dataValidadeMax) {
-        List<Municao> allMunicoes = municaoRepository.findAll();
+    public List<Municao> buscarMunicoesPorFiltro(String termo) {
+        Specification<Municao> spec = (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
 
-        List<Municao> resultado = allMunicoes.stream()
-                .filter(municao -> 
-                    containsIgnoreCase(municao.getTipo(), query) ||
-                    containsIgnoreCase(municao.getCalibre(), query) ||
-                    Integer.toString(municao.getQuantidade()).contains(query) ||
-                    Float.toString(municao.getPeso()).contains(query) ||
-                    Float.toString(municao.getCoeficienteBalistico()).contains(query) ||
-                    (dataFabricacaoMin == null || municao.getDataFabricacao().compareTo(dataFabricacaoMin) >= 0) &&
-                    (dataFabricacaoMax == null || municao.getDataFabricacao().compareTo(dataFabricacaoMax) <= 0) &&
-                    (dataValidadeMin == null || municao.getDataValidade().compareTo(dataValidadeMin) >= 0) &&
-                    (dataValidadeMax == null || municao.getDataValidade().compareTo(dataValidadeMax) <= 0)
-                )
-                .collect(Collectors.toList());
+	    predicates.add(cb.like(cb.lower(root.get("tipo")), "%" + termo.toLowerCase() + "%"));
 
-        return resultado;
-    }
+	    predicates.add(cb.like(cb.lower(root.get("calibre")), "%" + termo.toLowerCase() + "%"));
 
 
+            // Busca por quantidade
+            try {
+                int quantidade = Integer.parseInt(termo);
+                predicates.add(cb.equal(root.get("quantidade"), quantidade));
+            } catch (NumberFormatException e) {
+                // Ignorar se o termo não for um número válido
+            }
 
-    // Método auxiliar para verificar se uma string contém outra ignorando maiúsculas/minúsculas
-    private boolean containsIgnoreCase(String source, String query) {
-        return source != null && source.toLowerCase().contains(query.toLowerCase());
+	    try {
+            	float peso = Float.parseFloat(termo);
+            	predicates.add(cb.equal(root.get("peso"), peso));
+            } catch (NumberFormatException e) {
+            	// Ignorar se o termo não for um número válido
+            }
+
+	    try {
+            	float coeficienteBalistico = Float.parseFloat(termo);
+            	predicates.add(cb.equal(root.get("coeficienteBalistico"), coeficienteBalistico));
+            } catch (NumberFormatException e) {
+            	// Ignorar se o termo não for um número válido
+            }
+
+
+            try {
+                LocalDate dataFabricacao = LocalDate.parse(termo, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                predicates.add(cb.equal(root.get("dataFabricacao"), dataFabricacao));
+            } catch (DateTimeParseException e) {
+                // Ignorar se o termo não for uma data válida
+            }
+
+            try {
+                LocalDate dataValidade = LocalDate.parse(termo, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                predicates.add(cb.equal(root.get("dataValidade"), dataValidade));
+            } catch (DateTimeParseException e) {
+                // Ignorar se o termo não for uma data válida
+            }
+
+            // Busca por ID
+            try {
+                int id = Integer.parseInt(termo);
+                predicates.add(cb.equal(root.get("id"), id));
+            } catch (NumberFormatException e) {
+                // Ignorar se o termo não for um número válido
+            }
+
+            return cb.or(predicates.toArray(new Predicate[0]));
+        };
+
+        return municaoRepository.findAll(spec);
     }
 }

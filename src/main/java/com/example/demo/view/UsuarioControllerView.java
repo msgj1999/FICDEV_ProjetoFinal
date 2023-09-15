@@ -1,5 +1,6 @@
 package com.example.demo.view;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -80,10 +81,10 @@ public class UsuarioControllerView {
     }
     
     @GetMapping("/buscar")
-    public ModelAndView buscarUsuarios(@RequestParam("campo") String campo, @RequestParam("termo") String termo) {
-        var view = new ModelAndView("listaUsuario");
-        view.addObject("usuarios", usuarioService.buscarUsuariosPorCampo(campo, termo));
+    public ModelAndView buscarUsuarios(@RequestParam(value = "termo", required = false) String termo) {
+        ModelAndView view = new ModelAndView("listaUsuario");
+        List<Usuario> usuarios = usuarioService.buscarUsuariosPorFiltro(termo);
+        view.addObject("usuarios", usuarios);
         return view;
     }
-
 }

@@ -68,15 +68,9 @@ public class UsuarioControllerApi {
     }
     
     @GetMapping("/buscar")
-    public ResponseEntity<List<Usuario>> buscarUsuariosPorCampo(
-        @RequestParam(name = "campo") String campo,
-        @RequestParam(name = "termo") String termo) {
-        List<Usuario> usuarios = usuarioService.buscarUsuariosPorCampo(campo, termo);
-        if (usuarios.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.ok(usuarios);
-        }
+    public ResponseEntity<List<Usuario>> buscarUsuarios(@RequestParam(value = "termo", required = false) String termo) {
+        List<Usuario> usuarios = usuarioService.buscarUsuariosPorFiltro(termo);
+        return ResponseEntity.ok(usuarios);
     }
 
 }

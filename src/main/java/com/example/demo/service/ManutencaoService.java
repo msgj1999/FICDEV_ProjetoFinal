@@ -1,14 +1,20 @@
 package com.example.demo.service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.Manutencao;
 import com.example.demo.repository.ManutencaoRepository;
+
+import jakarta.persistence.criteria.Predicate;
 
 @Service
 public class ManutencaoService {
@@ -43,16 +49,31 @@ public class ManutencaoService {
         return deletada;
     }
     
-    @Autowired
-    public ManutencaoService(ManutencaoRepository manutencaoRepository) {
-        this.manutencaoRepository = manutencaoRepository;
-    }
-    
-    public List<Manutencao> buscarPorStatus(String status) {
-        return manutencaoRepository.findByStatusContainingIgnoreCase(status);
-    }
+    public List<Manutencao> buscarManutencoesPorFiltro(String termo) {
+        Specification<Manutencao> spec = (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
 
-    public List<Manutencao> buscarPorDataManutencao(LocalDate data) {
-        return manutencaoRepository.findByDataManutencao(data);
+            predicates.add(cb.like(cb.lower(root.get("status")), "%" + termo.toLowerCase() + "%"));
+
+            // Busca por data de Manutenção
+            try {
+                LocalDate dataManutencao = LocalDate.parse(termo, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                predicates.add(cb.equal(root.get("dataManutencao"), dataManutencao));
+            } catch (DateTimeParseException e) {
+                // Ignorar se o termo não for uma data válida
+            }
+
+            // Busca por ID
+            try {
+                int id = Integer.parseInt(termo);
+                predicates.add(cb.equal(root.get("id"), id));
+            } catch (NumberFormatException e) {
+                // Ignorar se o termo não for um número válido
+            }
+
+            return cb.or(predicates.toArray(new Predicate[0]));
+        };
+
+        return manutencaoRepository.findAll(spec);
     }
 }

@@ -1,11 +1,9 @@
 package com.example.demo.api;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -69,14 +67,10 @@ public class ManutencaoControllerApi {
         }
     }
     
-    @GetMapping("/buscarPorStatus")
-    public List<Manutencao> buscarManutencoesPorStatus(@RequestParam String status) {
-        return manutencaoService.buscarPorStatus(status);
-    }
-
-    @GetMapping("/buscarPorDataManutencao")
-    public List<Manutencao> buscarManutencoesPorDataManutencao(@RequestParam LocalDate data) {
-        return manutencaoService.buscarPorDataManutencao(data);
+    @GetMapping("/buscar")
+    public ResponseEntity<List<Manutencao>> buscarManutencoes(@RequestParam(value = "termo", required = false) String termo) {
+        List<Manutencao> manutencoes = manutencaoService.buscarManutencoesPorFiltro(termo);
+        return ResponseEntity.ok(manutencoes);
     }
 
 }

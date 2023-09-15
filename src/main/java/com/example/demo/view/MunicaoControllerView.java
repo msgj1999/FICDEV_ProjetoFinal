@@ -75,19 +75,10 @@ public class MunicaoControllerView {
         return modelAndView;
     }
     
-    @GetMapping("/search")
-    public ModelAndView searchMunicoes(@RequestParam(required = false) String query) {
+    @GetMapping("/buscar")
+    public ModelAndView buscarMunicoes(@RequestParam(value = "termo", required = false) String termo) {
         ModelAndView view = new ModelAndView("listaMunicao");
-        List<Municao> municoes;
-
-        if (query != null && !query.isEmpty()) {
-            // Realize a pesquisa apenas se a consulta não estiver vazia
-            municoes = municaoService.searchMunicoes(query, null, null, null, null);
-        } else {
-            // Se a consulta estiver vazia, liste todas as munições
-            municoes = municaoService.getAllMunicoes();
-        }
-
+        List<Municao> municoes = municaoService.buscarMunicoesPorFiltro(termo);
         view.addObject("municoes", municoes);
         return view;
     }

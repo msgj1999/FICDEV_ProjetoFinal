@@ -12,6 +12,21 @@
         body {
             background-color: #f8f9fa;
         }
+        
+        .sidebar {
+            width: 280px;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            padding: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .content {
+            margin-left: 280px; /* Largura da barra lateral */
+            padding: 30px;
+        }
 
         .container {
             padding-top: 30px;
@@ -68,30 +83,90 @@
         .btn-danger i {
             color: #fff;
         }
+        
+                /* Estilo para o campo de busca e botão */
+        .search-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 70%;
+        }
+
+        .search-button {
+            width: 25%;
+        }
+
+        .create-button {
+            width: 25%; /* Alterado para ocupar o mesmo espaço do botão de pesquisa */
+        }
     </style>
 </head>
 
 <body>
+	    <div class="sidebar">
+       <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+            <span class="fs-4">Gestão de Munições</span>
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <!-- Adicionando a guia "Dashboard" -->
+            <li class="nav-item">
+                <a th:href="@{/dashboard}" class="nav-link">
+                    Dashboard
+                </a>
+            </li>
+            <!-- Fim da nova guia "Dashboard" -->
+
+            <li class="nav-item">
+                <a th:href="@{/municao/view/listar}" class="nav-link active" aria-current="page">
+                    Munição
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/entrega/view/listar}" class="nav-link">
+                    Entrega
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/manutencao/view/listar}" class="nav-link">
+                    Manutenção
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/usuario/view/listar}" class="nav-link">
+                    Usuário
+                </a>
+            </li>
+        </ul>
+        <hr>
+        <div class="dropdown">
+            <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                <strong>Seu Nome</strong>
+            </a>
+            <ul class="dropdown-menu text-small shadow">
+                <li><a class="dropdown-item" href="#">New project...</a></li>
+                <li><a class="dropdown-item" href="#">Settings</a></li>
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Sign out</a></li>
+            </ul>
+        </div>
+    </div>
 <div class="container">
         <h1 class="display-4 mt-5">Lista de Munições</h1>
 
         <!-- Adicione este código para o campo de pesquisa e botão -->
-        <div class="row">
-            <div class="col-md-6">
-                <form class="form-inline mt-3">
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="searchInput" placeholder="Pesquisar Munição">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-primary" type="button" id="searchButton">
-                                <i class="fas fa-search"></i> Pesquisar
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="col-md-6 text-md-end">
-                <a th:href="@{/municao/view/cadastrar}" class="mt-4 btn btn-success">Cadastrar Nova Munição</a>
-            </div>
+        <div class="search-container">
+            <form action="/municao/view/buscar" method="get">
+                <input type="text" class="form-control search-input" placeholder="Buscar Munição" name="termo">
+                <button class="btn btn-outline-secondary search-button" type="submit">Buscar</button>
+            </form>
+            <a th:href="@{/municao/view/cadastrar}" class="btn btn-success create-button">Cadastrar Nova Munição</a>
         </div>
 
         
