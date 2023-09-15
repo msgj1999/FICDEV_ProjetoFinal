@@ -18,7 +18,6 @@ public class Manutencao {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String status;
-	@FutureOrPresent
 	@DateTimeFormat (pattern="yyyy-MM-dd")
 	private LocalDate dataManutencao;
 	

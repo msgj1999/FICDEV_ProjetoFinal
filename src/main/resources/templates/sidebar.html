@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,36 +14,33 @@
         </a>
         <hr>
         <ul class="nav nav-pills flex-column mb-auto">
-            <!-- Adicionando a guia "Dashboard" -->
+            <!-- Adicione a guia "Dashboard" -->
             <li class="nav-item">
-                <a th:href="@{/dashboard}" class="nav-link">
-                    Dashboard
-                </a>
+                <a th:href="@{/dashboard}" class="nav-link" th:class="${#httpServletRequest.requestURI == '/dashboard' ? 'active' : ''}">
+    				Dashboard
+				</a>
+
             </li>
             <!-- Fim da nova guia "Dashboard" -->
 
             <li class="nav-item">
-                <a th:href="@{/municao/view/listar}" class="nav-link active" aria-current="page">
+                <a th:href="@{/municao/view/listar}" class="nav-link th:classappend="${#httpServletRequest.requestURI == '/municao/view/listar' ? 'active' : ''}">
                     Munição
                 </a>
             </li>
+			<li class="nav-item">
+    			<a th:href="@{/entrega/view/listar}" class="nav-link th:classappend="${#httpServletRequest.requestURI == '/entrega/view/listar' ? 'active' : ''}">
+        			Entrega
+    			</a>
+			</li>
+
             <li class="nav-item">
-                <a th:href="@{/armazem/view/listar}" class="nav-link">
-                    Armazém
-                </a>
-            </li>
-            <li class="nav-item">
-                <a th:href="@{/entrega/view/listar}" class="nav-link">
-                    Entrega
-                </a>
-            </li>
-            <li class="nav-item">
-                <a th:href="@{/manutencao/view/listar}" class="nav-link">
+                <a th:href="@{/manutencao/view/listar}" class="nav-link th:classappend="${#httpServletRequest.requestURI == '/manutencao/view/listar' ? 'active' : ''}">
                     Manutenção
                 </a>
             </li>
             <li class="nav-item">
-                <a th:href="@{/usuario/view/listar}" class="nav-link">
+                <a th:href="@{/usuario/view/listar}" class="nav-link th:classappend="${#httpServletRequest.requestURI == '/usuario/view/listar' ? 'active' : ''}">
                     Usuário
                 </a>
             </li>
@@ -64,8 +61,6 @@
         </div>
     </div>
     <div class="container-fluid">
-        <!-- Conteúdo da sua página aqui -->
     </div>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
