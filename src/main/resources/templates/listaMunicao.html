@@ -115,7 +115,7 @@
         <ul class="nav nav-pills flex-column mb-auto">
             <!-- Adicionando a guia "Dashboard" -->
             <li class="nav-item">
-                <a th:href="@{/dashboard}" class="nav-link">
+                <a th:href="@{/inicio}" class="nav-link">
                     Dashboard
                 </a>
             </li>
@@ -161,14 +161,15 @@
         <h1 class="display-4 mt-5">Lista de Munições</h1>
 
         <!-- Adicione este código para o campo de pesquisa e botão -->
-        <div class="search-container">
-            <form action="/municao/view/buscar" method="get">
-                <input type="text" class="form-control search-input" placeholder="Buscar Munição" name="termo">
-                <button class="btn btn-outline-secondary search-button" type="submit">Buscar</button>
-            </form>
-            <a th:href="@{/municao/view/cadastrar}" class="btn btn-success create-button">Cadastrar Nova Munição</a>
+<div class="search-container">
+    <form action="/municao/view/buscar" method="get" class="d-flex">
+        <div class="input-group">
+            <input type="text" class="form-control search-input" placeholder="Buscar Munição" name="termo" id="searchInput">
+            <button class="btn btn-outline-secondary search-button" type="submit" id="searchButton">Buscar</button>
         </div>
-
+    </form>
+    <a th:href="@{/municao/view/cadastrar}" class="btn btn-success create-button">Cadastrar Nova Munição</a>
+</div>
         
         <table class="table">
     		<thead>

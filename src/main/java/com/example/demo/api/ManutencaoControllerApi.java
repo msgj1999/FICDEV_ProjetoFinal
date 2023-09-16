@@ -72,5 +72,10 @@ public class ManutencaoControllerApi {
         List<Manutencao> manutencoes = manutencaoService.buscarManutencoesPorFiltro(termo);
         return ResponseEntity.ok(manutencoes);
     }
+    
+    @GetMapping("/total-manutencoes")
+    public int getTotalManutencoes() {
+        return manutencaoService.buscarTotalManutencoes();
+    }
 
 }

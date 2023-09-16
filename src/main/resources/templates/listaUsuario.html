@@ -104,7 +104,7 @@
 		}
 		
 		.search-button {
-		    width: 30%; /* Reduza a largura do botão de busca */
+		    width: 25%; /* Reduza a largura do botão de busca */
 		    border-top-left-radius: 0;
 		    border-bottom-left-radius: 0;
 		}
@@ -123,7 +123,7 @@
         <ul class="nav nav-pills flex-column mb-auto">
             <!-- Adicionando a guia "Dashboard" -->
             <li class="nav-item">
-                <a th:href="@{/dashboard}" class="nav-link">
+                <a th:href="@{/inicio}" class="nav-link">
                     Dashboard
                 </a>
             </li>
@@ -169,13 +169,15 @@
         <h1 class="display-4 mt-5">Lista de Usuários</h1>
 
                 <!-- Formulário de busca por Nome, Cargo, ID ou Email -->
-					<div class="d-flex justify-content-between w-100">
-					    <form action="/usuario/view/buscar" method="get" class="flex-grow-1 mr-2">
-					        <input type="text" class="form-control search-input" placeholder="Buscar Usuário" name="termo">
-					    </form>
-					    <button class="btn btn-outline-secondary search-button" type="submit">Buscar</button>
-					    <a th:href="@{/usuario/view/cadastrar}" class="btn btn-success create-button ml-2">Cadastrar Novo Usuário</a>
-					</div>
+<div class="search-container">
+    <form action="/usuario/view/buscar" method="get" class="d-flex">
+        <div class="input-group">
+            <input type="text" class="form-control search-input" placeholder="Buscar Usuário" name="termo" id="searchInput">
+            <button class="btn btn-outline-secondary search-button" type="submit" id="searchButton">Buscar</button>
+        </div>
+    </form>
+    <a th:href="@{/usuario/view/cadastrar}" class="btn btn-success create-button">Cadastrar Novo Usuário</a>
+</div>
         <!-- Fim do formulário de busca e botão -->
 
         <table class="table">

@@ -76,4 +76,10 @@ public class ManutencaoService {
 
         return manutencaoRepository.findAll(spec);
     }
+    
+    public int buscarTotalManutencoes() {
+        List<Manutencao> manutencoes = manutencaoRepository.findAll();
+        return manutencoes.size();
+    }
+
 }

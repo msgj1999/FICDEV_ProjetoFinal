@@ -4,7 +4,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.data.jpa.domain.Specification;
@@ -114,4 +117,29 @@ public class MunicaoService {
 
         return municaoRepository.findAll(spec);
     }
+    
+    public int buscarTotalMunicoesEmEstoque() {
+        List<Municao> municoes = municaoRepository.findAll();
+        int total = 0;
+        for (Municao municao : municoes) {
+            total += municao.getQuantidade();
+        }
+        return total;
+    }
+    
+    public List<Map<String, Object>> getDadosMunicoes() {
+        List<Object[]> dados = municaoRepository.findTipoCalibreQuantidade(); // Consulta personalizada no repositório
+        List<Map<String, Object>> dadosMunicoes = new ArrayList<>();
+
+        for (Object[] dado : dados) {
+            Map<String, Object> municaoData = new HashMap<>();
+            municaoData.put("tipo", dado[0]);
+            municaoData.put("calibre", dado[1]);
+            municaoData.put("quantidade", dado[2]);
+            dadosMunicoes.add(municaoData);
+        }
+
+        return dadosMunicoes;
+    }
+
 }

@@ -126,7 +126,7 @@
         <ul class="nav nav-pills flex-column mb-auto">
             <!-- Adicionando a guia "Dashboard" -->
             <li class="nav-item">
-                <a th:href="@{/dashboard}" class="nav-link">
+                <a th:href="@{/inicio}" class="nav-link">
                     Dashboard
                 </a>
             </li>
@@ -171,13 +171,15 @@
     <div class="container">
         <h1 class="display-4 mt-5">Lista de Manutenções</h1>
         
-        <div class="search-container">
-            <form action="/manutencao/view/buscar" method="get">
-                <input type="text" class="form-control search-input" placeholder="Buscar Manutenção" name="termo">
-                <button class="btn btn-outline-secondary search-button" type="submit">Buscar</button>
-            </form>
-            <a th:href="@{/manutencao/view/cadastrar}" class="btn btn-success create-button">Cadastrar Nova Manutenção</a>
+<div class="search-container">
+    <form action="/manutencao/view/buscar" method="get" class="d-flex">
+        <div class="input-group">
+            <input type="text" class="form-control search-input" placeholder="Buscar Manutenção" name="termo" id="searchInput">
+            <button class="btn btn-outline-secondary search-button" type="submit" id="searchButton">Buscar</button>
         </div>
+    </form>
+    <a th:href="@{/manutencao/view/cadastrar}" class="btn btn-success create-button">Cadastrar Nova Manutenção</a>
+</div>
 
 
         <!-- Tabela de Manutenções -->

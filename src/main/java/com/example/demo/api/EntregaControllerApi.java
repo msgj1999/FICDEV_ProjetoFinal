@@ -78,4 +78,10 @@ public class EntregaControllerApi {
         return ResponseEntity.ok(entregas);
     }
     
+    @GetMapping("/total-entregas")
+    public ResponseEntity<Integer> buscarTotalEntregas() {
+        int total = entregaService.buscarTotalEntregas();
+        return ResponseEntity.ok(total);
+    }
+    
 }

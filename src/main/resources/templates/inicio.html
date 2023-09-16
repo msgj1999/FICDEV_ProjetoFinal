@@ -1,66 +1,352 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="caminho/para/seu/arquivo.css">
-    <title>Início - Gestão de Munições</title>
-</head>
-<body>
-    <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px;">
-        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-            <span class="fs-4">Gestão de Munições</span>
-        </a>
-        <hr>
-        <ul class="nav nav-pills flex-column mb-auto">
-            <!-- Adicionando a guia "Dashboard" -->
-            <li class="nav-item">
-                <a th:href="@{/dashboard}" class="nav-link">
-                    Dashboard
-                </a>
-            </li>
-            <!-- Fim da nova guia "Dashboard" -->
 
-            <li class="nav-item">
-                <a th:href="@{/municao/view/listar}" class="nav-link active" aria-current="page">
-                    Munição
-                </a>
-            </li>
-            <li class="nav-item">
-                <a th:href="@{/entrega/view/listar}" class="nav-link">
-                    Entrega
-                </a>
-            </li>
-            <li class="nav-item">
-                <a th:href="@{/manutencao/view/listar}" class="nav-link">
-                    Manutenção
-                </a>
-            </li>
-            <li class="nav-item">
-                <a th:href="@{/usuario/view/listar}" class="nav-link">
-                    Usuário
-                </a>
-            </li>
-        </ul>
-        <hr>
-        <div class="dropdown">
-            <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                <strong>Seu Nome</strong>
-            </a>
-            <ul class="dropdown-menu text-small shadow">
-                <li><a class="dropdown-item" href="#">New project...</a></li>
-                <li><a class="dropdown-item" href="#">Settings</a></li>
-                <li><a class="dropdown-item" href="#">Profile</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Sign out</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="container-fluid">
-        <!-- Conteúdo da sua página aqui -->
-    </div>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Dashboard</title>
+
+	<!-- Adicione o link para o Bootstrap CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+	<!-- Adicione o link para o Bootstrap JS e o jQuery (necessário para alguns recursos do Bootstrap) -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+	<!-- Adicione o link para a biblioteca Chart.js (para o gráfico de pizza) -->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+	<!-- Adicione o seu arquivo CSS personalizado aqui, se necessário -->
+	<!-- <link rel="stylesheet" href="css/style.css"> -->
+
+	<style>
+		body {
+			background-color: #f8f9fa;
+		}
+
+		.sidebar {
+			width: 280px;
+			min-height: 100vh;
+			background-color: #f8f9fa;
+			padding: 20px;
+			position: fixed;
+			top: 0;
+			left: 0;
+		}
+
+		.content {
+			margin-left: 280px;
+			/* Largura da barra lateral */
+			padding: 30px;
+		}
+
+		.container {
+			padding-top: 30px;
+		}
+
+		.display-4 {
+			color: #007bff;
+			text-align: center;
+			margin-bottom: 30px;
+		}
+
+		.table {
+			background-color: #fff;
+			border-radius: 5px;
+		}
+
+		th,
+		td {
+			vertical-align: middle;
+		}
+
+		.btn {
+			border-radius: 5px;
+		}
+
+		.btn-success {
+			background-color: #28a745;
+			border-color: #28a745;
+		}
+
+		.btn-success:hover {
+			background-color: #218838;
+			border-color: #1e7e34;
+		}
+
+		.btn-primary {
+			background-color: #007bff;
+			border-color: #007bff;
+		}
+
+		.btn-primary:hover {
+			background-color: #0056b3;
+			border-color: #0056b3;
+		}
+
+		.btn-danger {
+			background-color: #dc3545;
+			border-color: #dc3545;
+		}
+
+		.btn-danger:hover {
+			background-color: #c82333;
+			border-color: #bd2130;
+		}
+
+		.btn i {
+			margin-right: 5px;
+		}
+
+		.btn-primary i {
+			color: #fff;
+		}
+
+		.btn-danger i {
+			color: #fff;
+		}
+	</style>
+	</style>
+</head>
+
+<body>
+	<!-- Barra de navegação Bootstrap -->
+	<div class="sidebar">
+		<a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+			<span class="fs-4">Gestão de Munições</span>
+		</a>
+		<hr>
+		<ul class="nav nav-pills flex-column mb-auto">
+			<!-- Adicionando a guia "Dashboard" -->
+			<li class="nav-item">
+				<a th:href="@{/dashboard}" class="nav-link active" aria-current="page">
+					Dashboard
+				</a>
+			</li>
+			<!-- Fim da nova guia "Dashboard" -->
+
+			<li class="nav-item">
+				<a th:href="@{/municao/view/listar}" class="nav-link">
+					Munição
+				</a>
+			</li>
+			<li class="nav-item">
+				<a th:href="@{/entrega/view/listar}" class="nav-link">
+					Entrega
+				</a>
+			</li>
+			<li class="nav-item">
+				<a th:href="@{/manutencao/view/listar}" class="nav-link">
+					Manutenção
+				</a>
+			</li>
+			<li class="nav-item">
+				<a th:href="@{/usuario/view/listar}" class="nav-link">
+					Usuário
+				</a>
+			</li>
+		</ul>
+		<hr>
+		<div class="dropdown">
+			<a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
+				data-bs-toggle="dropdown" aria-expanded="false">
+				<img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+				<strong>Seu Nome</strong>
+			</a>
+			<ul class="dropdown-menu text-small shadow">
+				<li><a class="dropdown-item" href="#">New project...</a></li>
+				<li><a class="dropdown-item" href="#">Settings</a></li>
+				<li><a class="dropdown-item" href="#">Profile</a></li>
+				<li>
+					<hr class="dropdown-divider">
+				</li>
+				<li><a class="dropdown-item" href="#">Sign out</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<!-- Conteúdo do Dashboard -->
+	<div class="container mt-5">
+		<h1>Dashboard</h1>
+
+		<!-- Resumo Geral -->
+		<div class="row mt-4">
+			<div class="col-md-3">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Total de Munições</h5>
+						<!-- Use o seu serviço para buscar o total de munições em estoque -->
+						<p class="card-text" id="totalMunicoesEmEstoque">Carregando...</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">Total de Entregas</h5>
+							<!-- Use o seu serviço para buscar o total de entregas feitas -->
+							<p class="card-text" id="totalEntregas">Carregando...</p>
+						</div>
+					</div>
+				</div>
+			<div class="col-md-3">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Total de Manutenções</h5>
+						<!-- Use o seu serviço para buscar o total de manutenções feitas -->
+						<p class="card-text" id="totalManutencoes">Carregando...</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Total de Usuários</h5>
+						<!-- Use o seu serviço para buscar o total de usuários cadastrados -->
+						<p class="card-text" id="totalUsuarios">Carregando...</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Gráfico de Pizza -->
+		<div class="row mt-4">
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Distribuição de Munições</h5>
+						<canvas id="grafico-municoes"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	<script>
+		function getTotalMunicoesEmEstoque() {
+			fetch('/municao/api/total-estoque')
+				.then(response => response.json())
+				.then(data => {
+					// Atualize o conteúdo da div com o valor retornado pela API
+					document.getElementById('totalMunicoesEmEstoque').textContent = data;
+				})
+				.catch(error => {
+					console.error('Erro ao buscar o total de munições em estoque:', error);
+				});
+		}
+
+    // Chame a função para buscar o total de munições em estoque quando a página carregar
+    document.addEventListener('DOMContentLoaded', getTotalMunicoesEmEstoque);
+	</script>
+
+	<script>
+		function getTotalEntregas() {
+			fetch('/entrega/api/total-entregas')
+				.then(response => response.json())
+				.then(data => {
+					// Atualize o conteúdo da div com o valor retornado pela API
+					document.getElementById('totalEntregas').textContent = data;
+				})
+				.catch(error => {
+					console.error('Erro ao buscar o total de entregas:', error);
+				});
+		}
+
+    // Chame a função para buscar o total de entregas quando a página carregar
+    document.addEventListener('DOMContentLoaded', getTotalEntregas);
+	</script>
+	
+		<script>
+		function getTotalManutencoes() {
+			fetch('/manutencao/api/total-manutencoes')
+				.then(response => response.json())
+				.then(data => {
+					// Atualize o conteúdo da div com o valor retornado pela API
+					document.getElementById('totalManutencoes').textContent = data;
+				})
+				.catch(error => {
+					console.error('Erro ao buscar o total de manutencoes:', error);
+				});
+		}
+
+    // Chame a função para buscar o total de entregas quando a página carregar
+    document.addEventListener('DOMContentLoaded', getTotalManutencoes);
+	</script>
+	
+	
+	<script>
+		function getTotalUsuarios() {
+    fetch('/usuario/api/total-usuarios')
+        .then(response => response.json())
+        .then(data => {
+            // Atualize o conteúdo da div com o valor retornado pela API
+            document.getElementById('totalUsuarios').textContent = data;
+        })
+        .catch(error => {
+            console.error('Erro ao buscar o total de usuários:', error);
+        });
+}
+
+    // Chame a função para buscar o total de entregas quando a página carregar
+    document.addEventListener('DOMContentLoaded', getTotalUsuarios);
+
+	</script>
+
+	<!-- Script para criar o gráfico de pizza -->
+	<script>
+		var ctx = document.getElementById('grafico-municoes').getContext('2d');
+		var myChart = new Chart(ctx, {
+			type: 'pie',
+			data: {
+				labels: ['Pistola - .45 Auto', 'Fuzil - 5.56x45mm', 'Caça - .308 Winchester'],
+				datasets: [{
+					data: [500, 250, 250],
+					backgroundColor: ['red', 'green', 'blue']
+				}]
+			}
+		});
+
+		// Função para atualizar o gráfico de munições
+		function atualizarGraficoMunicoes() {
+			fetch('/municao/api/dados-municoes')
+				.then(response => response.json())
+				.then(data => {
+					const labels = data.map(item => `${item.tipo} - ${item.calibre}`);
+					const quantidades = data.map(item => item.quantidade);
+					const backgroundColors = data.map(() => getRandomColor());
+
+					const ctx = document.getElementById('grafico-municoes').getContext('2d');
+					if (myChart) {
+						myChart.destroy(); // Destrua o gráfico anterior, se existir
+					}
+					myChart = new Chart(ctx, {
+						type: 'pie',
+						data: {
+							labels: labels,
+							datasets: [{
+								data: quantidades,
+								backgroundColor: backgroundColors
+							}]
+						}
+					});
+				})
+				.catch(error => {
+					console.error('Erro ao buscar os dados das munições:', error);
+				});
+		}
+
+		function getRandomColor() {
+			const letters = '0123456789ABCDEF';
+			let color = '#';
+			for (let i = 0; i < 6; i++) {
+				color += letters[Math.floor(Math.random() * 16)];
+			}
+			return color;
+		}
+
+		// Chame a função para atualizar o gráfico quando a página carregar
+		document.addEventListener('DOMContentLoaded', atualizarGraficoMunicoes);
+	</script>
+
 </body>
-</html>
+
+</html></html>

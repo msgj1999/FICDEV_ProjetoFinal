@@ -72,5 +72,12 @@ public class UsuarioControllerApi {
         List<Usuario> usuarios = usuarioService.buscarUsuariosPorFiltro(termo);
         return ResponseEntity.ok(usuarios);
     }
+    
+    @GetMapping("/total-usuarios")
+    public ResponseEntity<Long> contarUsuarios() {
+        long totalUsuarios = usuarioService.countUsuarios();
+        return ResponseEntity.ok(totalUsuarios);
+    }
+
 
 }

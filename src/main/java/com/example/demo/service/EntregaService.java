@@ -116,5 +116,9 @@ public class EntregaService {
     }
 
 
+    public int buscarTotalEntregas() {
+        List<Entrega> entregas = entregaRepository.findAll();
+        return entregas.size();
+    }
 
 }

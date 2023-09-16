@@ -77,4 +77,9 @@ public class UsuarioService {
 
         return usuarioRepository.findAll(spec);
     }
+    
+    public long countUsuarios() {
+        return usuarioRepository.count();
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.example.demo.api;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
@@ -72,4 +73,17 @@ public class MunicaoControllerApi {
         List<Municao> municoes = municaoService.buscarMunicoesPorFiltro(termo);
         return ResponseEntity.ok(municoes);
     }
+    
+    @GetMapping("/total-estoque")
+    public ResponseEntity<Integer> buscarTotalMunicoesEmEstoque() {
+        int total = municaoService.buscarTotalMunicoesEmEstoque();
+        return ResponseEntity.ok(total);
+    }
+    
+    @GetMapping("/dados-municoes")
+    public ResponseEntity<List<Map<String, Object>>> buscarDadosMunicoes() {
+        List<Map<String, Object>> dadosMunicoes = municaoService.getDadosMunicoes();
+        return ResponseEntity.ok(dadosMunicoes);
+    }
+
 }
