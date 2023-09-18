@@ -61,7 +61,7 @@ public class EntregaService {
         
         if (municao != null && entrega.getQuantidade() <= municao.getQuantidade()) {
             try {
-                municao.setQuantidade(municao.getQuantidade() - entrega.getQuantidade()); // Deduza a quantidade de munição
+                municao.setQuantidade(municao.getQuantidade() - entrega.getQuantidade()); // Reduza a quantidade de munição
                 municaoService.saveMunicao(municao); // Atualize a quantidade de munição
 
                 entregaRepository.save(entrega); // Salve a entrega

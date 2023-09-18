@@ -51,18 +51,18 @@
                 <label for="nomePolicial">Nome do Policial</label>
                 <input type="text" th:field="*{nomePolicial}" class="form-control" id="nomePolicial">
             </div>
-            <div class="form-group">
-    			<label for="municao">Selecione a Munição:</label>
-    			<select class="form-control" id="municao" th:field="*{municao.id}">
-        			<!-- Popule as opções com as munições disponíveis -->
-        			<option th:each="municao : ${municoes}" th:value="${municao.id}" th:text="${municao.tipo + ' - ' + municao.calibre}"></option>
-    			</selec>
-			</div>
-			
-            <div class="form-group">
-                <label for="quantidade">Quantidade</label>
-                <input type="number" th:field="*{quantidade}" class="form-control" id="quantidade">
-            </div>
+<div class="form-group">
+    <label for="municao">Selecione a Munição:</label>
+    <select class="form-control" id="municao" th:field="*{municao.id}">
+        <!-- Popule as opções com as munições disponíveis -->
+        <option th:each="municao : ${municoes}" th:value="${municao.id}" th:text="${municao.tipo + ' - ' + municao.calibre}"></option>
+    </select>
+</div>
+
+<div class="form-group">
+    <label for="quantidade">Quantidade</label>
+    <input type="number" th:field="*{quantidade}" class="form-control" id="quantidade">
+</div>
             <div class="form-group">
                 <label for="dataEntrega">Data de Entrega</label>
                 <input type="date" th:field="*{dataEntrega}" class="form-control" id="dataEntrega">

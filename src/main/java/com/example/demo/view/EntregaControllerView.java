@@ -64,14 +64,19 @@ public class EntregaControllerView {
         if (!violations.isEmpty()) {
             problemas = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(" - "));
         } else {
-             entregaService.saveEntrega(entrega);
-            mensagens = "Salvo com sucesso!";
+            try {
+            	entregaService.cadastrarEntrega(entrega); // Chame o método de serviço aqui
+                mensagens = "Salvo com sucesso!";
+            } catch (NotFoundException e) {
+                problemas = e.getMessage();
+            }
         }
         ModelAndView modelAndView = new ModelAndView("cadastroEntrega");
         modelAndView.addObject("sucesso", mensagens);
         modelAndView.addObject("error", problemas);
         return modelAndView;
     }
+
 
 
     @GetMapping("/atualizar/{id}")
