@@ -57,7 +57,7 @@ public class EntregaService {
     }
     
     public void cadastrarEntrega(Entrega entrega) throws NotFoundException {
-        Municao municao = entrega.getMunicao();
+        Municao municao = municaoService.findById(entrega.getMunicao().getId()).orElseThrow();
         
         if (municao != null && entrega.getQuantidade() <= municao.getQuantidade()) {
             try {
