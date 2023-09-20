@@ -5,7 +5,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.data.domain.Sort;
+
 
 import com.example.demo.entities.Entrega;
 import com.example.demo.service.EntregaService;
@@ -35,12 +40,12 @@ public class EntregaControllerView {
     private Validator validator;
 
     @GetMapping("/listar")
-    public ModelAndView listaEntregas() {
-        var view = new ModelAndView("listaEntrega");
-        view.addObject("entregas", entregaService.getAllEntregas());
+    public ModelAndView listaEntregas(Pageable pageable) {
+        ModelAndView view = new ModelAndView("listaEntrega");
+        Page<Entrega> entregas = entregaService.getAllEntregas(pageable);
+        view.addObject("entregas", entregas);
         return view;
     }
-
     @GetMapping("/remover/{id}")
     public String removerEntrega(@PathVariable("id") int id) throws NotFoundException {
         entregaService.deleteEntrega(id);
@@ -89,10 +94,14 @@ public class EntregaControllerView {
     }
     
     @GetMapping("/buscar")
-    public ModelAndView buscarEntregas(@RequestParam(value = "termo", required = false) String termo) {
+    public ModelAndView buscarEntregas(
+        @RequestParam(value = "termo", required = false) String termo,
+        @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+
+        Page<Entrega> pageEntregas = entregaService.buscarEntregasPorFiltro(termo, pageable);
         ModelAndView view = new ModelAndView("listaEntrega");
-        List<Entrega> entregas = entregaService.buscarEntregasPorFiltro(termo);
-        view.addObject("entregas", entregas);
+        view.addObject("entregas", pageEntregas);
         return view;
     }
+
 }

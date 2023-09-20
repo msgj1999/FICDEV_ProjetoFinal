@@ -2,221 +2,249 @@
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Entregas</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        
-        .sidebar {
-            width: 280px;
-            min-height: 100vh;
-            background-color: #f8f9fa;
-            padding: 20px;
-            position: fixed;
-            top: 0;
-            left: 0;
-        }
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Lista de Entregas</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+	<style>
+		body {
+			background-color: #f8f9fa;
+		}
 
-        .content {
-            margin-left: 280px; /* Largura da barra lateral */
-            padding: 30px;
-        }
+		.sidebar {
+			width: 280px;
+			min-height: 100vh;
+			background-color: #f8f9fa;
+			padding: 20px;
+			position: fixed;
+			top: 0;
+			left: 0;
+		}
 
-        .container {
-            padding-top: 30px;
-        }
+		.content {
+			margin-left: 280px;
+			/* Largura da barra lateral */
+			padding: 30px;
+		}
 
-        .display-4 {
-            color: #007bff;
-            text-align: center;
-            margin-bottom: 30px;
-        }
+		.container {
+			padding-top: 30px;
+		}
 
-        .table {
-            background-color: #fff;
-            border-radius: 5px;
-        }
+		.display-4 {
+			color: rgb(0, 0, 0);
+			text-align: center;
+			margin-bottom: 30px;
+		}
 
-        th,
-        td {
-            vertical-align: middle;
-        }
+		.table {
+			background-color: #fff;
+			border-radius: 5px;
+		}
 
-        .btn {
-            border-radius: 5px;
-        }
+		th,
+		td {
+			vertical-align: middle;
+		}
 
-        .btn-success {
-            background-color: #28a745;
-            border-color: #28a745;
-        }
+		.btn {
+			border-radius: 5px;
+		}
 
-        .btn-success:hover {
-            background-color: #218838;
-            border-color: #1e7e34;
-        }
 
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
+		.btn-primary {
+			background-color: #007bff;
+			border-color: #007bff;
+		}
 
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
-        }
+		.btn-primary:hover {
+			background-color: #0056b3;
+			border-color: #0056b3;
+		}
 
-        .btn-danger {
-            background-color: #dc3545;
-            border-color: #dc3545;
-        }
+		.btn-danger {
+			background-color: #dc3545;
+			border-color: #dc3545;
+		}
 
-        .btn-danger:hover {
-            background-color: #c82333;
-            border-color: #bd2130;
-        }
+		.btn-danger:hover {
+			background-color: #c82333;
+			border-color: #bd2130;
+		}
 
-        .btn i {
-            margin-right: 5px;
-        }
+		.btn i {
+			margin-right: 5px;
+		}
 
-        .btn-primary i {
-            color: #fff;
-        }
+		.btn-primary i {
+			color: #fff;
+		}
 
-        .btn-danger i {
-            color: #fff;
-        }
+		.btn-danger i {
+			color: #fff;
+		}
 
-        /* Estilo para o campo de busca e botão */
-        .search-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
+		/* Estilo para o campo de busca e botão */
+		.search-container {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 20px;
+		}
 
-        .search-input {
-            width: 70%;
-        }
+		.search-input {
+			width: 70%;
+		}
 
-        .search-button {
-            width: 25%;
-        }
+		.search-button {
+			width: 25%;
+		}
 
-        .create-button {
-            width: 25%; /* Alterado para ocupar o mesmo espaço do botão de pesquisa */
-        }
-    </style>
+		.create-button {
+			width: 25%;
+			border-radius: 6px;
+			background: var(--status-color-info, #17A2B8);
+			border-color: #17A2B8;
+		}
+
+		.create-button:hover {
+			width: 25%;
+			border-radius: 6px;
+			background: var(--status-color-info, #0E8497);
+			border-color: #0E8497;
+		}
+	</style>
 </head>
 
 <body>
 	<div class="sidebar">
-       <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-            <span class="fs-4">Gestão de Munições</span>
-        </a>
-        <hr>
-        <ul class="nav nav-pills flex-column mb-auto">
-            <!-- Adicionando a guia "Dashboard" -->
-            <li class="nav-item">
-                <a th:href="@{/inicio}" class="nav-link">
-                    Dashboard
-                </a>
-            </li>
-            <!-- Fim da nova guia "Dashboard" -->
+		<a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+			<span class="fs-4">Gestão de Munições</span>
+		</a>
+		<hr>
+		<ul class="nav nav-pills flex-column mb-auto">
+			<!-- Adicionando a guia "Dashboard" -->
+			<li class="nav-item">
+				<a th:href="@{/inicio}" class="nav-link">
+					Dashboard
+				</a>
+			</li>
+			<!-- Fim da nova guia "Dashboard" -->
 
-            <li class="nav-item">
-                <a th:href="@{/municao/view/listar}" class="nav-link">
-                    Munição
-                </a>
-            </li>
-            <li class="nav-item">
-                <a th:href="@{/entrega/view/listar}" class="nav-link active" aria-current="page">
-                    Entrega
-                </a>
-            </li>
-            <li class="nav-item">
-                <a th:href="@{/manutencao/view/listar}" class="nav-link">
-                    Manutenção
-                </a>
-            </li>
-            <li class="nav-item">
-                <a th:href="@{/usuario/view/listar}" class="nav-link">
-                    Usuário
-                </a>
-            </li>
-        </ul>
-        <hr>
-        <div class="dropdown">
-            <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                <strong>Seu Nome</strong>
-            </a>
-            <ul class="dropdown-menu text-small shadow">
-                <li><a class="dropdown-item" href="#">New project...</a></li>
-                <li><a class="dropdown-item" href="#">Settings</a></li>
-                <li><a class="dropdown-item" href="#">Profile</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Sign out</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="container">
-        <h1 class="display-4 mt-5">Lista de Entregas</h1>
+			<li class="nav-item">
+				<a th:href="@{/municao/view/listar}" class="nav-link">
+					Munição
+				</a>
+			</li>
+			<li class="nav-item">
+				<a th:href="@{/entrega/view/listar}" class="nav-link active" aria-current="page">
+					Entrega
+				</a>
+			</li>
+			<li class="nav-item">
+				<a th:href="@{/manutencao/view/listar}" class="nav-link">
+					Manutenção
+				</a>
+			</li>
+			<li class="nav-item">
+				<a th:href="@{/usuario/view/listar}" class="nav-link">
+					Usuário
+				</a>
+			</li>
+		</ul>
+		<hr>
+		<div class="dropdown">
+			<a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
+				data-bs-toggle="dropdown" aria-expanded="false">
+				<img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+				<strong>Seu Nome</strong>
+			</a>
+			<ul class="dropdown-menu text-small shadow">
+				<li><a class="dropdown-item" href="#">New project...</a></li>
+				<li><a class="dropdown-item" href="#">Settings</a></li>
+				<li><a class="dropdown-item" href="#">Profile</a></li>
+				<li>
+					<hr class="dropdown-divider">
+				</li>
+				<li><a class="dropdown-item" href="#">Sign out</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="container">
+		<h1 class="fw-bold display-4 mt-5">Entregas</h1>
+		<!-- Formulário de Busca e Botão de Cadastro -->
+		<div class="search-container mb-5">
+			<form action="/entrega/view/buscar" method="get" class="d-flex">
+				<div class="input-group">
+					<input type="text" class="form-control search-input" placeholder="Buscar Entrega" name="termo"
+						id="searchInput">
+					<button class="btn btn-outline-secondary search-button" type="submit"
+						id="searchButton">Buscar</button>
+				</div>
+			</form>
+			<a th:href="@{/entrega/view/cadastrar}" class="btn btn-success create-button">Cadastrar Nova Entrega</a>
+		</div>
+		<!-- Fim do Formulário de Busca e Botão de Cadastro -->
 
-        <!-- Formulário de Busca e Botão de Cadastro -->
-<div class="search-container">
-    <form action="/entrega/view/buscar" method="get" class="d-flex">
-        <div class="input-group">
-            <input type="text" class="form-control search-input" placeholder="Buscar Entrega" name="termo" id="searchInput">
-            <button class="btn btn-outline-secondary search-button" type="submit" id="searchButton">Buscar</button>
-        </div>
-    </form>
-    <a th:href="@{/entrega/view/cadastrar}" class="btn btn-success create-button">Cadastrar Nova Entrega</a>
-</div>
-        <!-- Fim do Formulário de Busca e Botão de Cadastro -->
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">ID</th>
+					<th scope="col">Nome do Policial</th>
+					<th scope="col">Munição</th>
+					<th scope="col">Quantidade</th>
+					<th scope="col">Data de Entrega</th>
+					<th scope="col">Observações</th>
+					<th scope="col" colspan="2">Ações</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- Inserir um bloco semelhante para cada entrega -->
+				<tr th:each="entrega : ${entregas}">
+					<th scope="row" th:text="${entrega.id}"></th>
+					<td th:text="${entrega.nomePolicial}"></td>
+					<td th:text="${entrega.municao.tipo + ' - ' + entrega.municao.calibre}"></td>
+					<td th:text="${entrega.quantidade}"></td>
+					<td th:text="${entrega.dataEntrega}"></td>
+					<td th:text="${entrega.observacoes}"></td>
+					<td>
+						<a th:href="@{/entrega/view/atualizar/{id}(id=${entrega.id})}" class="btn btn-primary">
+							<i class="fas fa-edit"></i> Editar
+						</a>
+						<a th:href="@{/entrega/view/remover/{id}(id=${entrega.id})}" th:method="delete"
+							class="btn btn-danger">
+							<i class="fas fa-trash-alt"></i> Deletar
+						</a>
+					</td>
+				</tr>
+				<!-- Fim do bloco para cada entrega -->
+			</tbody>
+		</table>
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Nome do Policial</th>
-                    <th scope="col">Munição</th>
-                    <th scope="col">Quantidade</th>
-                    <th scope="col">Data de Entrega</th>
-                    <th scope="col">Observações</th>
-                    <th scope="col" colspan="2">Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Inserir um bloco semelhante para cada entrega -->
-                <tr th:each="entrega : ${entregas}">
-                    <th scope="row" th:text="${entrega.id}"></th>
-                    <td th:text="${entrega.nomePolicial}"></td>
-                    <td th:text="${entrega.municao.tipo + ' - ' + entrega.municao.calibre}"></td>
-                    <td th:text="${entrega.quantidade}"></td>
-                    <td th:text="${entrega.dataEntrega}"></td>
-                    <td th:text="${entrega.observacoes}"></td>
-                    <td>
-                        <a th:href="@{/entrega/view/atualizar/{id}(id=${entrega.id})}" class="btn btn-primary">
-                            <i class="fas fa-edit"></i> Editar
-                        </a>
-                        <a th:href="@{/entrega/view/remover/{id}(id=${entrega.id})}" th:method="delete"
-                            class="btn btn-danger">
-                            <i class="fas fa-trash-alt"></i> Deletar
-                        </a>
-                    </td>
-                </tr>
-                <!-- Fim do bloco para cada entrega -->
-            </tbody>
-        </table>
-    </div>
+		<nav aria-label="Page navigation example">
+			<ul class="pagination">
+				<li class="page-item">
+					<a class="page-link" th:href="@{/entrega/view/listar(page=0)}" aria-label="Previous">
+						<span aria-hidden="true">&laquo;</span>
+					</a>
+				</li>
+				<li class="page-item" th:each="page,iterStat : ${entregas}">
+					<a class="page-link" th:href="@{/entrega/view/listar(page=${iterStat.index})}"
+						th:text="${page.number + 1}"></a>
+				</li>
+				<li class="page-item">
+					<a class="page-link" th:href="@{/entrega/view/listar(page=${entregas.totalPages - 1})}"
+						aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<!-- Marcação de paginação -->
+
+
 </body>
 
 </html>

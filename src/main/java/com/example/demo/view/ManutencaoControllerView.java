@@ -73,12 +73,20 @@ public class ManutencaoControllerView {
 
     @GetMapping("/atualizar/{id}")
     public ModelAndView formUpdate(@PathVariable("id") int id) throws NotFoundException {
-        ModelAndView modelAndView = new ModelAndView("cadastroManutencao");
+        ModelAndView modelAndView = new ModelAndView("editarManutencao");
         Manutencao manutencao = manutencaoService.getManutencao(id);
         modelAndView.addObject("manutencao", manutencao);
         modelAndView.addObject("municoes", municaoService.getAllMunicoes());
         return modelAndView;
     }
+    
+    @PostMapping("/atualizar/{id}")
+    public String atualizarManutencao(@PathVariable("id") int id, Manutencao manutencao) throws NotFoundException {
+        manutencaoService.updateManutencao(manutencao, id);
+        return "redirect:/manutencao/view/listar";
+    }
+
+
     
     @GetMapping("/buscar")
     public ModelAndView buscarManutencoes(@RequestParam(value = "termo", required = false) String termo) {

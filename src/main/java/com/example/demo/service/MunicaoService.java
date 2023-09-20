@@ -26,7 +26,7 @@ public class MunicaoService {
     private MunicaoRepository municaoRepository;
 
     public List<Municao> getAllMunicoes() {
-        return municaoRepository.findAll();
+        return municaoRepository.findAllOrderedById();
     }
 
     public Municao getMunicao(int id) throws NotFoundException {

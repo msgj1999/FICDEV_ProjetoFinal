@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -74,7 +76,7 @@ public class EntregaService {
         }
     }
     
-    public List<Entrega> buscarEntregasPorFiltro(String termo) {
+    public Page<Entrega> buscarEntregasPorFiltro(String termo, Pageable pageable) {
         Specification<Entrega> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -112,7 +114,7 @@ public class EntregaService {
             return cb.or(predicates.toArray(new Predicate[0]));
         };
 
-        return entregaRepository.findAll(spec);
+        return entregaRepository.findAll(spec, pageable);
     }
 
 
@@ -121,4 +123,7 @@ public class EntregaService {
         return entregas.size();
     }
 
+    public Page<Entrega> getAllEntregas(Pageable pageable) {
+        return entregaRepository.findAll(pageable);
+    }
 }

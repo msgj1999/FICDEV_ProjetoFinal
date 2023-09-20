@@ -13,5 +13,7 @@ public interface MunicaoRepository extends JpaRepository<Municao, Integer>, JpaS
 	@Query("SELECT m.tipo AS tipo, m.calibre AS calibre, SUM(m.quantidade) AS quantidade FROM Municao m GROUP BY m.tipo, m.calibre")
 	List<Object[]> findTipoCalibreQuantidade();
 
+    @Query("SELECT m FROM Municao m ORDER BY m.id")
+    List<Municao> findAllOrderedById();
 
 }

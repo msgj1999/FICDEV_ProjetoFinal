@@ -2,241 +2,231 @@
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Munições</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        
-        .sidebar {
-            width: 280px;
-            min-height: 100vh;
-            background-color: #f8f9fa;
-            padding: 20px;
-            position: fixed;
-            top: 0;
-            left: 0;
-        }
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Lista de Munições</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+	<style>
+		body {
+			background-color: #f8f9fa;
+		}
 
-        .content {
-            margin-left: 280px; /* Largura da barra lateral */
-            padding: 30px;
-        }
+		.sidebar {
+			width: 280px;
+			min-height: 100vh;
+			background-color: #f8f9fa;
+			padding: 20px;
+			position: fixed;
+			top: 0;
+			left: 0;
+		}
 
-        .container {
-            padding-top: 30px;
-        }
+		.content {
+			margin-left: 280px;
+			/* Largura da barra lateral */
+			padding: 30px;
+		}
 
-        .display-4 {
-            color: #007bff;
-            text-align: center;
-            margin-bottom: 30px;
-        }
+		.container {
+			padding-top: 30px;
+		}
 
-        .table {
-            background-color: #fff;
-            border-radius: 5px;
-        }
+		.display-4 {
+			color: rgb(0, 0, 0);
+			text-align: center;
+			margin-bottom: 30px;
+		}
 
-        th,
-        td {
-            vertical-align: middle;
-        }
+		.table {
+			background-color: #fff;
+			border-radius: 5px;
+		}
 
-        .btn {
-            border-radius: 5px;
-        }
+		th,
+		td {
+			vertical-align: middle;
+		}
 
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
+		.btn {
+			border-radius: 5px;
+		}
 
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
-        }
+		.btn-primary {
+			background-color: #007bff;
+			border-color: #007bff;
+		}
 
-        .btn-danger {
-            background-color: #dc3545;
-            border-color: #dc3545;
-        }
+		.btn-primary:hover {
+			background-color: #0056b3;
+			border-color: #0056b3;
+		}
 
-        .btn-danger:hover {
-            background-color: #c82333;
-            border-color: #bd2130;
-        }
+		.btn-danger {
+			background-color: #dc3545;
+			border-color: #dc3545;
+		}
 
-        .btn i {
-            margin-right: 5px;
-        }
+		.btn-danger:hover {
+			background-color: #c82333;
+			border-color: #bd2130;
+		}
 
-        .btn-primary i {
-            color: #fff;
-        }
+		.btn i {
+			margin-right: 5px;
+		}
 
-        .btn-danger i {
-            color: #fff;
-        }
-        
-                /* Estilo para o campo de busca e botão */
-        .search-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
+		.btn-primary i {
+			color: #fff;
+		}
 
-        .search-input {
-            width: 70%;
-        }
+		.btn-danger i {
+			color: #fff;
+		}
 
-        .search-button {
-            width: 25%;
-        }
+		/* Estilo para o campo de busca e botão */
+		.search-container {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 20px;
+		}
 
-        .create-button {
-            width: 25%; /* Alterado para ocupar o mesmo espaço do botão de pesquisa */
-        }
-    </style>
+		.search-input {
+			width: 70%;
+		}
+
+		.search-button {
+			width: 25%;
+		}
+
+		.create-button {
+			width: 25%;
+			border-radius: 6px;
+			background: var(--status-color-info, #17A2B8);
+			border-color: #17A2B8;
+		}
+
+		.create-button:hover {
+			width: 25%;
+			border-radius: 6px;
+			background: var(--status-color-info, #0E8497);
+			border-color: #0E8497;
+		}
+	</style>
 </head>
 
 <body>
-	    <div class="sidebar">
-       <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-            <span class="fs-4">Gestão de Munições</span>
-        </a>
-        <hr>
-        <ul class="nav nav-pills flex-column mb-auto">
-            <!-- Adicionando a guia "Dashboard" -->
-            <li class="nav-item">
-                <a th:href="@{/inicio}" class="nav-link">
-                    Dashboard
-                </a>
-            </li>
-            <!-- Fim da nova guia "Dashboard" -->
+	<div class="sidebar">
+		<a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+			<span class="fs-4">Gestão de Munições</span>
+		</a>
+		<hr>
+		<ul class="nav nav-pills flex-column mb-auto">
+			<!-- Adicionando a guia "Dashboard" -->
+			<li class="nav-item">
+				<a th:href="@{/inicio}" class="nav-link">
+					Dashboard
+				</a>
+			</li>
+			<!-- Fim da nova guia "Dashboard" -->
 
-            <li class="nav-item">
-                <a th:href="@{/municao/view/listar}" class="nav-link active" aria-current="page">
-                    Munição
-                </a>
-            </li>
-            <li class="nav-item">
-                <a th:href="@{/entrega/view/listar}" class="nav-link">
-                    Entrega
-                </a>
-            </li>
-            <li class="nav-item">
-                <a th:href="@{/manutencao/view/listar}" class="nav-link">
-                    Manutenção
-                </a>
-            </li>
-            <li class="nav-item">
-                <a th:href="@{/usuario/view/listar}" class="nav-link">
-                    Usuário
-                </a>
-            </li>
-        </ul>
-        <hr>
-        <div class="dropdown">
-            <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                <strong>Seu Nome</strong>
-            </a>
-            <ul class="dropdown-menu text-small shadow">
-                <li><a class="dropdown-item" href="#">New project...</a></li>
-                <li><a class="dropdown-item" href="#">Settings</a></li>
-                <li><a class="dropdown-item" href="#">Profile</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Sign out</a></li>
-            </ul>
-        </div>
-    </div>
-<div class="container">
-        <h1 class="display-4 mt-5">Lista de Munições</h1>
+			<li class="nav-item">
+				<a th:href="@{/municao/view/listar}" class="nav-link active" aria-current="page">
+					Munição
+				</a>
+			</li>
+			<li class="nav-item">
+				<a th:href="@{/entrega/view/listar}" class="nav-link">
+					Entrega
+				</a>
+			</li>
+			<li class="nav-item">
+				<a th:href="@{/manutencao/view/listar}" class="nav-link">
+					Manutenção
+				</a>
+			</li>
+			<li class="nav-item">
+				<a th:href="@{/usuario/view/listar}" class="nav-link">
+					Usuário
+				</a>
+			</li>
+		</ul>
+		<hr>
+		<div class="dropdown">
+			<a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
+				data-bs-toggle="dropdown" aria-expanded="false">
+				<img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+				<strong>Seu Nome</strong>
+			</a>
+			<ul class="dropdown-menu text-small shadow">
+				<li><a class="dropdown-item" href="#">New project...</a></li>
+				<li><a class="dropdown-item" href="#">Settings</a></li>
+				<li><a class="dropdown-item" href="#">Profile</a></li>
+				<li>
+					<hr class="dropdown-divider">
+				</li>
+				<li><a class="dropdown-item" href="#">Sign out</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="container">
+		<h1 class="fw-bold display-4 mt-5">Munições</h1>
 
-        <!-- Adicione este código para o campo de pesquisa e botão -->
-<div class="search-container">
-    <form action="/municao/view/buscar" method="get" class="d-flex">
-        <div class="input-group">
-            <input type="text" class="form-control search-input" placeholder="Buscar Munição" name="termo" id="searchInput">
-            <button class="btn btn-outline-secondary search-button" type="submit" id="searchButton">Buscar</button>
-        </div>
-    </form>
-    <a th:href="@{/municao/view/cadastrar}" class="btn btn-success create-button">Cadastrar Nova Munição</a>
-</div>
-        
-        <table class="table">
-    		<thead>
-        		<tr>
-            		<th scope="col">ID</th>
-            		<th scope="col">Tipo</th>
-            		<th scope="col">Calibre</th>
-            		<th scope="col">Quantidade</th> <!-- Adicione esta linha -->
-            		<th scope="col">Peso</th> <!-- Adicione esta linha -->
-            		<th scope="col">Coeficiente Balístico</th> <!-- Adicione esta linha -->
-            		<th scope="col">Data Fabricação</th> <!-- Adicione esta linha -->
-            		<th scope="col">Data Validade</th> <!-- Adicione esta linha -->
-            		<th scope="col" colspan="2">Ações</th>
-        		</tr>
-    		</thead>
-    		<tbody>
-        		<!-- Inserir um bloco semelhante para cada munição -->
-        		<tr th:each="municao : ${municoes}">
-            		<th scope="row" th:text="${municao.id}"></th>
-            		<td th:text="${municao.tipo}"></td>
-            		<td th:text="${municao.calibre}"></td>
-            		<td th:text="${municao.quantidade}"></td> <!-- Adicione esta linha -->
-            		<td th:text="${municao.peso}"></td> <!-- Adicione esta linha -->
-            		<td th:text="${municao.coeficienteBalistico}"></td> <!-- Adicione esta linha -->
-            		<td th:text="${municao.dataFabricacao}"></td>
-                    <td th:text="${municao.dataValidade}"></td>
-            		<!--td th:text="${#dates.format(municao.dataFabricacao, 'dd/MM/yyyy')}"></td> <! Adicione esta linha -->
-            		<!--td th:text="${#dates.format(municao.dataValidade, 'dd/MM/yyyy')}"></td> <! Adicione esta linha -->
-            		<td>
-                		<a th:href="@{/municao/view/atualizar/{id}(id=${municao.id})}" class="btn btn-primary">
-                    		<i class="fas fa-edit"></i> Editar
-                		</a>
-                		<a th:href="@{/municao/view/remover/{id}(id=${municao.id})}" th:method="delete"
-                    		class="btn btn-danger">
-                    		<i class="fas fa-trash-alt"></i> Deletar
-                		</a>
-            		</td>
-        		</tr>
-        		<!-- Fim do bloco para cada munição -->
-    		</tbody>
+		<!-- Adicione este código para o campo de pesquisa e botão -->
+		<div class="search-container mb-5">
+			<form action="/municao/view/buscar" method="get" class="d-flex">
+				<div class="input-group">
+					<input type="text" class="form-control search-input" placeholder="Buscar Munição" name="termo"
+						id="searchInput">
+					<button class="btn btn-outline-secondary search-button" type="submit"
+						id="searchButton">Buscar</button>
+				</div>
+			</form>
+			<a th:href="@{/municao/view/cadastrar}" class="btn btn-success create-button">Cadastrar Nova Munição</a>
+		</div>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">ID</th>
+					<th scope="col">Tipo</th>
+					<th scope="col">Calibre</th>
+					<th scope="col">Quantidade</th> 
+					<th scope="col">Peso</th> 
+					<th scope="col">Coeficiente Balístico</th> 
+					<th scope="col">Data Fabricação</th> 
+					<th scope="col">Data Validade</th> 
+					<th scope="col" colspan="2">Ações</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- Inserir um bloco semelhante para cada munição -->
+				<tr th:each="municao : ${municoes}">
+					<th scope="row" th:text="${municao.id}"></th>
+					<td th:text="${municao.tipo}"></td>
+					<td th:text="${municao.calibre}"></td>
+					<td th:text="${municao.quantidade}"></td> 
+					<td th:text="${municao.peso}"></td> 
+					<td th:text="${municao.coeficienteBalistico}"></td> 
+					<td th:text="${municao.dataFabricacao}"></td>
+					<td th:text="${municao.dataValidade}"></td>
+					<!--td th:text="${#dates.format(municao.dataFabricacao, 'dd/MM/yyyy')}"></td> <! Adicione esta linha -->
+					<!--td th:text="${#dates.format(municao.dataValidade, 'dd/MM/yyyy')}"></td> <! Adicione esta linha -->
+					<td>
+						<a th:href="@{/municao/view/atualizar/{id}(id=${municao.id})}" class="btn btn-primary">
+							<i class="fas fa-edit"></i> Editar
+						</a>
+						<a th:href="@{/municao/view/remover/{id}(id=${municao.id})}" th:method="delete"
+							class="btn btn-danger">
+							<i class="fas fa-trash-alt"></i> Deletar
+						</a>
+					</td>
+				</tr>
+				<!-- Fim do bloco para cada munição -->
+			</tbody>
 		</table>
-
-    <!-- Adicione este código JavaScript para a funcionalidade de pesquisa -->
-    <script>
-        document.getElementById("searchButton").addEventListener("click", function () {
-            // Obter o valor do campo de pesquisa
-            var searchTerm = document.getElementById("searchInput").value.toLowerCase();
-
-            // Loop através das linhas da tabela de munições
-            var rows = document.querySelectorAll("tbody tr");
-            rows.forEach(function (row) {
-                var tipo = row.querySelector("td:nth-child(2)").textContent.toLowerCase();
-                var calibre = row.querySelector("td:nth-child(3)").textContent.toLowerCase();
-
-
-                // Verificar se algum dos campos contém o termo de pesquisa
-                if (tipo.includes(searchTerm) || calibre.includes(searchTerm) || periculosidade.includes(searchTerm)) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
-            });
-        });
-    </script>
-    <!-- Fim do código JavaScript de pesquisa -->
 
 </body>
 
 </html>
-
