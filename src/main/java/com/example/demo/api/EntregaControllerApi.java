@@ -1,7 +1,5 @@
 package com.example.demo.api;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.data.domain.Page;
@@ -32,9 +30,11 @@ public class EntregaControllerApi {
     private EntregaService entregaService;
 
     @GetMapping
-    public List<Entrega> listarEntregas() {
-        return entregaService.getAllEntregas();
+    public Page<Entrega> listarEntregas(
+        @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        return entregaService.getAllEntregas(pageable);
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Entrega> listarEntrega(@PathVariable int id) {

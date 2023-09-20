@@ -221,28 +221,31 @@
 				<!-- Fim do bloco para cada entrega -->
 			</tbody>
 		</table>
-
+		
+		
 		<nav aria-label="Page navigation example">
-			<ul class="pagination">
-				<li class="page-item">
-					<a class="page-link" th:href="@{/entrega/view/listar(page=0)}" aria-label="Previous">
-						<span aria-hidden="true">&laquo;</span>
-					</a>
-				</li>
-				<li class="page-item" th:each="page,iterStat : ${entregas}">
-					<a class="page-link" th:href="@{/entrega/view/listar(page=${iterStat.index})}"
-						th:text="${page.number + 1}"></a>
-				</li>
-				<li class="page-item">
-					<a class="page-link" th:href="@{/entrega/view/listar(page=${entregas.totalPages - 1})}"
-						aria-label="Next">
-						<span aria-hidden="true">&raquo;</span>
-					</a>
-				</li>
-			</ul>
+    		<ul class="pagination mx-auto"> 
+        		<li class="page-item">
+            		<a class="page-link" th:href="@{/entrega/view/listar(page=0)}" aria-label="Previous">
+                		<span aria-hidden="true">&laquo;</span>
+            		</a>
+        		</li>
+        		<li class="page-item" th:each="pageNumber : ${#numbers.sequence(0, entregas.totalPages - 1)}">
+            		<a class="page-link" th:href="@{/entrega/view/listar(page=${pageNumber})}"
+               th:text="${pageNumber + 1}"></a>
+        		</li>
+        		<li class="page-item">
+            		<a class="page-link" th:href="@{/entrega/view/listar(page=${entregas.totalPages - 1})}"
+               			aria-label="Next">
+                		<span aria-hidden="true">&raquo;</span>
+            		</a>
+        		</li>
+    		</ul>
 		</nav>
-	</div>
-	<!-- Marcação de paginação -->
+
+
+
+
 
 
 </body>

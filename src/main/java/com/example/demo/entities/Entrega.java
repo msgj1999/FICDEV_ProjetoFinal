@@ -11,18 +11,26 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Entrega {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	@Size(max = 50, message = "O nome do policial deve ter no máximo 50 caracteres.")
+	@Pattern(regexp = "^[A-Za-z]*$", message = "O nome do policial deve conter apenas letras.")
 	private String nomePolicial;
+	@Min(value = 1, message = "A quantidade deve ser maior que zero.")
 	private int quantidade;
 	@FutureOrPresent
 	@DateTimeFormat (pattern="yyyy-MM-dd")
 	private LocalDate dataEntrega;
-	private  String observacoes;
+	@Size(max = 200, message = "As observações devem ter no máximo 200 caracteres.")
+	private String observacoes;
+
 	
 	@ManyToOne
 	@JoinColumn(name="id_municao")

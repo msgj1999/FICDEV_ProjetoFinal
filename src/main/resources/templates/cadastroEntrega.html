@@ -47,14 +47,15 @@
                 <input type="hidden" th:field="*{id}" class="form-control" id="id">
             </div>
 
-            <div class="form-group">
-                <label for="nomePolicial">Nome do Policial</label>
-                <input type="text" th:field="*{nomePolicial}" class="form-control" id="nomePolicial">
-            </div>
+<div class="form-group">
+    <label for="nomePolicial">Nome do Policial</label>
+    <input type="text" th:field="*{nomePolicial}" class="form-control" id="nomePolicial">
+    <span class="text-danger" th:if="${#fields.hasErrors('nomePolicial')}" th:errors="*{nomePolicial}"></span>
+</div>
+
 <div class="form-group">
     <label for="municao">Selecione a Munição:</label>
     <select class="form-control" id="municao" th:field="*{municao.id}">
-        <!-- Popule as opções com as munições disponíveis -->
         <option th:each="municao : ${municoes}" th:value="${municao.id}" th:text="${municao.tipo + ' - ' + municao.calibre}"></option>
     </select>
 </div>
@@ -62,15 +63,21 @@
 <div class="form-group">
     <label for="quantidade">Quantidade</label>
     <input type="number" th:field="*{quantidade}" class="form-control" id="quantidade">
+    <span class="text-danger" th:if="${#fields.hasErrors('quantidade')}" th:errors="*{quantidade}"></span>
 </div>
-            <div class="form-group">
-                <label for="dataEntrega">Data de Entrega</label>
-                <input type="date" th:field="*{dataEntrega}" class="form-control" id="dataEntrega">
-            </div>
-            <div class="form-group">
-                <label for="observacoes">Observações</label>
-                <textarea th:field="*{observacoes}" class="form-control" id="observacoes" rows="4"></textarea>
-            </div>
+
+<div class="form-group">
+    <label for="dataEntrega">Data de Entrega</label>
+    <input type="date" th:field="*{dataEntrega}" class="form-control" id="dataEntrega">
+    <span class="text-danger" th:if="${#fields.hasErrors('dataEntrega')}" th:errors="*{dataEntrega}"></span>
+</div>
+
+<div class="form-group">
+    <label for="observacoes">Observações</label>
+    <textarea th:field="*{observacoes}" class="form-control" id="observacoes" rows="4"></textarea>
+    <span class="text-danger" th:if="${#fields.hasErrors('observacoes')}" th:errors="*{observacoes}"></span>
+</div>
+
 
             <div class="mb-3 row">
                 <div class="col-12 d-grid">

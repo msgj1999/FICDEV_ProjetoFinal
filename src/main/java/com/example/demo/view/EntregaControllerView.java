@@ -1,6 +1,5 @@
 package com.example.demo.view;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -40,12 +39,15 @@ public class EntregaControllerView {
     private Validator validator;
 
     @GetMapping("/listar")
-    public ModelAndView listaEntregas(Pageable pageable) {
+    public ModelAndView listaEntregas(
+        @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         ModelAndView view = new ModelAndView("listaEntrega");
         Page<Entrega> entregas = entregaService.getAllEntregas(pageable);
         view.addObject("entregas", entregas);
         return view;
     }
+
+    
     @GetMapping("/remover/{id}")
     public String removerEntrega(@PathVariable("id") int id) throws NotFoundException {
         entregaService.deleteEntrega(id);
