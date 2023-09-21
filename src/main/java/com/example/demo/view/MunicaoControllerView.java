@@ -1,24 +1,29 @@
 package com.example.demo.view;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entities.Municao;
 import com.example.demo.service.MunicaoService;
 
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validator;
+import jakarta.validation.Valid;
+
 
 @Controller
 @RequestMapping("/municao/view")
@@ -27,13 +32,13 @@ public class MunicaoControllerView {
     @Autowired
     MunicaoService municaoService;
     
-	@Autowired
-	private Validator validator;
 
     @GetMapping("/listar")
-    public ModelAndView listaMunicoes() {
-        var view = new ModelAndView("listaMunicao");
-        view.addObject("municoes", municaoService.getAllMunicoes());
+    public ModelAndView listaMunicoes(
+        @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        ModelAndView view = new ModelAndView("listaMunicao");
+        Page<Municao> municoes = municaoService.getAllMunicoes(pageable);
+        view.addObject("municoes", municoes);
         return view;
     }
 
@@ -51,20 +56,17 @@ public class MunicaoControllerView {
     }
 
     @PostMapping("/cadastrar")
-    public ModelAndView saveMunicao(Municao municao) {
-        Set<ConstraintViolation<Municao>> violations = validator.validate(municao);
-        String problemas = "";
-        String mensagens = "";
-        if (!violations.isEmpty()) {
-            problemas = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(" - "));
-        } else {
-            municaoService.saveMunicao(municao);
-            mensagens = "Salvo com sucesso!";
-        }
+    public ModelAndView saveMunicao(@Valid @ModelAttribute("municao") Municao municao, BindingResult result, RedirectAttributes redirectAttributes) {
         ModelAndView modelAndView = new ModelAndView("cadastroMunicao");
-        modelAndView.addObject("sucesso", mensagens);
-        modelAndView.addObject("error", problemas);
-        return modelAndView;
+
+        if (result.hasErrors()) {
+            modelAndView.addObject("error", "Erro na validação. Por favor, verifique os campos.");
+            return modelAndView;
+        }
+
+        municaoService.saveMunicao(municao);
+		redirectAttributes.addFlashAttribute("sucesso", "Munição cadastrada com sucesso!");
+		return new ModelAndView("redirect:/municao/view/listar");
     }
 
     @GetMapping("/atualizar/{id}")
@@ -76,10 +78,13 @@ public class MunicaoControllerView {
     }
     
     @GetMapping("/buscar")
-    public ModelAndView buscarMunicoes(@RequestParam(value = "termo", required = false) String termo) {
+    public ModelAndView buscarMunicoes(
+        @RequestParam(value = "termo", required = false) String termo,
+        @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+
+        Page<Municao> pageMunicoes = municaoService.buscarMunicoesPorFiltro(termo, pageable);
         ModelAndView view = new ModelAndView("listaMunicao");
-        List<Municao> municoes = municaoService.buscarMunicoesPorFiltro(termo);
-        view.addObject("municoes", municoes);
+        view.addObject("municoes", pageMunicoes);
         return view;
     }
 }

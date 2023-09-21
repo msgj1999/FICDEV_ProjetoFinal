@@ -42,38 +42,50 @@
     <div class="container">
         <h2>Cadastro de Munição</h2>
         <form action="#" th:action="@{/municao/view/cadastrar}" th:object="${municao}" method="post">
-            <!-- Mensagens de sucesso e erro aqui -->
-            <div class="form-group">
-                <input type="hidden" th:field="*{id}" class="form-control" id="id">
+              <!-- Mensagens de sucesso e erro aqui -->
+            <div th:if="${param.sucesso}" class="alert alert-success">
+                <p th:text="${param.sucesso}"></p>
             </div>
+            <div th:if="${param.error}" class="alert alert-danger">
+                <p th:text="${param.error}"></p>
+            </div>
+
+            <div
 
             <div class="form-group">
                 <label for="tipo">Tipo de Munição</label>
                 <input type="text" th:field="*{tipo}" class="form-control" id="tipo">
+                <span class="text-danger" th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}"></span>
             </div>
             <div class="form-group">
                 <label for="calibre">Calibre</label>
                 <input type="text" th:field="*{calibre}" class="form-control" id="calibre">
+                <span class="text-danger" th:if="${#fields.hasErrors('calibre')}" th:errors="*{calibre}"></span>
             </div>
             <div class="form-group">
                 <label for="quantidade">Quantidade</label>
                 <input type="number" th:field="*{quantidade}" class="form-control" id="quantidade">
+                <span class="text-danger" th:if="${#fields.hasErrors('quantidade')}" th:errors="*{quantidade}"></span>
             </div>
             <div class="form-group">
                 <label for="peso">Peso (em gramas)</label>
                 <input type="number" th:field="*{peso}" class="form-control" id="peso">
+                <span class="text-danger" th:if="${#fields.hasErrors('peso')}" th:errors="*{peso}"></span>
             </div>
             <div class="form-group">
                 <label for="coeficienteBalistico">Coeficiente Balístico</label>
                 <input type="number" step="0.001" th:field="*{coeficienteBalistico}" class="form-control" id="coeficienteBalistico">
+                <span class="text-danger" th:if="${#fields.hasErrors('coeficienteBalistico')}" th:errors="*{coeficienteBalistico}"></span>
             </div>
             <div class="form-group">
                 <label for="dataFabricacao">Data de Fabricação</label>
                 <input type="date" th:field="*{dataFabricacao}" class="form-control" id="dataFabricacao">
+                <span class="text-danger" th:if="${#fields.hasErrors('dataFabricacao')}" th:errors="*{dataFabricacao}"></span>
             </div>
             <div class="form-group">
                 <label for="dataValidade">Data de Validade</label>
                 <input type="date" th:field="*{dataValidade}" class="form-control" id="dataValidade">
+                <span class="text-danger" th:if="${#fields.hasErrors('dataValidade')}" th:errors="*{dataValidade}"></span>
             </div>
 
             <div class="mb-3 row">

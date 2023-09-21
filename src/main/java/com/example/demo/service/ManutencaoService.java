@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +23,6 @@ public class ManutencaoService {
 
     @Autowired
     private ManutencaoRepository manutencaoRepository;
-
-    public List<Manutencao> getAllManutencoes() {
-        return manutencaoRepository.findAll();
-    }
 
     public Manutencao getManutencao(int id) throws NotFoundException {
         return manutencaoRepository.findById(id).orElseThrow(NotFoundException::new);
@@ -49,7 +47,7 @@ public class ManutencaoService {
         return deletada;
     }
     
-    public List<Manutencao> buscarManutencoesPorFiltro(String termo) {
+    public Page<Manutencao> buscarManutencoesPorFiltro(String termo, Pageable pageable) {
         Specification<Manutencao> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -74,12 +72,17 @@ public class ManutencaoService {
             return cb.or(predicates.toArray(new Predicate[0]));
         };
 
-        return manutencaoRepository.findAll(spec);
+        return manutencaoRepository.findAll(spec, pageable);
     }
     
     public int buscarTotalManutencoes() {
         List<Manutencao> manutencoes = manutencaoRepository.findAll();
         return manutencoes.size();
     }
+    
+    public Page<Manutencao> getAllManutencoes(Pageable pageable) {
+        return manutencaoRepository.findAll(pageable);
+    }
+
 
 }

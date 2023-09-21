@@ -22,7 +22,7 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     public List<Usuario> getAllUsuarios() {
-        return usuarioRepository.findAll();
+        return usuarioRepository.findAllOrderedById();
     }
 
     public Usuario getUsuario(int id) throws NotFoundException {

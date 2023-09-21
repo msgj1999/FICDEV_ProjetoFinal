@@ -79,7 +79,7 @@ public class EntregaControllerApi {
     @GetMapping("/buscar")
     public ResponseEntity<Page<Entrega>> buscarEntregas(
             @RequestParam(value = "termo", required = false) String termo,
-            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+            @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
 
         Page<Entrega> pageEntregas = entregaService.buscarEntregasPorFiltro(termo, pageable);
         

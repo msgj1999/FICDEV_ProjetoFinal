@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +15,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer>, JpaS
 		        nativeQuery = true
 		    )
 	Optional<Usuario> findByLogin(String login);
+
+	@Query("SELECT u FROM Usuario u ORDER BY u.id")
+	List<Usuario> findAllOrderedById();
 }

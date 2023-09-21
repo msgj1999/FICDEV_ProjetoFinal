@@ -1,29 +1,28 @@
 package com.example.demo.view;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.Sort;
-
 
 import com.example.demo.entities.Entrega;
 import com.example.demo.service.EntregaService;
 import com.example.demo.service.MunicaoService;
 
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validator;
+import jakarta.validation.Valid;
+
 
 @Controller
 @RequestMapping("/entrega/view")
@@ -35,8 +34,7 @@ public class EntregaControllerView {
     @Autowired
     MunicaoService municaoService;
 
-    @Autowired
-    private Validator validator;
+
 
     @GetMapping("/listar")
     public ModelAndView listaEntregas(
@@ -56,44 +54,64 @@ public class EntregaControllerView {
 
     @GetMapping("/cadastrar")
     public ModelAndView cadastrarEntrega() {
-        var view = new ModelAndView("cadastroEntrega");
+        ModelAndView view = new ModelAndView("cadastroEntrega");
         view.addObject("entrega", new Entrega());
         view.addObject("municoes", municaoService.getAllMunicoes());
         return view;
     }
 
     @PostMapping("/cadastrar")
-    public ModelAndView saveEntrega(Entrega entrega) {
-        Set<ConstraintViolation<Entrega>> violations = validator.validate(entrega);
-        String problemas = "";
-        String mensagens = "";
-
-        if (!violations.isEmpty()) {
-            problemas = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(" - "));
-        } else {
-            try {
-            	entregaService.cadastrarEntrega(entrega); // Chame o método de serviço aqui
-                mensagens = "Salvo com sucesso!";
-            } catch (NotFoundException e) {
-                problemas = e.getMessage();
-            }
-        }
+    public ModelAndView saveEntrega(@Valid @ModelAttribute("entrega") Entrega entrega, BindingResult result, RedirectAttributes redirectAttributes) {
         ModelAndView modelAndView = new ModelAndView("cadastroEntrega");
-        modelAndView.addObject("sucesso", mensagens);
-        modelAndView.addObject("error", problemas);
-        return modelAndView;
+
+        if (result.hasErrors()) {
+            modelAndView.addObject("error", "Erro na validação. Por favor, verifique os campos.");
+            modelAndView.addObject("municoes", municaoService.getAllMunicoes());
+            return modelAndView;
+        }
+
+        try {
+            entregaService.cadastrarEntrega(entrega);
+            redirectAttributes.addFlashAttribute("sucesso", "Entrega cadastrada com sucesso!");
+            return new ModelAndView("redirect:/entrega/view/listar");
+        } catch (NotFoundException e) {
+            modelAndView.addObject("error", e.getMessage());
+            modelAndView.addObject("municoes", municaoService.getAllMunicoes());
+            return modelAndView;
+        }
     }
 
 
-
     @GetMapping("/atualizar/{id}")
-    public ModelAndView formUpdate(@PathVariable("id") int id) throws NotFoundException {
-        ModelAndView modelAndView = new ModelAndView("cadastroEntrega");
+    public ModelAndView formUpdate(@PathVariable("id") int id, RedirectAttributes redirectAttributes) throws NotFoundException {
+        ModelAndView modelAndView = new ModelAndView("editarEntrega");
         Entrega entrega = entregaService.getEntrega(id);
         modelAndView.addObject("entrega", entrega);
         modelAndView.addObject("municoes", municaoService.getAllMunicoes());
         return modelAndView;
     }
+
+    @PostMapping("/atualizar/{id}")
+    public ModelAndView atualizarEntrega(@PathVariable("id") int id, @Valid @ModelAttribute("entrega") Entrega entrega, BindingResult result, RedirectAttributes redirectAttributes) throws NotFoundException {
+        ModelAndView modelAndView = new ModelAndView("editarEntrega");
+
+        if (result.hasErrors()) {
+            modelAndView.addObject("error", "Erro na validação. Por favor, verifique os campos.");
+            modelAndView.addObject("municoes", municaoService.getAllMunicoes());
+            return modelAndView;
+        }
+
+        try {
+            entregaService.updateEntrega(entrega, id);
+            redirectAttributes.addFlashAttribute("sucesso", "Entrega atualizada com sucesso!");
+            return new ModelAndView("redirect:/entrega/view/listar");
+        } catch (NotFoundException e) {
+            modelAndView.addObject("error", e.getMessage());
+            modelAndView.addObject("municoes", municaoService.getAllMunicoes());
+            return modelAndView;
+        }
+    }
+
     
     @GetMapping("/buscar")
     public ModelAndView buscarEntregas(

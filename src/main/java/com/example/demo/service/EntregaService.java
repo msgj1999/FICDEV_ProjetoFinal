@@ -28,10 +28,6 @@ public class EntregaService {
     @Autowired
     private MunicaoService municaoService;
 
-    /*public List<Entrega> getAllEntregas() {
-        return entregaRepository.findAll();
-    }*/
-
     public Entrega getEntrega(int id) throws NotFoundException {
         return entregaRepository.findById(id).orElseThrow(NotFoundException::new);
     }

@@ -1,18 +1,22 @@
 package com.example.demo.view;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entities.Manutencao;
 import com.example.demo.service.ManutencaoService;
@@ -30,15 +34,17 @@ public class ManutencaoControllerView {
     @Autowired
     MunicaoService municaoService;
     
-	@Autowired
-	private Validator validator;
+
 
     @GetMapping("/listar")
-    public ModelAndView listaManutencoes() {
-        var view = new ModelAndView("listaManutencao");
-        view.addObject("manutencoes", manutencaoService.getAllManutencoes());
+    public ModelAndView listaManutencoes(
+        @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        ModelAndView view = new ModelAndView("listaManutencao");
+        Page<Manutencao> manutencoes = manutencaoService.getAllManutencoes(pageable);
+        view.addObject("manutencoes", manutencoes);
         return view;
     }
+
 
     @GetMapping("/remover/{id}")
     public String removerManutencao(@PathVariable("id") int id) throws NotFoundException {
@@ -55,20 +61,17 @@ public class ManutencaoControllerView {
     }
 
     @PostMapping("/cadastrar")
-    public ModelAndView saveManutencao(Manutencao manutencao) {
-        Set<ConstraintViolation<Manutencao>> violations = validator.validate(manutencao);
-        String problemas = "";
-        String mensagens = "";
-        if (!violations.isEmpty()) {
-            problemas = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(" - "));
-        } else {
-            manutencaoService.saveManutencao(manutencao);
-            mensagens = "Salvo com sucesso!";
-        }
+    public ModelAndView saveManutencao(@Valid @ModelAttribute("manutencao") Manutencao manutencao, BindingResult result, RedirectAttributes redirectAttributes) {
         ModelAndView modelAndView = new ModelAndView("cadastroManutencao");
-        modelAndView.addObject("sucesso", mensagens);
-        modelAndView.addObject("error", problemas);
-        return modelAndView;
+
+        if (result.hasErrors()) {
+            modelAndView.addObject("error", "Erro na validação. Por favor, verifique os campos.");
+            return modelAndView;
+        }
+
+        manutencaoService.saveManutencao(manutencao);
+		redirectAttributes.addFlashAttribute("sucesso", "Manutenção cadastrada com sucesso!");
+		return new ModelAndView("redirect:/manutencao/view/listar");
     }
 
     @GetMapping("/atualizar/{id}")
@@ -89,10 +92,13 @@ public class ManutencaoControllerView {
 
     
     @GetMapping("/buscar")
-    public ModelAndView buscarManutencoes(@RequestParam(value = "termo", required = false) String termo) {
+    public ModelAndView buscarManutencoes(
+        @RequestParam(value = "termo", required = false) String termo,
+        @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+
+        Page<Manutencao> pageManutencoes = manutencaoService.buscarManutencoesPorFiltro(termo, pageable);
         ModelAndView view = new ModelAndView("listaManutencao");
-        List<Manutencao> manutencoes = manutencaoService.buscarManutencoesPorFiltro(termo);
-        view.addObject("manutencoes", manutencoes);
+        view.addObject("manutencoes", pageManutencoes);
         return view;
     }
 

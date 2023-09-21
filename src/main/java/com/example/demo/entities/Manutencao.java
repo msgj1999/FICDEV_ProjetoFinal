@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Manutencao {
@@ -18,8 +19,9 @@ public class Manutencao {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String status;
-	@DateTimeFormat (pattern="yyyy-MM-dd")
-	private LocalDate dataManutencao;
+    @NotNull(message = "A data de manutenção não pode ser nula.")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataManutencao;
 	
 	@ManyToOne
 	@JoinColumn(name="id_municao")

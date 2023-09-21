@@ -5,6 +5,10 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,8 +33,9 @@ public class MunicaoControllerApi {
     private MunicaoService municaoService;
 
     @GetMapping
-    public List<Municao> listarMunicoes() {
-        return municaoService.getAllMunicoes();
+    public Page<Municao> listarMunicoes(
+        @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        return municaoService.getAllMunicoes(pageable);
     }
 
     @GetMapping("/{id}")
@@ -44,8 +49,9 @@ public class MunicaoControllerApi {
     }
 
     @PostMapping
-    public void cadastrarMunicao(@RequestBody @Valid Municao municao) {
+    public ResponseEntity<?> cadastrarMunicao(@RequestBody @Valid Municao municao) {
         municaoService.saveMunicao(municao);
+		return ResponseEntity.ok("Munição cadastrada com sucesso!");
     }
 
     @PutMapping("/{id}")
@@ -69,9 +75,13 @@ public class MunicaoControllerApi {
     }
     
     @GetMapping("/buscar")
-    public ResponseEntity<List<Municao>> buscarMunicoes(@RequestParam(value = "termo", required = false) String termo) {
-        List<Municao> municoes = municaoService.buscarMunicoesPorFiltro(termo);
-        return ResponseEntity.ok(municoes);
+    public ResponseEntity<Page<Municao>> buscarMunicoes(
+            @RequestParam(value = "termo", required = false) String termo,
+            @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+
+        Page<Municao> pageMunicoes = municaoService.buscarMunicoesPorFiltro(termo, pageable);
+        
+        return ResponseEntity.ok(pageMunicoes);
     }
     
     @GetMapping("/total-estoque")

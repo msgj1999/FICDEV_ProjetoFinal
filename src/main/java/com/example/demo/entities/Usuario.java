@@ -15,13 +15,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Usuario implements UserDetails{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@NotBlank(message="Nome deve ser preenchido")
+	@NotBlank(message = "O nome do usuário não pode ser nulo e deve ter no máximo 50 caracteres.")
+	@Size(max = 50, message = "O nome do usuário deve ter no máximo 50 caracteres.")
+	@Pattern(regexp = "^[A-Za-z]*$", message = "O nome do usuário deve conter apenas letras.")
 	private String nome;
 	@NotBlank(message="Email deve ser preenchido")
 	private String email;

@@ -11,9 +11,10 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
 import com.example.demo.entities.Municao;
 import com.example.demo.repository.MunicaoRepository;
 
@@ -24,7 +25,7 @@ public class MunicaoService {
 
     @Autowired
     private MunicaoRepository municaoRepository;
-
+    
     public List<Municao> getAllMunicoes() {
         return municaoRepository.findAllOrderedById();
     }
@@ -59,7 +60,7 @@ public class MunicaoService {
         return deletada;
     }
     
-    public List<Municao> buscarMunicoesPorFiltro(String termo) {
+    public Page<Municao> buscarMunicoesPorFiltro(String termo, Pageable pageable) {
         Specification<Municao> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -116,7 +117,7 @@ public class MunicaoService {
             return cb.or(predicates.toArray(new Predicate[0]));
         };
 
-        return municaoRepository.findAll(spec);
+        return municaoRepository.findAll(spec, pageable);
     }
     
     public int buscarTotalMunicoesEmEstoque() {
@@ -147,4 +148,7 @@ public class MunicaoService {
 		return municaoRepository.findById(id); 
 	}
 
+    public Page<Municao> getAllMunicoes(Pageable pageable) {
+        return municaoRepository.findAll(pageable);
+    }
 }

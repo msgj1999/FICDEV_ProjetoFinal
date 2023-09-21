@@ -43,9 +43,11 @@ public class UsuarioControllerApi {
     }
 
     @PostMapping
-    public void cadastrarUsuario(@RequestBody @Valid Usuario usuario) {
+    public ResponseEntity<?> cadastrarUsuario(@RequestBody @Valid Usuario usuario) {
         usuarioService.saveUsuario(usuario);
+		return ResponseEntity.ok("Usuário cadastrada com sucesso!");
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> updateUsuario(@PathVariable int id, @RequestBody @Valid Usuario usuario) {

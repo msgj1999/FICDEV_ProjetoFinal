@@ -1,9 +1,11 @@
 package com.example.demo.api;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,10 +30,11 @@ public class ManutencaoControllerApi {
     private ManutencaoService manutencaoService;
 
     @GetMapping
-    public List<Manutencao> listarManutencoes() {
-        return manutencaoService.getAllManutencoes();
+    public Page<Manutencao> listarManutencoes(
+        @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        return manutencaoService.getAllManutencoes(pageable);
     }
-
+    
     @GetMapping("/{id}")
     public ResponseEntity<Manutencao> listarManutencao(@PathVariable int id) {
         try {
@@ -43,8 +46,9 @@ public class ManutencaoControllerApi {
     }
 
     @PostMapping
-    public void cadastrarManutencao(@RequestBody @Valid Manutencao manutencao) {
+    public ResponseEntity<?> cadastrarManutencao(@RequestBody @Valid Manutencao manutencao) {
         manutencaoService.saveManutencao(manutencao);
+		return ResponseEntity.ok("Manutenção cadastrada com sucesso!");
     }
 
     @PutMapping("/{id}")
@@ -68,11 +72,15 @@ public class ManutencaoControllerApi {
     }
     
     @GetMapping("/buscar")
-    public ResponseEntity<List<Manutencao>> buscarManutencoes(@RequestParam(value = "termo", required = false) String termo) {
-        List<Manutencao> manutencoes = manutencaoService.buscarManutencoesPorFiltro(termo);
-        return ResponseEntity.ok(manutencoes);
+    public ResponseEntity<Page<Manutencao>> buscarManutencoes(
+            @RequestParam(value = "termo", required = false) String termo,
+            @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+
+        Page<Manutencao> pageManutencoes = manutencaoService.buscarManutencoesPorFiltro(termo, pageable);
+        
+        return ResponseEntity.ok(pageManutencoes);
     }
-    
+
     @GetMapping("/total-manutencoes")
     public int getTotalManutencoes() {
         return manutencaoService.buscarTotalManutencoes();

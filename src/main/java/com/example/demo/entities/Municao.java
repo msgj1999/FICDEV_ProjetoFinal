@@ -8,28 +8,55 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Municao {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	private String tipo;
-	private String calibre;
-	private int quantidade;
-	private float peso;
-	private float coeficienteBalistico;
-	@PastOrPresent
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDate dataFabricacao;
-	@Future
-	@DateTimeFormat (pattern="yyyy-MM-dd")
-	private LocalDate dataValidade;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @NotBlank(message = "O tipo não pode ser nulo e deve ter no máximo 30 caracteres.")
+    @Size(max = 30, message = "O tipo deve ter no máximo {max} caracteres.")
+    private String tipo;
+
+    @NotBlank(message = "O calibre não pode ser nulo e deve ter no máximo 30 caracteres.")
+    @Size(max = 30, message = "O calibre deve ter no máximo {max} caracteres.")
+    private String calibre;
+
+    @NotNull(message = "A quantidade não pode ser nula.")
+    @Min(value = 1, message = "A quantidade deve ser maior que zero.")
+    @Max(value = 999999, message = "A quantidade deve ser menor ou igual a {value}.")
+    private Integer quantidade;
+
+    @NotNull(message = "O peso não pode ser nulo.")
+    @DecimalMin(value = "0.01", message = "O peso deve ser maior que zero.")
+    @DecimalMax(value = "1000.0", message = "O peso deve ser no máximo {value}.")
+    private Float peso;
+
+    @DecimalMax(value = "3.0", message = "O coeficiente balístico deve ser no máximo {value}.")
+    private float coeficienteBalistico;
+
+    @NotNull(message = "A data de fabricação não pode ser nula.")
+    @PastOrPresent(message = "A data de fabricação deve ser no passado ou presente.")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataFabricacao;
+
+    @NotNull(message = "A data de validade não pode ser nula.")
+    @Future(message = "A data de validade deve estar no futuro.")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataValidade;
 	
 	
-	public Municao(int id, String tipo, String calibre, int quantidade, float peso, float coeficienteBalistico,
+	public Municao(int id, String tipo, String calibre, Integer quantidade, Float peso, float coeficienteBalistico,
 			@PastOrPresent LocalDate dataFabricacao, @Future LocalDate dataValidade) {
 		super();
 		this.id = id;
@@ -77,22 +104,22 @@ public class Municao {
 	}
 
 
-	public int getQuantidade() {
+	public Integer getQuantidade() {
 		return quantidade;
 	}
 
 
-	public void setQuantidade(int quantidade) {
+	public void setQuantidade(Integer quantidade) {
 		this.quantidade = quantidade;
 	}
 
 
-	public float getPeso() {
+	public Float getPeso() {
 		return peso;
 	}
 
 
-	public void setPeso(float peso) {
+	public void setPeso(Float peso) {
 		this.peso = peso;
 	}
 

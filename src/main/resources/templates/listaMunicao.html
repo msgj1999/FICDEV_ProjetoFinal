@@ -226,6 +226,26 @@
 				<!-- Fim do bloco para cada munição -->
 			</tbody>
 		</table>
+		
+				<nav aria-label="Page navigation example">
+			<ul class="pagination mx-auto">
+				<li class="page-item">
+					<a class="page-link" th:href="@{/municao/view/listar(page=0)}" aria-label="Previous">
+						<span aria-hidden="true">&laquo;</span>
+					</a>
+				</li>
+				<li class="page-item" th:each="pageNumber : ${#numbers.sequence(0, municoes.totalPages - 1)}">
+					<a class="page-link" th:href="@{/municao/view/listar(page=${pageNumber})}"
+						th:text="${pageNumber + 1}"></a>
+				</li>
+				<li class="page-item">
+					<a class="page-link" th:href="@{/municao/view/listar(page=${municoes.totalPages - 1})}"
+						aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
 
 </body>
 

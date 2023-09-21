@@ -8,17 +8,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entities.Usuario;
 import com.example.demo.service.UsuarioService;
 
 import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 
 @Controller
@@ -55,22 +59,19 @@ public class UsuarioControllerView {
     }
     
     @PostMapping("/cadastrar")
-    public ModelAndView saveUsuario(Usuario usuario) {
-        Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
-        String problemas = "";
-        String mensagens = "";
-        if (!violations.isEmpty()) {
-            problemas = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(" - "));
-        } else {
-        	usuario.setSenha(passwordEncode.encode(usuario.getSenha()));
-            usuarioService.saveUsuario(usuario);
-            mensagens = "Salvo com sucesso!";
-        }
+    public ModelAndView saveUsuario(@Valid @ModelAttribute("usuario") Usuario usuario, BindingResult result, RedirectAttributes redirectAttributes) {
         ModelAndView modelAndView = new ModelAndView("cadastroUsuario");
-        modelAndView.addObject("sucesso", mensagens);
-        modelAndView.addObject("error", problemas);
-        return modelAndView;
+
+        if (result.hasErrors()) {
+            modelAndView.addObject("error", "Erro na validação. Por favor, verifique os campos.");
+            return modelAndView;
+        }
+        usuario.setSenha(passwordEncode.encode(usuario.getSenha()));
+        usuarioService.saveUsuario(usuario);
+		redirectAttributes.addFlashAttribute("sucesso", "Usuário cadastrado com sucesso!");
+		return new ModelAndView("redirect:/usuario/view/listar");
     }
+
     
     @GetMapping("/atualizar/{id}")
     public ModelAndView formUpdate(@PathVariable("id") int id) throws NotFoundException {

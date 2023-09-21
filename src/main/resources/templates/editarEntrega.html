@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Cadastro de Entrega</title>
+    <title>Editar Entrega</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -10,8 +10,8 @@
 </head>
 <body>
     <div class="container">
-        <h2>Cadastro de Entrega</h2>
-        <form action="#" th:action="@{/entrega/view/cadastrar}" th:object="${entrega}" method="post">
+        <h2>Editar Entrega</h2>
+        <form action="#" th:action="@{/entrega/view/atualizar/{id}(id=${entrega.id})}" th:object="${entrega}" method="post">
             <!-- Mensagens de sucesso e erro aqui -->
             <div th:if="${param.sucesso}" class="alert alert-success">
                 <p th:text="${param.sucesso}"></p>
@@ -57,7 +57,7 @@
 
             <div class="mb-3 row">
                 <div class="col-12 d-grid">
-                    <button type="submit" class="mt-4 btn btn-primary">Cadastrar</button>
+                    <button type="submit" class="mt-4 btn btn-primary">Atualizar</button>
                     <a th:href="@{/entrega/view/listar}" class="mt-4 btn btn-secondary">Voltar</a>
                 </div>
             </div>
