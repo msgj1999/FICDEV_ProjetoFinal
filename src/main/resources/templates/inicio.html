@@ -103,6 +103,10 @@
 		.btn-danger i {
 			color: #fff;
 		}
+		
+				.nav-link:not(.active) {
+		    color: black !important;
+		}
 	</style>
 	</style>
 </head>
@@ -118,6 +122,7 @@
 			<!-- Adicionando a guia "Dashboard" -->
 			<li class="nav-item">
 				<a th:href="@{/dashboard}" class="nav-link active" aria-current="page">
+					<img src="/images/painel-de-controle.png" alt="imagem perfil" width="16" height="16">
 					Dashboard
 				</a>
 			</li>
@@ -125,21 +130,25 @@
 
 			<li class="nav-item">
 				<a th:href="@{/municao/view/listar}" class="nav-link">
+					<img src="/images/balas.png" alt="imagem perfil" width="16" height="16">
 					Munição
 				</a>
 			</li>
 			<li class="nav-item">
 				<a th:href="@{/entrega/view/listar}" class="nav-link">
+					<img src="/images/prancheta3.png" alt="imagem perfil" width="16" height="16">
 					Entrega
 				</a>
 			</li>
 			<li class="nav-item">
 				<a th:href="@{/manutencao/view/listar}" class="nav-link">
+					<img src="/images/manutencao.png" alt="imagem entrega" width="16" height="16">
 					Manutenção
 				</a>
 			</li>
 			<li class="nav-item">
 				<a th:href="@{/usuario/view/listar}" class="nav-link">
+					<img src="/images/user.png" alt="imagem entrega" width="16" height="16">
 					Usuário
 				</a>
 			</li>
@@ -148,7 +157,7 @@
 		<div class="dropdown">
 			<a class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" href="#"
 				role="button" data-bs-toggle="dropdown" aria-expanded="false">
-				<img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+				<img src="/images/perfil.png" alt="imagem perfil" width="32" height="32" class="rounded-circle me-2">
 				<strong id="nomeUsuario">Carregando...</strong>
 			</a>
 			<ul class="dropdown-menu text-small shadow">

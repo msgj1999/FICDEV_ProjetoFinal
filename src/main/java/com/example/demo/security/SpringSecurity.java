@@ -31,6 +31,8 @@ public class SpringSecurity {
 		.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers(HttpMethod.GET, "/usuario/view/cadastrar").hasAnyAuthority(UserRole.GESTOR.toString(), UserRole.GESTOR.getRole(), "1")
 				.requestMatchers(HttpMethod.POST, "/usuario/view/cadastrar").hasAnyAuthority(UserRole.GESTOR.toString(), UserRole.GESTOR.getRole(), "1")
+				.requestMatchers(HttpMethod.GET, "/usuario/view/remover/{id}").hasAnyAuthority(UserRole.GESTOR.toString(), UserRole.GESTOR.getRole(), "1")
+				.requestMatchers(HttpMethod.GET, "/usuario/view/atualizar/{id}").hasAnyAuthority(UserRole.GESTOR.toString(), UserRole.GESTOR.getRole(), "1")
 				.requestMatchers(HttpMethod.GET, "/login").permitAll()
 				.anyRequest().authenticated());
 		
