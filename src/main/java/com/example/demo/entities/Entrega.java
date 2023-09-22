@@ -23,7 +23,7 @@ public class Entrega {
 	private int id;
 	@NotBlank(message = "O nome do polical não pode ser nulo e deve ter no máximo 50 caracteres.")
 	@Size(max = 50, message = "O nome do policial deve ter no máximo 50 caracteres.")
-	@Pattern(regexp = "^[A-Za-z]*$", message = "O nome do policial deve conter apenas letras.")
+	@Pattern(regexp = "^[A-Za-zÀ-ÖØ-öø-ÿ\\s]*$", message = "O nome do policial deve conter apenas letras.")
 	private String nomePolicial;
 	
 	@Min(value = 1, message = "A quantidade deve ser maior que zero.")
