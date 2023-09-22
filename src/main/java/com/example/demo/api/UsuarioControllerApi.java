@@ -1,9 +1,11 @@
 package com.example.demo.api;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,10 +30,11 @@ public class UsuarioControllerApi {
     private UsuarioService usuarioService;
 
     @GetMapping
-    public List<Usuario> listarUsuarios() {
-        return usuarioService.getAllUsuarios();
+    public Page<Usuario> listarUsuarios(
+        @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        return usuarioService.getAllUsuarios(pageable);
     }
-
+    
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> listarUsuario(@PathVariable int id) {
         try {
@@ -70,9 +73,13 @@ public class UsuarioControllerApi {
     }
     
     @GetMapping("/buscar")
-    public ResponseEntity<List<Usuario>> buscarUsuarios(@RequestParam(value = "termo", required = false) String termo) {
-        List<Usuario> usuarios = usuarioService.buscarUsuariosPorFiltro(termo);
-        return ResponseEntity.ok(usuarios);
+    public ResponseEntity<Page<Usuario>> buscarUsuarios(
+            @RequestParam(value = "termo", required = false) String termo,
+            @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+
+        Page<Usuario> pageUsuarios = usuarioService.buscarUsuariosPorFiltro(termo, pageable);
+        
+        return ResponseEntity.ok(pageUsuarios);
     }
     
     @GetMapping("/total-usuarios")
@@ -80,6 +87,23 @@ public class UsuarioControllerApi {
         long totalUsuarios = usuarioService.countUsuarios();
         return ResponseEntity.ok(totalUsuarios);
     }
+    
+
+    @GetMapping("/nome-usuario-logado")
+    public ResponseEntity<String> getNomeUsuarioLogado() {
+        try {
+            Usuario usuarioLogado = usuarioService.getUsuarioLogado();
+            if (usuarioLogado != null) {
+                String nomeUsuarioLogado = usuarioLogado.getNome();
+                return ResponseEntity.ok(nomeUsuarioLogado);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (NotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
 
 }

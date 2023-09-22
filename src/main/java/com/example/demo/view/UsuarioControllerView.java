@@ -1,11 +1,12 @@
 package com.example.demo.view;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -21,9 +22,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.demo.entities.Usuario;
 import com.example.demo.service.UsuarioService;
 
-import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Valid;
-import jakarta.validation.Validator;
+
 
 @Controller
 @RequestMapping("/usuario/view")
@@ -35,13 +35,13 @@ public class UsuarioControllerView {
     @Autowired
     UsuarioService usuarioService;
     
-    @Autowired
-    private Validator validator;
     
     @GetMapping("/listar")
-    public ModelAndView listaUsuarios() {
-        var view = new ModelAndView("listaUsuario");
-        view.addObject("usuarios", usuarioService.getAllUsuarios());
+    public ModelAndView listaUsuarios(
+        @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        ModelAndView view = new ModelAndView("listaUsuario");
+        Page<Usuario> usuarios = usuarioService.getAllUsuarios(pageable);
+        view.addObject("usuarios", usuarios);
         return view;
     }
     
@@ -82,10 +82,14 @@ public class UsuarioControllerView {
     }
     
     @GetMapping("/buscar")
-    public ModelAndView buscarUsuarios(@RequestParam(value = "termo", required = false) String termo) {
+    public ModelAndView buscarUsuarios(
+        @RequestParam(value = "termo", required = false) String termo,
+        @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+
+        Page<Usuario> pageUsuarios = usuarioService.buscarUsuariosPorFiltro(termo, pageable);
         ModelAndView view = new ModelAndView("listaUsuario");
-        List<Usuario> usuarios = usuarioService.buscarUsuariosPorFiltro(termo);
-        view.addObject("usuarios", usuarios);
+        view.addObject("usuarios", pageUsuarios);
         return view;
     }
+    
 }
