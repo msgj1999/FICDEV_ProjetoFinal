@@ -272,11 +272,10 @@
 									class="btn btn-primary me-2 mb-0"> <!-- Adicione mb-0 aqui -->
 									<i class="fas fa-edit"></i> Editar
 								</a>
-								<form th:action="@{/municao/view/remover/{id}(id=${municao.id})}" method="delete"
-									onsubmit="return confirmDelete(event)" style="cursor: pointer">
-									<button class="btn btn-danger mb-0" type="submit">Excluir</button>
-									<!-- Adicione mb-0 aqui -->
-								</form>
+										<button type="button" class="btn btn-danger mb-0" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"
+											th:data-bs-municaoId=${municao.id}>
+											Excluir
+										</button>
 							</td>
 
 						</tr>
@@ -302,7 +301,31 @@
 						</li>
 					</ul>
 				</nav>
-			</main>
+			</main>			
+		</div>		
+	</div>
+
+
+	<!-- Modal -->
+	<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h1 class="modal-title fs-5" id="deleteConfirmModalLabel">Excluir Registro</h1>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+			Tem Certeza que deseja excluir
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Cancelar</button>
+				<form th:action="@{/municao/view/remover/}" method="delete"
+				style="cursor: pointer" class="delete-form">
+					<!-- Button trigger modal -->
+					<button type="submit" class="btn btn-danger">Excluir</button>
+				</form>
+			</div>
+		</div>
 		</div>
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -321,10 +344,39 @@
 
 	<script th:inline="javascript">
 		function confirmDelete(event) {
-			if (!confirm('Tem certeza que deseja excluir este usuário?')) {
+			if (!confirm('Tem certeza que deseja xexcluir este usuário?')) {
 				event.preventDefault();
 			}
 		}
+	</script>
+
+	<script>
+		var municaoId  = 0
+		window.addEventListener('load', () => {
+			
+
+		
+
+			const deleteConfirmModal = document.getElementById('deleteConfirmModal')
+			if (deleteConfirmModal) {
+			deleteConfirmModal.addEventListener('show.bs.modal', event => {
+				// Button that triggered the modal
+				const button = event.relatedTarget
+				// Extract info from data-bs-* attributes
+				const mId = button.getAttribute('data-bs-municaoId')
+				municaoId = mId;
+
+				let deleteForm = deleteConfirmModal.getElementsByClassName('delete-form')[0];				
+				deleteForm.action += mId;
+				console.log(deleteForm.action)
+
+				const modalBodyInput = deleteConfirmModal.querySelector('.modal-body')
+
+				modalBodyInput.textContent += ` a munição de ID ${mId} ?`;
+			})
+			}
+		});
+
 	</script>
 </body>
 
