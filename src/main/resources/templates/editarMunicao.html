@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Editar Munição</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<!-- Adicione o link para o seu arquivo CSS personalizado aqui -->
+	<link rel="stylesheet" href="caminho/para/seu/arquivo.css">
+	<style>
+		/* Estilos globais */
+		body {
+			font-family: Arial, sans-serif;
+			margin: 20px;
+			background-color: #f2f2f2;
+		}
+
+		h1 {
+			text-align: center;
+		}
+
+		.form-container {
+			max-width: 500px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #fff;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+
+		.form-container label,
+		.form-container input,
+		.form-container select {
+			display: block;
+			margin-bottom: 10px;
+		}
+
+		.form-container input[type="text"],
+		.form-container select {
+			width: 100%;
+			padding: 10px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+		}
+
+		button[type="submit"] {
+			background-color: #a573ef;
+			color: white;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+
+		button[type="submit"]:hover {
+			background-color: #45a049;
+		}
+
+		/* Estilos para a mensagem de sucesso */
+		.message-container {
+			background-color: #4CAF50;
+			color: white;
+			padding: 10px;
+			border-radius: 5px;
+			text-align: center;
+			margin-top: 20px;
+			display: none;
+		}
+
+		.overlay {
+			display: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.7);
+			z-index: 999;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Editar Munição</h1>
+	<div class="form-container">
+		<form th:action="@{/municao/view/atualizar/{id}(id=${municao.id})}" method="post" 
+        class=" needs-validation" novalidate>
+			<div th:if="${param.sucesso}" class="alert alert-success">
+				<p th:text="${param.sucesso}"></p>
+			</div>
+			<div th:if="${param.error}" class="alert alert-danger">
+				<p th:text="${param.error}"></p>
+			</div>
+			
+    <label for="tipo">Tipo de Munição:</label>
+    <input type="text" id="tipo" name="tipo" th:value="*{municao.tipo}" required>
+    <span class="text-danger" th:if="${#fields.hasErrors('municao.tipo')}" th:errors="*{municao.tipo}"></span>
+
+
+			
+			<label for="calibre">Calibre:</label>
+			<input type="text" id="calibre" name="calibre" th:value="*{municao.calibre}" required>
+			<span class="text-danger" th:if="${#fields.hasErrors('municao.calibre')}" th:errors="*{municao.calibre}"></span>
+
+			<label for="quantidade">Quantidade:</label>
+			<input type="number" id="quantidade" name="quantidade" th:value="*{municao.quantidade}" required>
+			<span class="text-danger" th:if="${#fields.hasErrors('municao.quantidade')}" th:errors="*{municao.quantidade}"></span>
+
+
+			<label for="peso">Peso (em gramas):</label>
+			<input type="number" step="0.001" id="peso" name="peso" th:value="*{municao.peso}" required>
+			<span class="text-danger" th:if="${#fields.hasErrors('municao.peso')}" th:errors="*{municao.peso}"></span>
+
+			<label for="coeficienteBalistico">Coeficiente Balístico:</label>
+			<input type="number" step="0.001" id="coeficienteBalistico" name="coeficienteBalistico"
+				th:value="*{municao.coeficienteBalistico}" required>
+				<span class="text-danger" th:if="${#fields.hasErrors('municao.coeficienteBalistico')}" th:errors="*{municao.coeficienteBalistico}"></span>
+
+			<label for="dataFabricacao">Data de Fabricação:</label>
+			<input type="date" id="dataFabricacao" name="dataFabricacao" th:value="*{municao.dataFabricacao}" required>
+			<span class="text-danger" th:if="${#fields.hasErrors('municao.dataFabricacao')}" th:errors="*{municao.dataFabricacao}"></span>
+
+			<label for="dataValidade">Data de Validade:</label>
+			<input type="date" id="dataValidade" name="dataValidade" th:value="*{municao.dataValidade}" required>
+			<span class="text-danger" th:if="${#fields.hasErrors('municao.dataValidade')}" th:errors="*{municao.dataValidade}"></span>
+
+			<button type="submit">Salvar</button>
+		</form>
+	</div>
+
+	<!-- Overlay para a mensagem de sucesso -->
+	<div class="overlay" id="success-overlay">
+		<div class="message-container">
+			Munição editada com sucesso!
+		</div>
+	</div>
+
+	<script th:inline="javascript">
+function showMessage() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const editParam = urlParams.get('edit');
+    if (editParam === 'success') {
+        const successOverlay = document.getElementById('success-overlay');
+        const messageContainer = document.querySelector('.message-container');
+        successOverlay.style.display = 'block';
+        messageContainer.style.display = 'block';
+        // Redirecionar após um breve atraso (por exemplo, 2 segundos)
+        setTimeout(function () {
+            window.location.href = '/municao/view/listar';
+        }, 2000); // 2000 milissegundos = 2 segundos
+    }
+}
+
+	</script>
+
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>

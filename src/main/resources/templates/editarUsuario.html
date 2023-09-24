@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Editar Entrega</title>
+    <title>Editar Usuário</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <!-- Adicione o link para o seu arquivo CSS personalizado aqui -->
     <link rel="stylesheet" href="caminho/para/seu/arquivo.css">
@@ -82,10 +82,10 @@
 </head>
 
 <body>
-    <h1>Editar Entrega</h1>
+    <h1>Editar Usuário</h1>
     <div class="form-container">
-        <form th:action="@{/entrega/view/atualizar/{id}(id=${entrega.id})}" method="post" class="needs-validation"
-            novalidate>
+        <form th:action="@{/usuario/view/atualizar/{id}(id=${usuario.id})}" method="post"
+            class="needs-validation" novalidate>
             <div th:if="${param.sucesso}" class="alert alert-success">
                 <p th:text="${param.sucesso}"></p>
             </div>
@@ -93,45 +93,28 @@
                 <p th:text="${param.error}"></p>
             </div>
 
-            <!-- O campo hidden para o ID -->
-            <input type="hidden" id="id" name="id" th:value="*{entrega.id}" />
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" th:value="*{usuario.nome}" required>
+            <span class="text-danger" th:if="${#fields.hasErrors('usuario.nome')}" th:errors="*{usuario.nome}"></span>
 
-            <label for="nomePolicial">Nome do Policial:</label>
-            <input type="text" id="nomePolicial" name="nomePolicial" th:value="*{entrega.nomePolicial}" required>
-            <span class="text-danger" th:if="${#fields.hasErrors('entrega.nomePolicial')}"
-                th:errors="*{entrega.nomePolicial}"></span>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" th:value="*{usuario.email}" required>
+            <span class="text-danger" th:if="${#fields.hasErrors('usuario.email')}" th:errors="*{usuario.email}"></span>
 
-            <label for="municao">Selecione a Munição:</label>
-            <select id="municao" name="municao.id" th:value="*{entrega.municao.id}" required>
-<option th:each="municao : ${municoes}" th:value="${municao.id}" th:text="${municao.tipo + ' - ' + municao.calibre}"></option>
+            <label for="cargo">Cargo:</label>
+            <select id="cargo" name="cargo" th:value="*{usuario.role}" required>
+                <option value="TECNICO">Técnico</option>
+                <option value="GESTOR">Gestor</option>
             </select>
-            <span class="text-danger" th:if="${#fields.hasErrors('entrega.municao.id')}"
-                th:errors="*{entrega.municao.id}"></span>
-
-            <label for="quantidade">Quantidade:</label>
-            <input type="number" id="quantidade" name="quantidade" th:value="*{entrega.quantidade}" required>
-            <span class="text-danger" th:if="${#fields.hasErrors('entrega.quantidade')}"
-                th:errors="*{entrega.quantidade}"></span>
-
-            <label for="dataEntrega">Data de Entrega:</label>
-            <input type="date" id="dataEntrega" name="dataEntrega" th:value="*{entrega.dataEntrega}" required>
-            <span class="text-danger" th:if="${#fields.hasErrors('entrega.dataEntrega')}"
-                th:errors="*{entrega.dataEntrega}"></span>
-
-            <label for="observacoes">Observações:</label>
-            <textarea id="observacoes" name="observacoes" th:value="*{entrega.observacoes}" rows="4"></textarea>
-            <span class="text-danger" th:if="${#fields.hasErrors('entrega.observacoes')}"
-                th:errors="*{entrega.observacoes}"></span>
 
             <button type="submit">Salvar</button>
         </form>
     </div>
 
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <!-- Overlay para a mensagem de sucesso -->
     <div class="overlay" id="success-overlay">
         <div class="message-container">
-            Entrega editada com sucesso!
+            Usuário editado com sucesso!
         </div>
     </div>
 
@@ -146,11 +129,13 @@
                 messageContainer.style.display = 'block';
                 // Redirecionar após um breve atraso (por exemplo, 2 segundos)
                 setTimeout(function () {
-                    window.location.href = '/entrega/view/listar';
+                    window.location.href = '/usuario/view/listar';
                 }, 2000); // 2000 milissegundos = 2 segundos
             }
         }
     </script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 
 </html>

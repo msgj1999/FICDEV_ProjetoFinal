@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -75,10 +76,22 @@ public class UsuarioControllerView {
     
     @GetMapping("/atualizar/{id}")
     public ModelAndView formUpdate(@PathVariable("id") int id) throws NotFoundException {
-        ModelAndView modelAndView = new ModelAndView("cadastroUsuario");
+        ModelAndView modelAndView = new ModelAndView("editarUsuario");
         Usuario usuario = usuarioService.getUsuario(id);
         modelAndView.addObject("usuario", usuario);
         return modelAndView;
+    }
+    
+    @PostMapping("/atualizar/{id}")
+    public ModelAndView atualizarUsuario(@PathVariable("id") int id, @Valid Usuario usuario, BindingResult result, Model model) throws NotFoundException {
+        if (result.hasErrors()) {
+            model.addAttribute("error", "Erro na validação. Por favor, verifique os campos.");
+            return new ModelAndView("editarUsuario");
+        }
+
+        usuarioService.updateUsuario(usuario, id);
+        model.addAttribute("sucesso", "Usuário atualizado com sucesso!");
+        return new ModelAndView("redirect:/usuario/view/listar");
     }
     
     @GetMapping("/buscar")

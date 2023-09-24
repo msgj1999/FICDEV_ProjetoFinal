@@ -127,7 +127,8 @@
 	<div class="container-fluid">
 		<div class="row">
 			<!-- Barra lateral -->
-			<nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar">
+			<nav id="sidebar" class="col-md-3 col-lg-2 d-md-flex flex-column justify-content-between sidebar">
+
 				<a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
 					<span class="fs-4">Gestão de Munições</span>
 				</a>
@@ -135,31 +136,31 @@
 				<ul class="nav nav-pills flex-column mb-auto">
 					<li class="nav-item">
 						<a th:href="@{/dashboard}" class="nav-link active" aria-current="page">
-							<img src="/images/painel-de-controle.png" alt="imagem perfil" width="16" height="16">
+							<img src="/images/painel-de-controle.png" alt="imagem perfil" width="18" height="18" class="me-1">
 							Dashboard
 						</a>
 					</li>
 					<li class="nav-item">
 						<a th:href="@{/municao/view/listar}" class="nav-link">
-							<img src="/images/balas.png" alt="imagem perfil" width="16" height="16">
+							<img src="/images/balas.png" alt="imagem perfil" width="18" height="18" class="me-1">
 							Munição
 						</a>
 					</li>
 					<li class="nav-item">
 						<a th:href="@{/entrega/view/listar}" class="nav-link">
-							<img src="/images/prancheta3.png" alt="imagem perfil" width="16" height="16">
+							<img src="/images/prancheta3.png" alt="imagem perfil" width="18" height="18" class="me-1">
 							Entrega
 						</a>
 					</li>
 					<li class="nav-item">
 						<a th:href="@{/manutencao/view/listar}" class="nav-link">
-							<img src="/images/manutencao.png" alt="imagem entrega" width="16" height="16">
+							<img src="/images/manutencao.png" alt="imagem entrega" width="18" height="18" class="me-1">
 							Manutenção
 						</a>
 					</li>
 					<li class="nav-item">
 						<a th:href="@{/usuario/view/listar}" class="nav-link">
-							<img src="/images/user.png" alt="imagem entrega" width="16" height="16">
+							<img src="/images/user.png" alt="imagem entrega" width="18" height="18" class="me-1">
 							Usuário
 						</a>
 					</li>

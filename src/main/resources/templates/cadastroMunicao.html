@@ -54,52 +54,38 @@
             <div class="form-group">
                 <label for="tipo">Tipo de Munição</label>
                 <input type="text" th:field="*{tipo}" class="form-control" id="tipo" required>
-                <div class="invalid-feedback">
-                    Por favor, preencha o tipo de munição.
-                </div>
+				<span class="text-danger" th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}"></span>
             </div>
             <div class="form-group">
                 <label for="calibre">Calibre</label>
                 <input type="text" th:field="*{calibre}" class="form-control" id="calibre" required>
-                <div class="invalid-feedback">
-                    Por favor, preencha o calibre.
-                </div>
+				<span class="text-danger" th:if="${#fields.hasErrors('calibre')}" th:errors="*{calibre}"></span>
             </div>
             <div class="form-group">
                 <label for="quantidade">Quantidade</label>
                 <input type="number" th:field="*{quantidade}" class="form-control" id="quantidade" required>
-                <div class="invalid-feedback">
-                    Por favor, forneça uma quantidade válida.
-                </div>
+				<span class="text-danger" th:if="${#fields.hasErrors('quantidade')}" th:errors="*{quantidade}"></span>
             </div>
             <div class="form-group">
                 <label for="peso">Peso (em gramas)</label>
-                <input type="number" step="0.001" th:field="*{peso}" class="form-control" id="peso" required>
-                <div class="invalid-feedback">
-                    Por favor, forneça um peso válido.
-                </div>
+                <input type="number" step="1" th:field="*{peso}" class="form-control" id="peso" required>
+				<span class="text-danger" th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}"></span>
             </div>
             <div class="form-group">
                 <label for="coeficienteBalistico">Coeficiente Balístico</label>
                 <input type="number" step="0.001" th:field="*{coeficienteBalistico}" class="form-control"
                     id="coeficienteBalistico" required>
-                <div class="invalid-feedback">
-                    Por favor, forneça um coeficiente balístico válido.
-                </div>
+				<span class="text-danger" th:if="${#fields.hasErrors('coeficienteBalistico')}" th:errors="*{coeficienteBalistico}"></span>
             </div>
             <div class="form-group">
                 <label for="dataFabricacao">Data de Fabricação</label>
                 <input type="date" th:field="*{dataFabricacao}" class="form-control" id="dataFabricacao" required>
-                <div class="invalid-feedback">
-                    Por favor, forneça uma data de fabricação válida.
-                </div>
+				<span class="text-danger" th:if="${#fields.hasErrors('dataFabricacao')}" th:errors="*{dataFabricacao}"></span>
             </div>
             <div class="form-group">
                 <label for="dataValidade">Data de Validade</label>
                 <input type="date" th:field="*{dataValidade}" class="form-control" id="dataValidade" required>
-                <div class="invalid-feedback">
-                    Por favor, forneça uma data de validade válida.
-                </div>
+				<span class="text-danger" th:if="${#fields.hasErrors('dataValidade')}" th:errors="*{dataValidade}"></span>
             </div>
 
             <div class="mb-3 row">

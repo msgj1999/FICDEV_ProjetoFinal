@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -71,11 +72,26 @@ public class MunicaoControllerView {
 
     @GetMapping("/atualizar/{id}")
     public ModelAndView formUpdate(@PathVariable("id") int id) throws NotFoundException {
-        ModelAndView modelAndView = new ModelAndView("cadastroMunicao");
+        ModelAndView modelAndView = new ModelAndView("editarMunicao");
         Municao municao = municaoService.getMunicao(id);
         modelAndView.addObject("municao", municao);
         return modelAndView;
     }
+    
+    @PostMapping("/atualizar/{id}")
+    public ModelAndView atualizarMunicao(@PathVariable("id") int id, @Valid Municao municao, BindingResult result, Model model) throws NotFoundException {
+        if (result.hasErrors()) {
+            model.addAttribute("error", "Erro na validação. Por favor, verifique os campos.");
+            return new ModelAndView("editarMunicao");
+        }
+
+        municaoService.updateMunicao(municao, id);
+        model.addAttribute("sucesso", "Munição atualizada com sucesso!");
+        return new ModelAndView("redirect:/municao/view/listar");
+    }
+
+
+
     
     @GetMapping("/buscar")
     public ModelAndView buscarMunicoes(
