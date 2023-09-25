@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Editar Manutenção</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
         /* Estilos globais */
         body {
@@ -39,11 +40,14 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            height: 100%; /* Define a altura para corresponder ao botão "Voltar" */
+            display: flex;
+            align-items: center; /* Alinha o conteúdo verticalmente ao centro */
         }
+
         button[type="submit"]:hover {
             background-color: #45a049;
         }
-
         /* Estilos para a mensagem de sucesso */
         .message-container {
             background-color: #4CAF50;
@@ -64,6 +68,23 @@
             background-color: rgba(0, 0, 0, 0.7);
             z-index: 999;
         }
+        
+                /* Estilo personalizado para o botão "Voltar" */
+        .button-voltar {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            height: 100%; /* Define a altura para corresponder ao botão "Salvar" */
+            display: flex;
+            align-items: center; /* Alinha o conteúdo verticalmente ao centro */
+        }
+
+        .button-voltar:hover {
+            background-color: #495057;
+        }
     </style>
 </head>
 <body>
@@ -79,7 +100,10 @@
                 <option th:selected="${manutencao.status == 'Pendente'}" th:text="Pendente" value="Pendente"></option>
             </select>
 
-            <button type="submit">Salvar</button>
+            <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                <button type="button" class="button-voltar" onclick="window.location.href = '/manutencao/view/listar';">Voltar</button>
+                <button type="submit">Salvar</button>
+            </div>
         </form>
 
     </div>
@@ -91,6 +115,7 @@
         </div>
     </div>
 
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script th:inline="javascript">
         function showMessage() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -105,5 +130,17 @@
 
         showMessage();
     </script>
+    
+      <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
+    </div>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
+  
 </body>
 </html>

@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <title>Editar Entrega</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <!-- Adicione o link para o seu arquivo CSS personalizado aqui -->
-    <link rel="stylesheet" href="caminho/para/seu/arquivo.css">
     <style>
         /* Estilos globais */
         body {
@@ -51,6 +49,9 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            height: 100%; /* Define a altura para corresponder ao botão "Voltar" */
+            display: flex;
+            align-items: center; /* Alinha o conteúdo verticalmente ao centro */
         }
 
         button[type="submit"]:hover {
@@ -78,10 +79,27 @@
             background-color: rgba(0, 0, 0, 0.7);
             z-index: 999;
         }
+
+        /* Estilo personalizado para o botão "Voltar" */
+        .button-voltar {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            height: 100%; /* Define a altura para corresponder ao botão "Salvar" */
+            display: flex;
+            align-items: center; /* Alinha o conteúdo verticalmente ao centro */
+        }
+
+        .button-voltar:hover {
+            background-color: #495057;
+        }
     </style>
 </head>
 
-<body>
+<body onload="showMessage()"> 
     <h1>Editar Entrega</h1>
     <div class="form-container">
         <form th:action="@{/entrega/view/atualizar/{id}(id=${entrega.id})}" method="post" class="needs-validation"
@@ -103,7 +121,7 @@
 
             <label for="municao">Selecione a Munição:</label>
             <select id="municao" name="municao.id" th:value="*{entrega.municao.id}" required>
-<option th:each="municao : ${municoes}" th:value="${municao.id}" th:text="${municao.tipo + ' - ' + municao.calibre}"></option>
+                <option th:each="municao : ${municoes}" th:value="${municao.id}" th:text="${municao.tipo + ' - ' + municao.calibre}"></option>
             </select>
             <span class="text-danger" th:if="${#fields.hasErrors('entrega.municao.id')}"
                 th:errors="*{entrega.municao.id}"></span>
@@ -123,18 +141,22 @@
             <span class="text-danger" th:if="${#fields.hasErrors('entrega.observacoes')}"
                 th:errors="*{entrega.observacoes}"></span>
 
-            <button type="submit">Salvar</button>
+            <!-- Botões agora têm classes diferentes para estilização -->
+            <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                <button type="button" class="button-voltar" onclick="window.location.href = '/entrega/view/listar';">Voltar</button>
+                <button type="submit">Salvar</button>
+            </div>
         </form>
     </div>
 
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <!-- Overlay para a mensagem de sucesso -->
     <div class="overlay" id="success-overlay">
         <div class="message-container">
             Entrega editada com sucesso!
         </div>
     </div>
-
+    
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script th:inline="javascript">
         function showMessage() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -151,6 +173,18 @@
             }
         }
     </script>
+    
+      <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
+    </div>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
+  
 </body>
 
 </html>

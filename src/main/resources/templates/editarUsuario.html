@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <title>Editar Usuário</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <!-- Adicione o link para o seu arquivo CSS personalizado aqui -->
-    <link rel="stylesheet" href="caminho/para/seu/arquivo.css">
     <style>
         /* Estilos globais */
         body {
@@ -51,6 +49,9 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            height: 100%; /* Define a altura para corresponder ao botão "Voltar" */
+            display: flex;
+            align-items: center; /* Alinha o conteúdo verticalmente ao centro */
         }
 
         button[type="submit"]:hover {
@@ -77,6 +78,23 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.7);
             z-index: 999;
+        }
+        
+                        /* Estilo personalizado para o botão "Voltar" */
+        .button-voltar {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            height: 100%; /* Define a altura para corresponder ao botão "Salvar" */
+            display: flex;
+            align-items: center; /* Alinha o conteúdo verticalmente ao centro */
+        }
+
+        .button-voltar:hover {
+            background-color: #495057;
         }
     </style>
 </head>
@@ -107,7 +125,10 @@
                 <option value="GESTOR">Gestor</option>
             </select>
 
-            <button type="submit">Salvar</button>
+            <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                <button type="button" class="button-voltar" onclick="window.location.href = '/usuario/view/listar';">Voltar</button>
+                <button type="submit">Salvar</button>
+            </div>
         </form>
     </div>
 
@@ -118,6 +139,7 @@
         </div>
     </div>
 
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script th:inline="javascript">
         function showMessage() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -135,7 +157,17 @@
         }
     </script>
 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
+    </div>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
+
 </body>
 
 </html>

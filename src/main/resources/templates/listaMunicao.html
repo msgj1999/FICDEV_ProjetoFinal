@@ -170,7 +170,7 @@
 		<div class="row">
 			<!-- Barra lateral -->
 			<nav id="sidebar" class="col-md-3 col-lg-2 d-md-flex flex-column justify-content-between sidebar">
-				<a href="/"
+				<a 
 					class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
 					<span class="fs-4">Gestão de Munições</span>
 				</a>
@@ -308,7 +308,7 @@
 
 	<!-- Modal -->
 	<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
+		<div class="modal-dialog"> <!-- Caso queira centralizar a modal adicione a classe modal-dialog-centered -->
 		<div class="modal-content">
 			<div class="modal-header">
 			<h1 class="modal-title fs-5" id="deleteConfirmModalLabel">Excluir Registro</h1>
@@ -342,42 +342,44 @@
 			});
 	</script>
 
-	<script th:inline="javascript">
-		function confirmDelete(event) {
-			if (!confirm('Tem certeza que deseja xexcluir este usuário?')) {
-				event.preventDefault();
-			}
-		}
-	</script>
+<script>
+    var municaoId = 0;
 
-	<script>
-		var municaoId  = 0
-		window.addEventListener('load', () => {
-			
+    window.addEventListener('load', () => {
+        const deleteConfirmModal = document.getElementById('deleteConfirmModal');
+        if (deleteConfirmModal) {
+            deleteConfirmModal.addEventListener('show.bs.modal', event => {
+                // Button that triggered the modal
+                const button = event.relatedTarget;
+                // Extract info from data-bs-* attributes
+                const mId = button.getAttribute('data-bs-municaoId');
+                municaoId = mId;
 
-		
+                let deleteForm = deleteConfirmModal.getElementsByClassName('delete-form')[0];
+                deleteForm.action = `/municao/view/remover/${mId}`;
 
-			const deleteConfirmModal = document.getElementById('deleteConfirmModal')
-			if (deleteConfirmModal) {
-			deleteConfirmModal.addEventListener('show.bs.modal', event => {
-				// Button that triggered the modal
-				const button = event.relatedTarget
-				// Extract info from data-bs-* attributes
-				const mId = button.getAttribute('data-bs-municaoId')
-				municaoId = mId;
+                const modalBodyInput = deleteConfirmModal.querySelector('.modal-body');
+                modalBodyInput.textContent = `Tem certeza que deseja excluir a munição de ID ${mId} ?`;
+            });
 
-				let deleteForm = deleteConfirmModal.getElementsByClassName('delete-form')[0];				
-				deleteForm.action += mId;
-				console.log(deleteForm.action)
+            deleteConfirmModal.addEventListener('hidden.bs.modal', () => {
+                municaoId = 0;
+            });
+        }
+    });
+</script>
 
-				const modalBodyInput = deleteConfirmModal.querySelector('.modal-body')
+  <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
+    </div>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
 
-				modalBodyInput.textContent += ` a munição de ID ${mId} ?`;
-			})
-			}
-		});
-
-	</script>
 </body>
 
 </html>
