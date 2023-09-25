@@ -5,6 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .clickable-link {
+            color: #007BFF; /* Cor azul padrão dos links no Bootstrap */
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .clickable-link:hover {
+            color: #0056b3; /* Cor quando o link é hover */
+        }
+
+        /* Cor personalizada para o botão "Entrar" */
+        .custom-btn {
+            background-color: #030085;
+            border-color:  #030085;
+            color: white; /* Texto branco */
+            width: 100%; /* Largura de 100% */
+        }
+        
+    </style>
 </head>
 <body>
     <div class="container mt-5">
@@ -15,24 +35,66 @@
                         Login
                     </div>
                     <div class="card-body">
-                        <form action="/login" method="post">
-                            <div class="form-group">
+                        <form th:action="@{/login}" method="post">
+                            <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                                Usuário e senha incorretos.
+                            </div>
+                            <div class="form-group mb-3"> <!-- Adicione a classe mb-3 -->
                                 <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
+                                <input type="text" class="form-control" name="username"/>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-3"> <!-- Adicione a classe mb-3 -->
                                 <label for="password">Senha</label>
-                                <input type="password" class="form-control" id="password" name="password" required>
+                                <input type="password" class="form-control" name="password"/>
                             </div>
-                            <button type="submit" class="btn btn-primary">Entrar</button>
+                            <!-- Adicione a classe mb-3 para o espaçamento abaixo do botão "Entrar" -->
+                            <button type="submit" class="btn btn-primary custom-btn mb-3">Entrar</button>
                         </form>
                     </div>
-                      <div class="card-footer">
-    						Sobre o sistema
+                    <div class="card-footer">
+                        <span class="clickable-link" data-toggle="modal" data-target="#sobreModal">
+                            Sobre o sistema
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="sobreModal" tabindex="-1" role="dialog" aria-labelledby="sobreModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable"> <!-- Remova a classe modal-dialog-centered -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sobreModalLabel">Sobre o sistema</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Conteúdo do modal vai aqui -->
+                    <strong>Principais Recursos:</strong><br>
+                    Cadastro de Munições: Nosso sistema permite que você registre todos os tipos de munições disponíveis, desde cartuchos de arma de fogo até projéteis especiais. Isso proporciona um controle detalhado do estoque.<br><br>
+                    <strong>Edição e Atualização:</strong><br>
+                    Mantenha seus registros atualizados e precisos. A funcionalidade de edição permite que você faça correções ou atualize informações sempre que necessário.<br><br>
+                    <strong>Exclusão Segura:</strong><br>
+                    Quando munições não são mais necessárias, você pode removê-las de seu inventário com segurança e precisão, mantendo o controle total.<br><br>
+                    <strong>Gestão de Entregas:</strong><br>
+                    Registramos as entregas de munições para Policiais, fornecendo rastreamento e registros detalhados.<br><br>
+                    <strong>Manutenção Preventiva:</strong><br>
+                    Registre e gerencie a manutenção regular das munições para garantir que elas estejam sempre em perfeito estado de funcionamento.<br><br>
+                    <strong>Controle de Usuários:</strong><br>
+                    Atribua permissões personalizadas para diferentes usuários do sistema, garantindo que apenas pessoal autorizado tenha acesso a funções críticas.<br><br>
+                    <strong>Dashboard Intuitivo:</strong><br>
+                    Nosso painel de controle fornece uma visão geral clara do status de suas munições, entregas, manutenções e outros aspectos essenciais.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

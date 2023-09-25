@@ -37,7 +37,7 @@ public class SpringSecurity {
 				.anyRequest().authenticated());
 		
 		httpSecurity.formLogin(form -> form
-				//.loginPage("/login")
+				.loginPage("/login")
 				.defaultSuccessUrl("/inicio")
 				.permitAll());
 		httpSecurity.logout(logout -> logout
