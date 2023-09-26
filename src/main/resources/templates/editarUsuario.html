@@ -119,6 +119,10 @@
             <input type="email" id="email" name="email" th:value="*{usuario.email}" required>
             <span class="text-danger" th:if="${#fields.hasErrors('usuario.email')}" th:errors="*{usuario.email}"></span>
 
+            <label for="senha">Senha:</label>
+            <input type="senha" id="senha" name="senha" th:value="*{usuario.senha}" required>
+            <span class="text-danger" th:if="${#fields.hasErrors('usuario.senha')}" th:errors="*{usuario.senha}"></span>
+            
             <label for="cargo">Cargo:</label>
             <select id="cargo" name="cargo" th:value="*{usuario.role}" required>
                 <option value="TECNICO">Técnico</option>

@@ -44,6 +44,7 @@ public class UsuarioService {
         atualizado.setNome(usuario.getNome());
         atualizado.setEmail(usuario.getEmail());
         atualizado.setSenha(usuario.getSenha());
+        atualizado.setRole(usuario.getRole());
 
         usuarioRepository.save(atualizado);
         return atualizado;
