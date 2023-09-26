@@ -186,45 +186,23 @@
 			<main role="main" class="col-md-6 ml-sm-auto col-lg-8 px-md-4 content">
 				<h1>Dashboard</h1>
 
-				<!-- Resumo Geral -->
-				<div class="row mt-4">
-					<div class="col-md-3">
-						<div class="card">
-							<div class="card-body">
-								<h5 class="card-title">Total de <br>Munições</h5>
-								<!-- Use o seu serviço para buscar o total de munições em estoque -->
-								<p class="card-text" id="totalMunicoesEmEstoque">Carregando...</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="card">
-							<div class="card-body">
-								<h5 class="card-title">Total de <br>Entregas</h5>
-								<!-- Use o seu serviço para buscar o total de entregas feitas -->
-								<p class="card-text" id="totalEntregas">Carregando...</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="card">
-							<div class="card-body">
-								<h5 class="card-title">Total de <br>Manutenções</h5>
-								<!-- Use o seu serviço para buscar o total de manutenções feitas -->
-								<p class="card-text" id="totalManutencoes">Carregando...</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="card">
-							<div class="card-body">
-								<h5 class="card-title">Total de <br>Usuários</h5>
-								<!-- Use o seu serviço para buscar o total de usuários cadastrados -->
-								<p class="card-text" id="totalUsuarios">Carregando...</p>
-							</div>
-						</div>
-					</div>
-				</div>
+<!-- Resumo Geral -->
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body text-center"> <!-- Centralizar o conteúdo -->
+                <h5 class="card-title" style="font-size: 24px;">TOTAL:</h5> <!-- Aumentar o tamanho da fonte -->
+                <div class="d-flex justify-content-between align-items-center" style="font-size: 18px;">
+                    <div>Munições: <span id="totalMunicoesEmEstoque" style="font-size: 24px;">Carregando...</span></div> <!-- Aumentar o tamanho da fonte -->
+                    <div>Entregas: <span id="totalEntregas" style="font-size: 24px;">Carregando...</span></div> <!-- Aumentar o tamanho da fonte -->
+                    <div>Manutenções: <span id="totalManutencoes" style="font-size: 24px;">Carregando...</span></div> <!-- Aumentar o tamanho da fonte -->
+                    <div>Usuários: <span id="totalUsuarios" style="font-size: 24px;">Carregando...</span></div> <!-- Aumentar o tamanho da fonte -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 				<!-- Gráfico de Pizza -->
 				<div class="row mt-4">
