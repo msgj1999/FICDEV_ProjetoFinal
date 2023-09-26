@@ -92,7 +92,7 @@ public class UsuarioControllerApi {
     @GetMapping("/nome-usuario-logado")
     public ResponseEntity<String> getNomeUsuarioLogado() {
         try {
-            Usuario usuarioLogado = usuarioService.getUsuarioLogado();
+            Usuario usuarioLogado = usuarioService.getUsuarioLogado2();
             if (usuarioLogado != null) {
                 String nomeUsuarioLogado = usuarioLogado.getNome();
                 return ResponseEntity.ok(nomeUsuarioLogado);

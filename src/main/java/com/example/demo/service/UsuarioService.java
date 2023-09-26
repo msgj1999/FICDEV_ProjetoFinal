@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.UsuarioDTO;
 import com.example.demo.entities.Usuario;
 import com.example.demo.repository.UsuarioRepository;
 import com.example.demo.security.UserRole;
@@ -90,7 +91,7 @@ public class UsuarioService {
         return usuarioRepository.findAll(pageable);
     }
     
-    public Usuario getUsuarioLogado() throws NotFoundException {
+    public Usuario getUsuarioLogado2() throws NotFoundException {
         // Obtém o contexto de segurança atual
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -107,5 +108,28 @@ public class UsuarioService {
         // Se o usuário não estiver autenticado, retorne null ou trate conforme necessário
         return null;
     }
+    
+    
+    public UsuarioDTO getUsuarioLogado() throws NotFoundException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            String nomeUsuarioLogado = authentication.getName();
+            Usuario usuario = usuarioRepository.findByLogin(nomeUsuarioLogado)
+                    .orElseThrow(() -> new NotFoundException());
+
+            // Crie um UsuarioDTO com as informações desejadas
+            UsuarioDTO usuarioDTO = new UsuarioDTO();
+            usuarioDTO.setId(usuario.getId());
+            usuarioDTO.setNome(usuario.getNome());
+            usuarioDTO.setEmail(usuario.getEmail());
+            usuarioDTO.setRole(usuario.getRole());
+
+            return usuarioDTO;
+        }
+
+        return null;
+    }
+
 
 }

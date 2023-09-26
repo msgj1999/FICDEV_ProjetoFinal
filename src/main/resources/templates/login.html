@@ -24,14 +24,50 @@
             width: 100%; /* Largura de 100% */
         }
         
+                h1 {
+            background-color: #DDDDDD;
+            color: rgb(0, 0, 0);
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .custom-card-header {
+    background-color: #DDDDDD; /* Cor de fundo desejada */
+    border-color: rgb(0, 0, 0);
+    color: rgb(0, 0, 0); /* Cor do texto */
+    font-size: 24px;
+}
+
+.custom-card-footer {
+    background-color: #DDDDDD; /* Cor de fundo desejada */
+    border-color: rgb(0, 0, 0);
+    color: rgb(0, 0, 0); /* Cor do texto */
+    font-size: 24px;
+}
+
+.custom-modal-header {
+    background-color: #030085; /* Cor de fundo desejada */
+    color: white; /* Cor do texto */
+    /* Adicione outros estilos conforme necessário */
+}
+
+.custom-modal-header .close {
+    color: white;
+}
+
+.card {
+	border-color:rgb(0, 0, 0);
+}
     </style>
 </head>
 <body>
+	<h1>Gestão de Munições</h1>
+	
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
+                <div class="card mx-auto w-75"> <!-- Adicione a classe w-75 -->
+                    <div class="card-header custom-card-header">
                         Login
                     </div>
                     <div class="card-body">
@@ -51,7 +87,7 @@
                             <button type="submit" class="btn btn-primary custom-btn mb-3">Entrar</button>
                         </form>
                     </div>
-                    <div class="card-footer">
+                    <div class="card-footer custom-card-footer">
                         <span class="clickable-link" data-toggle="modal" data-target="#sobreModal">
                             Sobre o sistema
                         </span>
@@ -65,7 +101,7 @@
     <div class="modal fade" id="sobreModal" tabindex="-1" role="dialog" aria-labelledby="sobreModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable"> <!-- Remova a classe modal-dialog-centered -->
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header custom-modal-header">
                     <h5 class="modal-title" id="sobreModalLabel">Sobre o sistema</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
