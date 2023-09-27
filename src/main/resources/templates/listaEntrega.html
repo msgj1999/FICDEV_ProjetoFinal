@@ -145,6 +145,26 @@
 		td.quantity {
 			text-align: center;
 		}
+		
+				        .clickable-link {
+            color: #007BFF !important;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .clickable-link:hover {
+            color: #0056b3 !important;
+        }
+        
+        .custom-modal-header {
+    background-color: #030085; /* Cor de fundo desejada */
+    color: white; /* Cor do texto */
+    /* Adicione outros estilos conforme necessário */
+}
+
+.custom-modal-header .close {
+    color: white;
+}
 	</style>
 </head>
 
@@ -192,6 +212,12 @@
 							<img src="/images/user.png" alt="imagem entrega" width="18" height="18" class="me-1">
 							Usuário
 						</a>
+					</li>
+					<li class="nav-item clickable-link">
+				    <a href="#" data-toggle="modal" class="nav-link" data-target="#sobreModal">
+						<img src="/images/info.png" alt="imagem info" width="18" height="18" class="me-1">
+				        Sobre o sistema
+				    </a>
 					</li>
 				</ul>
 				<hr>
@@ -313,6 +339,42 @@
 		</div>
 		</div>
 	</div>
+	
+		    <!-- Modal -->
+    <div class="modal fade" id="sobreModal" tabindex="-1" role="dialog" aria-labelledby="sobreModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable"> <!-- Remova a classe modal-dialog-centered -->
+            <div class="modal-content">
+                <div class="modal-header custom-modal-header">
+                    <h5 class="modal-title" id="sobreModalLabel">Sobre o sistema</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Conteúdo do modal vai aqui -->
+                    <Strong>Autor:</Strong> Milton Simplicio Gonçalves Junior<br>
+                    <p>Para obter mais informações, visite o meu repositório no <a href="https://github.com/msgj1999/FICDEV_ProjetoFinal" target="_blank">GitHub</a>.</p>
+                    <strong>Principais Recursos:</strong><br>
+                    Cadastro de Munições: Nosso sistema permite que você registre todos os tipos de munições disponíveis, desde cartuchos de arma de fogo até projéteis especiais. Isso proporciona um controle detalhado do estoque.<br><br>
+                    <strong>Edição e Atualização:</strong><br>
+                    Mantenha seus registros atualizados e precisos. A funcionalidade de edição permite que você faça correções ou atualize informações sempre que necessário.<br><br>
+                    <strong>Exclusão Segura:</strong><br>
+                    Quando munições não são mais necessárias, você pode removê-las de seu inventário com segurança e precisão, mantendo o controle total.<br><br>
+                    <strong>Gestão de Entregas:</strong><br>
+                    Registramos as entregas de munições para Policiais, fornecendo rastreamento e registros detalhados.<br><br>
+                    <strong>Manutenção Preventiva:</strong><br>
+                    Registre e gerencie a manutenção regular das munições para garantir que elas estejam sempre em perfeito estado de funcionamento.<br><br>
+                    <strong>Controle de Usuários:</strong><br>
+                    Atribua permissões personalizadas para diferentes usuários do sistema, garantindo que apenas pessoal autorizado tenha acesso a funções críticas.<br><br>
+                    <strong>Dashboard Intuitivo:</strong><br>
+                    Nosso painel de controle fornece uma visão geral clara do status de suas munições, entregas, manutenções e outros aspectos essenciais.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Use JavaScript para buscar o nome do usuário logado
@@ -371,6 +433,10 @@
   <script>
     new window.VLibras.Widget('https://vlibras.gov.br/app');
   </script>
+  
+  	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 

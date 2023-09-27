@@ -2,118 +2,376 @@
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Entregas</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Lista de Entregas</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+	<style>
+		body {
+			background-color: #f8f9fa;
+		}
 
-        .container {
-            padding-top: 30px;
-        }
+		.sidebar {
+			width: 280px;
+			min-height: 100vh;
+			background-color: #f8f9fa;
+			padding: 20px;
+			position: fixed;
+			top: 0;
+			left: 0;
+		}
 
-        .display-4 {
-            color: #007bff;
-            text-align: center;
-            margin-bottom: 30px;
-        }
+		.content {
+			margin-left: 280px;
+			/* Largura da barra lateral */
+			padding: 30px;
+		}
 
-        .table {
-            background-color: #fff;
-            border-radius: 5px;
-        }
+		.container {
+			padding-top: 30px;
+		}
 
-        th,
-        td {
-            vertical-align: middle;
-        }
+		.display-4 {
+			color: rgb(0, 0, 0);
+			text-align: center;
+			margin-bottom: 30px;
+		}
 
-        .btn {
-            border-radius: 5px;
-        }
+		.table {
+			background-color: #fff;
+			border-radius: 5px;
+		}
 
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
+		th,
+		td {
+			vertical-align: middle;
+		}
 
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
-        }
+		.btn {
+			border-radius: 5px;
+		}
 
-        .btn-danger {
-            background-color: #dc3545;
-            border-color: #dc3545;
-        }
+		.btn-primary {
+			background-color: #007bff;
+			border-color: #007bff;
+		}
 
-        .btn-danger:hover {
-            background-color: #c82333;
-            border-color: #bd2130;
-        }
+		.btn-primary:hover {
+			background-color: #0056b3;
+			border-color: #0056b3;
+		}
 
-        .btn i {
-            margin-right: 5px;
-        }
+		.btn-danger {
+			background-color: #dc3545;
+			border-color: #dc3545;
+		}
 
-        .btn-primary i {
-            color: #fff;
-        }
+		.btn-danger:hover {
+			background-color: #c82333;
+			border-color: #bd2130;
+		}
 
-        .btn-danger i {
-            color: #fff;
-        }
-    </style>
+		.btn i {
+			margin-right: 5px;
+		}
+
+		.btn-primary i {
+			color: #fff;
+		}
+
+		.btn-danger i {
+			color: #fff;
+		}
+
+		/* Estilo para o campo de busca e botão */
+		.search-container {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 20px;
+		}
+
+		.search-input {
+			width: 70%;
+		}
+
+		.search-button {
+			width: 25%;
+		}
+
+		.create-button {
+			width: auto;
+			/* Deixe o botão crescer automaticamente para a largura do conteúdo */
+			max-width: 100%;
+			/* Certifique-se de que ele não ultrapasse a largura do elemento pai */
+			border-radius: 6px;
+			background: var(--status-color-info, #17A2B8);
+			border-color: #17A2B8;
+			white-space: normal;
+			/* Permita que o texto quebre em várias linhas */
+		}
+
+
+		.create-button:hover {
+			width: auto;
+			/* Deixe o botão crescer automaticamente para a largura do conteúdo */
+			max-width: 100%;
+			/* Certifique-se de que ele não ultrapasse a largura do elemento pai */
+			border-radius: 6px;
+			background: var(--status-color-info, #0E8497);
+			border-color: #0E8497;
+			white-space: normal;
+			/* Permita que o texto quebre em várias linhas */
+		}
+
+		.nav-link:not(.active) {
+			color: black !important;
+		}
+
+		/* Adicione um estilo para ocultar a barra lateral em telas menores */
+		@media (max-width: 768px) {
+			.sidebar {
+				width: 100%;
+				position: static;
+				padding: 10px;
+			}
+
+			.content {
+				margin-left: 0;
+			}
+		}
+
+		td.quantity {
+			text-align: center;
+		}
+	</style>
 </head>
 
 <body>
-    <div class="container">
-        <h1 class="display-4 mt-5">Lista de Entregas</h1>
+	<div class="container-fluid">
+		<div class="row">
+			<!-- Barra lateral -->
+			<nav id="sidebar" class="col-md-3 col-lg-2 d-md-flex flex-column justify-content-between sidebar">
+				<a 
+					class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+					<span class="fs-4">Gestão de Munições</span>
+				</a>
+				<hr>
+				<ul class="nav nav-pills flex-column mb-auto">
+					<!-- Adicionando a guia "Dashboard" -->
+					<li class="nav-item">
+						<a th:href="@{/inicio}" class="nav-link">
+							<img src="/images/painel-de-controle-preto.png" alt="imagem perfil" width="18" height="18"
+								class="me-1">
+							Dashboard
+						</a>
+					</li>
+					<!-- Fim da nova guia "Dashboard" -->
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Nome do Policial</th>
-                    <th scope="col">Quantidade</th>
-                    <th scope="col">Data de Entrega</th>
-                    <th scope="col">Observações</th>
-                    <th scope="col" colspan="2">Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Inserir um bloco semelhante para cada entrega -->
-                <tr th:each="entrega : ${entregas}">
-                    <th scope="row" th:text="${entrega.id}"></th>
-                    <td th:text="${entrega.nomePolicial}"></td>
-                    <td th:text="${entrega.quantidade}"></td>
-                    <td th:text="${entrega.dataEntrega}"></td>
-                    <td th:text="${entrega.observacoes}"></td>
-                    <td>
-                        <a th:href="@{/entrega/view/atualizar/{id}(id=${entrega.id})}" class="btn btn-primary">
-                            <i class="fas fa-edit"></i> Atualizar
-                        </a>
-                        <a th:href="@{/entrega/view/remover/{id}(id=${entrega.id})}" th:method="delete"
-                            class="btn btn-danger">
-                            <i class="fas fa-trash-alt"></i> Deletar
-                        </a>
-                    </td>
-                </tr>
-                <!-- Fim do bloco para cada entrega -->
-            </tbody>
-        </table>
-        <div class="mb-3 row">
-            <div class="col-12 d-grid">
-                <a th:href="@{/entrega/view/cadastrar}" class="mt-4 btn btn-success">Cadastrar Nova Entrega</a>
-                <a th:href="@{/inicio}" class="mt-4 btn btn-primary">Voltar</a>
-            </div>
-        </div>
+					<li class="nav-item">
+						<a th:href="@{/municao/view/listar}" class="nav-link">
+							<img src="/images/balas.png" alt="imagem perfil" width="18" height="18" class="me-1">
+							Munição
+						</a>
+					</li>
+					<li class="nav-item">
+						<a th:href="@{/entrega/view/listar}" class="nav-link active" aria-current="page">
+							<img src="/images/prancheta.png" alt="imagem entrega" width="18" height="18" class="me-1">
+							Entrega
+						</a>
+					</li>
+					<li class="nav-item">
+						<a th:href="@{/manutencao/view/listar}" class="nav-link">
+							<img src="/images/manutencao.png" alt="imagem entrega" width="18" height="18" class="me-1">
+							Manutenção
+						</a>
+					</li>
+					<li class="nav-item">
+						<a th:href="@{/usuario/view/listar}" class="nav-link">
+							<img src="/images/user.png" alt="imagem entrega" width="18" height="18" class="me-1">
+							Usuário
+						</a>
+					</li>
+				</ul>
+				<hr>
+				<div class="dropdown">
+					<a class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
+						href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<img src="/images/perfil.png" alt="imagem perfil" width="32" height="32"
+							class="rounded-circle me-2">
+						<strong id="nomeUsuario">Carregando...</strong>
+					</a>
+					<ul class="dropdown-menu text-small shadow">
+						<li><a class="dropdown-item" href="/perfil">Perfil</a></li>
+						<li>
+							<hr class="dropdown-divider">
+						</li>
+						<li><a class="dropdown-item" th:href="@{/logout}">Sair</a></li>
+					</ul>
+				</div>
+			</nav>
+
+			<!-- Conteúdo principal -->
+			<main role="main" class="col-md-6 ml-sm-auto col-lg-8 px-md-4 content">
+				<h1 class="fw-bold display-4 mt-5">Entregas</h1>
+				<!-- Formulário de Busca e Botão de Cadastro -->
+				<div class="search-container mb-5">
+					<form action="/entrega/view/buscar" method="get" class="d-flex">
+						<div class="input-group">
+							<input type="text" class="form-control search-input" placeholder="Buscar Entrega"
+								name="termo" id="searchInput">
+							<button class="btn btn-outline-secondary search-button" type="submit"
+								id="searchButton">Buscar</button>
+						</div>
+					</form>
+					<a th:href="@{/entrega/view/cadastrar}" class="btn btn-success create-button">Cadastrar Nova
+						Entrega</a>
+				</div>
+				<!-- Fim do Formulário de Busca e Botão de Cadastro -->
+
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">ID</th>
+								<th scope="col">Nome do Policial</th>
+								<th scope="col">Munição</th>
+								<th scope="col">Quantidade</th>
+								<th scope="col">Data de Entrega</th>
+								<th scope="col">Observações</th>
+								<th scope="col" colspan="2">Ações</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- Inserir um bloco semelhante para cada entrega -->
+							<tr th:each="entrega : ${entregas}">
+								<th scope="row" th:text="${entrega.id}"></th>
+								<td th:text="${entrega.nomePolicial}"></td>
+								<td th:text="${entrega.municao.tipo + ' - ' + entrega.municao.calibre}"></td>
+								<td class="quantity" th:text="${entrega.quantidade}"></td>
+								<td th:text="${entrega.dataEntrega}"></td>
+								<td th:text="${entrega.observacoes}"></td>
+								<td class="d-flex"> <!-- Use a classe d-flex aqui -->
+									<a th:href="@{/entrega/view/atualizar/{id}(id=${entrega.id})}"
+										class="btn btn-primary me-2 mb-0"> <!-- Adicione mb-0 aqui -->
+										<i class="fas fa-edit"></i> Editar
+									</a>
+										<button type="button" class="btn btn-danger mb-0" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"
+											th:data-bs-entregaId=${entrega.id}>
+											Excluir
+										</button>
+								</td>
+							</tr>
+							<!-- Fim do bloco para cada entrega -->
+						</tbody>
+					</table>
+				</div>
+
+				<nav aria-label="Page navigation example">
+					<ul class="pagination mx-auto">
+						<li class="page-item">
+							<a class="page-link" th:href="@{/entrega/view/listar(page=0)}" aria-label="Previous">
+								<span aria-hidden="true">&laquo;</span>
+							</a>
+						</li>
+						<li class="page-item" th:each="pageNumber : ${#numbers.sequence(0, entregas.totalPages - 1)}">
+							<a class="page-link" th:href="@{/entrega/view/listar(page=${pageNumber})}"
+								th:text="${pageNumber + 1}"></a>
+						</li>
+						<li class="page-item">
+							<a class="page-link" th:href="@{/entrega/view/listar(page=${entregas.totalPages - 1})}"
+								aria-label="Next">
+								<span aria-hidden="true">&raquo;</span>
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</main>
+		</div>
+	</div>
+	
+		<!-- Modal -->
+	<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+		<div class="modal-dialog"> <!-- Caso queira centralizar a modal adicione a classe modal-dialog-centered -->
+		<div class="modal-content">
+			<div class="modal-header">
+			<h1 class="modal-title fs-5" id="deleteConfirmModalLabel">Excluir Registro</h1>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+			Tem Certeza que deseja excluir
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Cancelar</button>
+				<form th:action="@{/entrega/view/remover/}" method="delete"
+				style="cursor: pointer" class="delete-form">
+					<!-- Button trigger modal -->
+					<button type="submit" class="btn btn-danger">Excluir</button>
+				</form>
+			</div>
+		</div>
+		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Use JavaScript para buscar o nome do usuário logado
+    fetch('/usuario/api/nome-usuario-logado')
+        .then(response => response.text())
+        .then(nomeUsuarioLogado => {
+            // Divida o nome completo em palavras
+            const palavrasNome = nomeUsuarioLogado.split(' ');
+            
+            // Pegue apenas a primeira palavra (primeiro nome)
+            const primeiroNome = palavrasNome[0];
+
+            // Atualize o nome do usuário no elemento HTML
+            document.getElementById('nomeUsuario').textContent = primeiroNome;
+        })
+        .catch(error => {
+            console.error('Erro ao buscar o nome do usuário logado:', error);
+        });
+</script>
+
+	
+	<script>
+    var entregaId = 0;
+
+    window.addEventListener('load', () => {
+        const deleteConfirmModal = document.getElementById('deleteConfirmModal');
+        if (deleteConfirmModal) {
+            deleteConfirmModal.addEventListener('show.bs.modal', event => {
+                // Button that triggered the modal
+                const button = event.relatedTarget;
+                // Extract info from data-bs-* attributes
+                const eId = button.getAttribute('data-bs-entregaId');
+                entregaId = eId;
+
+                let deleteForm = deleteConfirmModal.getElementsByClassName('delete-form')[0];
+                deleteForm.action = `/entrega/view/remover/${eId}`;
+
+                const modalBodyInput = deleteConfirmModal.querySelector('.modal-body');
+                modalBodyInput.textContent = `Tem certeza que deseja excluir a entrega de ID ${eId} ?`;
+            });
+
+            deleteConfirmModal.addEventListener('hidden.bs.modal', () => {
+                entregaId = 0;
+            });
+        }
+    });
+</script>
+
+  <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
     </div>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
+
 </body>
 
 </html>

@@ -41,27 +41,51 @@
 <body>
     <div class="container">
         <h2>Cadastro de Munição</h2>
-        <form action="#" th:action="@{/municao/view/cadastrar}" th:object="${municao}" method="post">
+        <form action="#" th:action="@{/municao/view/cadastrar}" th:object="${municao}" method="post"
+            class="needs-validation" novalidate>
             <!-- Mensagens de sucesso e erro aqui -->
-            <div class="form-group">
-                <input type="hidden" th:field="*{id}" class="form-control" id="id">
+            <div th:if="${param.sucesso}" class="alert alert-success">
+                <p th:text="${param.sucesso}"></p>
+            </div>
+            <div th:if="${param.error}" class="alert alert-danger">
+                <p th:text="${param.error}"></p>
             </div>
 
             <div class="form-group">
                 <label for="tipo">Tipo de Munição</label>
-                <input type="text" th:field="*{tipo}" class="form-control" id="tipo">
+                <input type="text" th:field="*{tipo}" class="form-control" id="tipo" required>
+				<span class="text-danger" th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}"></span>
             </div>
             <div class="form-group">
                 <label for="calibre">Calibre</label>
-                <input type="text" th:field="*{calibre}" class="form-control" id="calibre">
+                <input type="text" th:field="*{calibre}" class="form-control" id="calibre" required>
+				<span class="text-danger" th:if="${#fields.hasErrors('calibre')}" th:errors="*{calibre}"></span>
             </div>
             <div class="form-group">
-                <label for="periculosidade">Periculosidade</label>
-                <select th:field="*{periculosidade}" class="form-control" id="periculosidade">
-                    <option value="baixa">Baixa</option>
-                    <option value="media">Média</option>
-                    <option value="alta">Alta</option>
-                </select>
+                <label for="quantidade">Quantidade</label>
+                <input type="number" th:field="*{quantidade}" class="form-control" id="quantidade" required>
+				<span class="text-danger" th:if="${#fields.hasErrors('quantidade')}" th:errors="*{quantidade}"></span>
+            </div>
+            <div class="form-group">
+                <label for="peso">Peso (em gramas)</label>
+                <input type="number" step="1" th:field="*{peso}" class="form-control" id="peso" required>
+				<span class="text-danger" th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}"></span>
+            </div>
+            <div class="form-group">
+                <label for="coeficienteBalistico">Coeficiente Balístico</label>
+                <input type="number" step="0.001" th:field="*{coeficienteBalistico}" class="form-control"
+                    id="coeficienteBalistico" required>
+				<span class="text-danger" th:if="${#fields.hasErrors('coeficienteBalistico')}" th:errors="*{coeficienteBalistico}"></span>
+            </div>
+            <div class="form-group">
+                <label for="dataFabricacao">Data de Fabricação</label>
+                <input type="date" th:field="*{dataFabricacao}" class="form-control" id="dataFabricacao" required>
+				<span class="text-danger" th:if="${#fields.hasErrors('dataFabricacao')}" th:errors="*{dataFabricacao}"></span>
+            </div>
+            <div class="form-group">
+                <label for="dataValidade">Data de Validade</label>
+                <input type="date" th:field="*{dataValidade}" class="form-control" id="dataValidade" required>
+				<span class="text-danger" th:if="${#fields.hasErrors('dataValidade')}" th:errors="*{dataValidade}"></span>
             </div>
 
             <div class="mb-3 row">
@@ -93,7 +117,17 @@
             window.location.href = "/municao/view/listar"; // Altere o URL conforme necessário
         }
     </script>
+    
+      <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
+    </div>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
 </body>
 
 </html>
-

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Manutenção</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        /* Estilos globais */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f2f2f2;
+        }
+        h1 {
+            text-align: center;
+        }
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-container label, .form-container input, .form-container select {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .form-container input[type="text"], .form-container select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button[type="submit"] {
+            background-color: #a573ef;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            height: 100%; /* Define a altura para corresponder ao botão "Voltar" */
+            display: flex;
+            align-items: center; /* Alinha o conteúdo verticalmente ao centro */
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        /* Estilos para a mensagem de sucesso */
+        .message-container {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+        }
+        
+                /* Estilo personalizado para o botão "Voltar" */
+        .button-voltar {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            height: 100%; /* Define a altura para corresponder ao botão "Salvar" */
+            display: flex;
+            align-items: center; /* Alinha o conteúdo verticalmente ao centro */
+        }
+
+        .button-voltar:hover {
+            background-color: #495057;
+        }
+    </style>
+</head>
+<body>
+    <h1>Editar Manutenção</h1>
+    <div class="form-container">
+        <form th:action="@{/manutencao/view/atualizar/{id}(id=${manutencao.id})}" method="post">
+            <label for="dataManutencao">Data de Manutenção:</label>
+            <input type="date" id="dataManutencao" name="dataManutencao" th:value="*{manutencao.dataManutencao}" required>
+
+            <label for="status">Status:</label>
+            <select id="status" name="status" th:value="*{manutencao.status}" required>
+                <option th:selected="${manutencao.status == 'Concluída'}" th:text="Concluída" value="Concluída"></option>
+                <option th:selected="${manutencao.status == 'Pendente'}" th:text="Pendente" value="Pendente"></option>
+            </select>
+
+            <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                <button type="button" class="button-voltar" onclick="window.location.href = '/manutencao/view/listar';">Voltar</button>
+                <button type="submit">Salvar</button>
+            </div>
+        </form>
+
+    </div>
+
+    <!-- Overlay para a mensagem de sucesso -->
+    <div class="overlay" id="success-overlay">
+        <div class="message-container">
+            Manutenção editada com sucesso!
+        </div>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script th:inline="javascript">
+        function showMessage() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const editParam = urlParams.get('edit');
+            if (editParam === 'success') {
+                const successOverlay = document.getElementById('success-overlay');
+                const messageContainer = document.querySelector('.message-container');
+                successOverlay.style.display = 'block';
+                messageContainer.style.display = 'block';
+            }
+        }
+
+        showMessage();
+    </script>
+    
+      <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
+    </div>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
+  
+</body>
+</html>

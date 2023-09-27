@@ -147,13 +147,13 @@
 		}
 		
 		        .clickable-link {
-            color: #007BFF; /* Cor azul padrão dos links no Bootstrap */
+            color: #007BFF !important;
             text-decoration: underline;
             cursor: pointer;
         }
 
         .clickable-link:hover {
-            color: #0056b3; /* Cor quando o link é hover */
+            color: #0056b3 !important;
         }
         
         .custom-modal-header {
@@ -208,10 +208,11 @@
 						Usuário
 					</a>
 				</li>
-				<li class="nav-item">
-					<a href="#" class="clickable-link" data-toggle="modal" data-target="#sobreModal">
-						Sobre o sistema
-					</a>
+				<li class="nav-item clickable-link">
+				    <a href="#" data-toggle="modal" class="nav-link" data-target="#sobreModal">
+						<img src="/images/info.png" alt="imagem info" width="18" height="18" class="me-1">
+				        Sobre o sistema
+				    </a>
 				</li>
 
 			</ul>

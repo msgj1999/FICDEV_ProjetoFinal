@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Entrega</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        /* Estilos globais */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f2f2f2;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container label,
+        .form-container input,
+        .form-container select {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .form-container input[type="text"],
+        .form-container select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button[type="submit"] {
+            background-color: #a573ef;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            height: 100%; /* Define a altura para corresponder ao botão "Voltar" */
+            display: flex;
+            align-items: center; /* Alinha o conteúdo verticalmente ao centro */
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        /* Estilos para a mensagem de sucesso */
+        .message-container {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+        }
+
+        /* Estilo personalizado para o botão "Voltar" */
+        .button-voltar {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            height: 100%; /* Define a altura para corresponder ao botão "Salvar" */
+            display: flex;
+            align-items: center; /* Alinha o conteúdo verticalmente ao centro */
+        }
+
+        .button-voltar:hover {
+            background-color: #495057;
+        }
+    </style>
+</head>
+
+<body onload="showMessage()"> 
+    <h1>Editar Entrega</h1>
+    <div class="form-container">
+        <form th:action="@{/entrega/view/atualizar/{id}(id=${entrega.id})}" method="post" class="needs-validation"
+            novalidate>
+            <div th:if="${param.sucesso}" class="alert alert-success">
+                <p th:text="${param.sucesso}"></p>
+            </div>
+            <div th:if="${param.error}" class="alert alert-danger">
+                <p th:text="${param.error}"></p>
+            </div>
+
+            <!-- O campo hidden para o ID -->
+            <input type="hidden" id="id" name="id" th:value="*{entrega.id}" />
+
+            <label for="nomePolicial">Nome do Policial:</label>
+            <input type="text" id="nomePolicial" name="nomePolicial" th:value="*{entrega.nomePolicial}" required>
+            <span class="text-danger" th:if="${#fields.hasErrors('entrega.nomePolicial')}"
+                th:errors="*{entrega.nomePolicial}"></span>
+
+            <label for="municao">Selecione a Munição:</label>
+            <select id="municao" name="municao.id" th:value="*{entrega.municao.id}" required>
+                <option th:each="municao : ${municoes}" th:value="${municao.id}" th:text="${municao.tipo + ' - ' + municao.calibre}"></option>
+            </select>
+            <span class="text-danger" th:if="${#fields.hasErrors('entrega.municao.id')}"
+                th:errors="*{entrega.municao.id}"></span>
+
+            <label for="quantidade">Quantidade:</label>
+            <input type="number" id="quantidade" name="quantidade" th:value="*{entrega.quantidade}" required>
+            <span class="text-danger" th:if="${#fields.hasErrors('entrega.quantidade')}"
+                th:errors="*{entrega.quantidade}"></span>
+
+            <label for="dataEntrega">Data de Entrega:</label>
+            <input type="date" id="dataEntrega" name="dataEntrega" th:value="*{entrega.dataEntrega}" required>
+            <span class="text-danger" th:if="${#fields.hasErrors('entrega.dataEntrega')}"
+                th:errors="*{entrega.dataEntrega}"></span>
+
+            <label for="observacoes">Observações:</label>
+            <textarea id="observacoes" name="observacoes" th:value="*{entrega.observacoes}" rows="4"></textarea>
+            <span class="text-danger" th:if="${#fields.hasErrors('entrega.observacoes')}"
+                th:errors="*{entrega.observacoes}"></span>
+
+            <!-- Botões agora têm classes diferentes para estilização -->
+            <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                <button type="button" class="button-voltar" onclick="window.location.href = '/entrega/view/listar';">Voltar</button>
+                <button type="submit">Salvar</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Overlay para a mensagem de sucesso -->
+    <div class="overlay" id="success-overlay">
+        <div class="message-container">
+            Entrega editada com sucesso!
+        </div>
+    </div>
+    
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script th:inline="javascript">
+        function showMessage() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const editParam = urlParams.get('edit');
+            if (editParam === 'success') {
+                const successOverlay = document.getElementById('success-overlay');
+                const messageContainer = document.querySelector('.message-container');
+                successOverlay.style.display = 'block';
+                messageContainer.style.display = 'block';
+                // Redirecionar após um breve atraso (por exemplo, 2 segundos)
+                setTimeout(function () {
+                    window.location.href = '/entrega/view/listar';
+                }, 2000); // 2000 milissegundos = 2 segundos
+            }
+        }
+    </script>
+    
+      <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
+    </div>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
+  
+</body>
+
+</html>

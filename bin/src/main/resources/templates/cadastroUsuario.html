@@ -42,22 +42,29 @@
     <div class="container">
         <h2>Cadastro de Usuário</h2>
         <form action="#" th:action="@{/usuario/view/cadastrar}" th:object="${usuario}" method="post">
-            <!-- Mensagens de sucesso e erro aqui -->
-            <div class="form-group">
-                <input type="hidden" th:field="*{id}" class="form-control" id="id">
+              <!-- Mensagens de sucesso e erro aqui -->
+            <div th:if="${param.sucesso}" class="alert alert-success">
+                <p th:text="${param.sucesso}"></p>
+            </div>
+            <div th:if="${param.error}" class="alert alert-danger">
+                <p th:text="${param.error}"></p>
             </div>
 
+            <div
             <div class="form-group">
                 <label for="nome">Nome</label>
                 <input type="text" th:field="*{nome}" class="form-control" id="nome">
+                <span class="text-danger" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" th:field="*{email}" class="form-control" id="email">
+                <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
             </div>
             <div class="form-group">
                 <label for="senha">Senha</label>
                 <input type="password" th:field="*{senha}" class="form-control" id="senha">
+                <span class="text-danger" th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></span>
             </div>
             <div class="form-group">
                 <label for="cargo">Cargo</label>
@@ -96,6 +103,17 @@
             window.location.href = "/usuario/view/listar"; // Altere o URL conforme necessário
         }
     </script>
+    
+      <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
+    </div>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
 </body>
 
 </html>

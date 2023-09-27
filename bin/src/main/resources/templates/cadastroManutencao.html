@@ -2,44 +2,68 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Cadastro de Manutenção</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <!-- Adicione o link para o seu arquivo CSS personalizado aqui -->
-    <link rel="stylesheet" href="caminho/para/seu/arquivo.css">
+	<title>Cadastro de Manutenção</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<!-- Adicione o link para o seu arquivo CSS personalizado aqui -->
+	<link rel="stylesheet" href="caminho/para/seu/arquivo.css">
 </head>
 
 <body>
-    <div class="container">
-        <h2>Cadastro de Manutenção</h2>
-        <form action="#" th:action="@{/manutencao/view/cadastrar}" th:object="${manutencao}" method="post">
+	<div class="container">
+		<h2>Cadastro de Manutenção</h2>
+		<form action="#" th:action="@{/manutencao/view/cadastrar}" th:object="${manutencao}" method="post">
             <!-- Mensagens de sucesso e erro aqui -->
+            <div th:if="${param.sucesso}" class="alert alert-success">
+                <p th:text="${param.sucesso}"></p>
+            </div>
+            <div th:if="${param.error}" class="alert alert-danger">
+                <p th:text="${param.error}"></p>
+            </div>
+
             <div class="form-group">
                 <input type="hidden" th:field="*{id}" class="form-control" id="id">
             </div>
+			<div class="form-group">
+				<label for="status">Status</label>
+				<select th:field="*{status}" class="form-control" id="status">
+					<option th:selected="${manutencao.status == 'Concluída'}" th:text="Concluída" value="Concluída">
+					</option>
+					<option th:selected="${manutencao.status == 'Pendente'}" th:text="Pendente" value="Pendente">
+					</option>
+				</select>
+			</div>
 
-            <div class="form-group">
-                <label for="status">Status</label>
-                <select th:field="*{status}" class="form-control" id="status">
-                    <option value="true">Concluída</option>
-                    <option value="false">Pendente</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="dataManutencao">Data de Manutenção</label>
-                <input type="date" th:field="*{dataManutencao}" class="form-control" id="dataManutencao">
-            </div>
 
-            <div class="mb-3 row">
-                <div class="col-12 d-grid">
-                    <button type="submit" class="mt-4 btn btn-primary">Cadastrar</button>
-                    <a th:href="@{/inicio}" class="mt-4 btn btn-secondary">Voltar</a>
-                </div>
-            </div>
-        </form>
+
+			<div class="form-group">
+				<label for="dataManutencao">Data de Manutenção</label>
+				<input type="date" th:field="*{dataManutencao}" class="form-control" id="dataManutencao">
+				<span class="text-danger" th:if="${#fields.hasErrors('dataManutencao')}" th:errors="*{dataManutencao}"></span>
+			</div>
+
+			<div class="mb-3 row">
+				<div class="col-12 d-grid">
+					<button type="submit" class="mt-4 btn btn-primary">Cadastrar</button>
+					<a th:href="@{/manutencao/view/listar}" class="mt-4 btn btn-secondary">Voltar</a>
+				</div>
+			</div>
+		</form>
+	</div>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	
+	  <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
     </div>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
+  
 </body>
 
 </html>
