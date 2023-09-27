@@ -329,18 +329,25 @@
 		</div>
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-	<script>
-		// Use JavaScript para buscar o nome do usuário logado
-		fetch('/usuario/api/nome-usuario-logado')
-			.then(response => response.text())
-			.then(nomeUsuarioLogado => {
-				// Atualize o nome do usuário no elemento HTML
-				document.getElementById('nomeUsuario').textContent = nomeUsuarioLogado;
-			})
-			.catch(error => {
-				console.error('Erro ao buscar o nome do usuário logado:', error);
-			});
-	</script>
+<script>
+    // Use JavaScript para buscar o nome do usuário logado
+    fetch('/usuario/api/nome-usuario-logado')
+        .then(response => response.text())
+        .then(nomeUsuarioLogado => {
+            // Divida o nome completo em palavras
+            const palavrasNome = nomeUsuarioLogado.split(' ');
+            
+            // Pegue apenas a primeira palavra (primeiro nome)
+            const primeiroNome = palavrasNome[0];
+
+            // Atualize o nome do usuário no elemento HTML
+            document.getElementById('nomeUsuario').textContent = primeiroNome;
+        })
+        .catch(error => {
+            console.error('Erro ao buscar o nome do usuário logado:', error);
+        });
+</script>
+
 
 <script>
     var municaoId = 0;

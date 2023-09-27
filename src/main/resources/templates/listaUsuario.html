@@ -145,6 +145,26 @@
 		td.quantity {
 			text-align: center;
 		}
+		
+		        .clickable-link {
+            color: #007BFF; /* Cor azul padrão dos links no Bootstrap */
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .clickable-link:hover {
+            color: #0056b3; /* Cor quando o link é hover */
+        }
+        
+        .custom-modal-header {
+    background-color: #030085; /* Cor de fundo desejada */
+    color: white; /* Cor do texto */
+    /* Adicione outros estilos conforme necessário */
+}
+
+.custom-modal-header .close {
+    color: white;
+}
 	</style>
 </head>
 
@@ -152,8 +172,7 @@
 	<div class="container-fluid">
 		<!-- Barra lateral -->
 		<nav id="sidebar" class="col-md-3 col-lg-2 d-md-flex flex-column justify-content-between sidebar">
-			<a 
-				class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+			<a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
 				<span class="fs-4">Gestão de Munições</span>
 			</a>
 			<hr>
@@ -189,6 +208,12 @@
 						Usuário
 					</a>
 				</li>
+				<li class="nav-item">
+					<a href="#" class="clickable-link" data-toggle="modal" data-target="#sobreModal">
+						Sobre o sistema
+					</a>
+				</li>
+
 			</ul>
 			<hr>
 			<div class="dropdown">
@@ -243,10 +268,10 @@
 								class="btn btn-primary me-2 mb-0"> <!-- Adicione mb-0 aqui -->
 								<i class="fas fa-edit"></i> Editar
 							</a>
-										<button type="button" class="btn btn-danger mb-0" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"
-											th:data-bs-usuarioId=${usuario.id}>
-											Excluir
-										</button>
+							<button type="button" class="btn btn-danger mb-0" data-bs-toggle="modal"
+								data-bs-target="#deleteConfirmModal" th:data-bs-usuarioId=${usuario.id}>
+								Excluir
+							</button>
 						</td>
 					</tr>
 					<!-- Fim do bloco para cada usuário -->
@@ -273,50 +298,87 @@
 			</nav>
 		</main>
 	</div>
-	
-		<!-- Modal -->
-	<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+
+	<!-- Modal -->
+	<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel"
+		aria-hidden="true">
 		<div class="modal-dialog"> <!-- Caso queira centralizar a modal adicione a classe modal-dialog-centered -->
-		<div class="modal-content">
-			<div class="modal-header">
-			<h1 class="modal-title fs-5" id="deleteConfirmModalLabel">Excluir Registro</h1>
-			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="deleteConfirmModalLabel">Excluir Registro</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					Tem Certeza que deseja excluir
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<form th:action="@{/usuario/view/remover/}" method="delete" style="cursor: pointer"
+						class="delete-form">
+						<!-- Button trigger modal -->
+						<button type="submit" class="btn btn-danger">Sim, Excluir</button>
+					</form>
+				</div>
 			</div>
-			<div class="modal-body">
-			Tem Certeza que deseja excluir
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Cancelar</button>
-				<form th:action="@{/usuario/view/remover/}" method="delete"
-				style="cursor: pointer" class="delete-form">
-					<!-- Button trigger modal -->
-					<button type="submit" class="btn btn-danger">Sim, Excluir</button>
-				</form>
-			</div>
-		</div>
 		</div>
 	</div>
 	<!-- Modal para exibir o perfil do usuário -->
-<div class="modal fade" id="perfilModal" tabindex="-1" aria-labelledby="perfilModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="perfilModalLabel">Perfil do Usuário</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" id="perfilModalBody">
-                <!-- Aqui as informações do perfil do usuário serão inseridas dinamicamente -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+	<div class="modal fade" id="perfilModal" tabindex="-1" aria-labelledby="perfilModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="perfilModalLabel">Perfil do Usuário</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" id="perfilModalBody">
+					<!-- Aqui as informações do perfil do usuário serão inseridas dinamicamente -->
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	    <!-- Modal -->
+    <div class="modal fade" id="sobreModal" tabindex="-1" role="dialog" aria-labelledby="sobreModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable"> <!-- Remova a classe modal-dialog-centered -->
+            <div class="modal-content">
+                <div class="modal-header custom-modal-header">
+                    <h5 class="modal-title" id="sobreModalLabel">Sobre o sistema</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Conteúdo do modal vai aqui -->
+                    <Strong>Autor:</Strong> Milton Simplicio Gonçalves Junior<br>
+                    <p>Para obter mais informações, visite o meu repositório no <a href="https://github.com/msgj1999/FICDEV_ProjetoFinal" target="_blank">GitHub</a>.</p>
+                    <strong>Principais Recursos:</strong><br>
+                    Cadastro de Munições: Nosso sistema permite que você registre todos os tipos de munições disponíveis, desde cartuchos de arma de fogo até projéteis especiais. Isso proporciona um controle detalhado do estoque.<br><br>
+                    <strong>Edição e Atualização:</strong><br>
+                    Mantenha seus registros atualizados e precisos. A funcionalidade de edição permite que você faça correções ou atualize informações sempre que necessário.<br><br>
+                    <strong>Exclusão Segura:</strong><br>
+                    Quando munições não são mais necessárias, você pode removê-las de seu inventário com segurança e precisão, mantendo o controle total.<br><br>
+                    <strong>Gestão de Entregas:</strong><br>
+                    Registramos as entregas de munições para Policiais, fornecendo rastreamento e registros detalhados.<br><br>
+                    <strong>Manutenção Preventiva:</strong><br>
+                    Registre e gerencie a manutenção regular das munições para garantir que elas estejam sempre em perfeito estado de funcionamento.<br><br>
+                    <strong>Controle de Usuários:</strong><br>
+                    Atribua permissões personalizadas para diferentes usuários do sistema, garantindo que apenas pessoal autorizado tenha acesso a funções críticas.<br><br>
+                    <strong>Dashboard Intuitivo:</strong><br>
+                    Nosso painel de controle fornece uma visão geral clara do status de suas munições, entregas, manutenções e outros aspectos essenciais.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 	<script>
@@ -324,80 +386,91 @@
 		fetch('/usuario/api/nome-usuario-logado')
 			.then(response => response.text())
 			.then(nomeUsuarioLogado => {
+				// Divida o nome completo em palavras
+				const palavrasNome = nomeUsuarioLogado.split(' ');
+
+				// Pegue apenas a primeira palavra (primeiro nome)
+				const primeiroNome = palavrasNome[0];
+
 				// Atualize o nome do usuário no elemento HTML
-				document.getElementById('nomeUsuario').textContent = nomeUsuarioLogado;
+				document.getElementById('nomeUsuario').textContent = primeiroNome;
 			})
 			.catch(error => {
 				console.error('Erro ao buscar o nome do usuário logado:', error);
 			});
 	</script>
-	
+
+
 	<script>
-    var usuarioId = 0;
+		var usuarioId = 0;
 
-    window.addEventListener('load', () => {
-        const deleteConfirmModal = document.getElementById('deleteConfirmModal');
-        if (deleteConfirmModal) {
-            deleteConfirmModal.addEventListener('show.bs.modal', event => {
-                // Button that triggered the modal
-                const button = event.relatedTarget;
-                // Extract info from data-bs-* attributes
-                const uId = button.getAttribute('data-bs-usuarioId');
-                usuarioId = uId;
+		window.addEventListener('load', () => {
+			const deleteConfirmModal = document.getElementById('deleteConfirmModal');
+			if (deleteConfirmModal) {
+				deleteConfirmModal.addEventListener('show.bs.modal', event => {
+					// Button that triggered the modal
+					const button = event.relatedTarget;
+					// Extract info from data-bs-* attributes
+					const uId = button.getAttribute('data-bs-usuarioId');
+					usuarioId = uId;
 
-                let deleteForm = deleteConfirmModal.getElementsByClassName('delete-form')[0];
-                deleteForm.action = `/usuario/view/remover/${uId}`;
+					let deleteForm = deleteConfirmModal.getElementsByClassName('delete-form')[0];
+					deleteForm.action = `/usuario/view/remover/${uId}`;
 
-                const modalBodyInput = deleteConfirmModal.querySelector('.modal-body');
-                modalBodyInput.textContent = `Tem certeza que deseja excluir o usuário de ID ${uId} ?`;
-            });
+					const modalBodyInput = deleteConfirmModal.querySelector('.modal-body');
+					modalBodyInput.textContent = `Tem certeza que deseja excluir o usuário de ID ${uId} ?`;
+				});
 
-            deleteConfirmModal.addEventListener('hidden.bs.modal', () => {
-                usuarioId = 0;
-            });
-        }
-    });
-</script>
+				deleteConfirmModal.addEventListener('hidden.bs.modal', () => {
+					usuarioId = 0;
+				});
+			}
+		});
+	</script>
 
-<script type="text/javascript">
-// Use JavaScript para buscar e exibir o perfil do usuário no modal
-document.addEventListener('DOMContentLoaded', () => {
-    const perfilModal = document.getElementById('perfilModal');
-    const perfilModalBody = document.getElementById('perfilModalBody');
+	<script type="text/javascript">
+		// Use JavaScript para buscar e exibir o perfil do usuário no modal
+		document.addEventListener('DOMContentLoaded', () => {
+			const perfilModal = document.getElementById('perfilModal');
+			const perfilModalBody = document.getElementById('perfilModalBody');
 
-    // Event listener para abrir o modal quando o link do perfil for clicado
-    const linkPerfil = document.querySelector('a[href="/perfil"]');
-    linkPerfil.addEventListener('click', () => {
-        // Faça uma solicitação AJAX para buscar as informações do perfil do usuário
-        fetch('/perfil')
-            .then(response => response.text())
-            .then(perfilHTML => {
-                // Preencha o corpo do modal com as informações do perfil
-                perfilModalBody.innerHTML = perfilHTML;
+			// Event listener para abrir o modal quando o link do perfil for clicado
+			const linkPerfil = document.querySelector('a[href="/perfil"]');
+			linkPerfil.addEventListener('click', () => {
+				// Faça uma solicitação AJAX para buscar as informações do perfil do usuário
+				fetch('/perfil')
+					.then(response => response.text())
+					.then(perfilHTML => {
+						// Preencha o corpo do modal com as informações do perfil
+						perfilModalBody.innerHTML = perfilHTML;
 
-                // Abra o modal
-                $(perfilModal).modal('show');
-            })
-            .catch(error => {
-                console.error('Erro ao buscar as informações do perfil:', error);
-            });
-    });
-});
-
-
-</script>
+						// Abra o modal
+						$(perfilModal).modal('show');
+					})
+					.catch(error => {
+						console.error('Erro ao buscar as informações do perfil:', error);
+					});
+			});
+		});
 
 
-  <div vw class="enabled">
-    <div vw-access-button class="active"></div>
-    <div vw-plugin-wrapper>
-      <div class="vw-plugin-top-wrapper"></div>
-    </div>
-  </div>
-  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-  <script>
-    new window.VLibras.Widget('https://vlibras.gov.br/app');
-  </script>
+	</script>
+
+
+	<div vw class="enabled">
+		<div vw-access-button class="active"></div>
+		<div vw-plugin-wrapper>
+			<div class="vw-plugin-top-wrapper"></div>
+		</div>
+	</div>
+	<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+	<script>
+		new window.VLibras.Widget('https://vlibras.gov.br/app');
+	</script>
+	
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 
