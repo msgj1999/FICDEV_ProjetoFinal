@@ -1,6 +1,8 @@
 package com.example.demo.repository;
 
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,5 +16,6 @@ public interface EntregaRepository extends JpaRepository<Entrega, Integer>, JpaS
 
 	Page<Entrega> findAll(Pageable pageable);
 	Page<Entrega> findAll(Specification<Entrega> spec, Pageable pageable);
+	List<Entrega> findByMunicaoId(int municaoId);
 
 }

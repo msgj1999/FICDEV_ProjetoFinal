@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entities.Municao;
+import com.example.demo.exceptions.MunicaoAssociadaEntregaException;
 import com.example.demo.service.MunicaoService;
 
 import jakarta.validation.Valid;
@@ -44,10 +45,19 @@ public class MunicaoControllerView {
     }
 
     @GetMapping("/remover/{id}")
-    public String removerMunicao(@PathVariable("id") int id) throws NotFoundException {
-        municaoService.deleteMunicao(id);
-        return "redirect:/municao/view/listar";
+    public String removerMunicao(@PathVariable("id") int id) {
+        try {
+            municaoService.deleteMunicao(id);
+            return "redirect:/municao/view/listar";
+        } catch (NotFoundException e) {
+            // Tratar exceção NotFoundException, se necessário
+            return "redirect:/municao/view/listar";
+        } catch (MunicaoAssociadaEntregaException e) {
+            // Tratar exceção MunicaoAssociadaEntregaException e exibir mensagem de erro
+            return "redirect:/municao/view/listar?error=Munição está associada a uma entrega e não pode ser excluída.";
+        }
     }
+
 
     @GetMapping("/cadastrar")
     public ModelAndView cadastrarMunicao() {

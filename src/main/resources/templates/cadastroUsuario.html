@@ -2,118 +2,396 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Cadastro de Usuário</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <!-- Adicione o link para o seu arquivo CSS personalizado aqui -->
-    <link rel="stylesheet" href="caminho/para/seu/arquivo.css">
-    <style>
-        /* Estilos para o overlay */
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 999;
-        }
+	<title>Cadastro de Usuário</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+	<style>
+		body {
+			background-color: #f8f9fa;
+		}
 
-        .overlay-content {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            text-align: center;
-        }
+		.sidebar {
+			width: 280px;
+			background-color: #f8f9fa;
+			padding: 20px;
+			position: fixed;
+			top: 0;
+			left: 0;
+		}
 
-        .overlay-button {
-            margin-top: 10px;
-        }
-    </style>
+		.content {
+			margin-left: 280px;
+			/* Largura da barra lateral */
+			padding: 30px;
+		}
+
+		.container {
+			padding-top: 30px;
+		}
+
+		.display-4 {
+			color: rgb(0, 0, 0);
+			text-align: center;
+			margin-bottom: 30px;
+		}
+
+		.table {
+			background-color: #fff;
+			border-radius: 5px;
+		}
+
+		th,
+		td {
+			vertical-align: middle;
+		}
+
+		.btn {
+			border-radius: 5px;
+		}
+
+		.btn-primary {
+			background-color: #007bff;
+			border-color: #007bff;
+		}
+
+		.btn-primary:hover {
+			background-color: #0056b3;
+			border-color: #0056b3;
+		}
+
+		.btn-danger {
+			background-color: #dc3545;
+			border-color: #dc3545;
+		}
+
+		.btn-danger:hover {
+			background-color: #c82333;
+			border-color: #bd2130;
+		}
+
+		.btn i {
+			margin-right: 5px;
+		}
+
+		.btn-primary i {
+			color: #fff;
+		}
+
+		.btn-danger i {
+			color: #fff;
+		}
+
+		/* Estilo para o campo de busca e botão */
+		.search-container {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 20px;
+		}
+
+		.search-input {
+			width: 70%;
+		}
+
+		.search-button {
+			width: 25%;
+		}
+
+		.create-button {
+			width: auto;
+			/* Deixe o botão crescer automaticamente para a largura do conteúdo */
+			max-width: 100%;
+			/* Certifique-se de que ele não ultrapasse a largura do elemento pai */
+			border-radius: 6px;
+			background: var(--status-color-info, #17A2B8);
+			border-color: #17A2B8;
+			white-space: normal;
+			/* Permita que o texto quebre em várias linhas */
+		}
+
+
+		.create-button:hover {
+			width: auto;
+			/* Deixe o botão crescer automaticamente para a largura do conteúdo */
+			max-width: 100%;
+			/* Certifique-se de que ele não ultrapasse a largura do elemento pai */
+			border-radius: 6px;
+			background: var(--status-color-info, #0E8497);
+			border-color: #0E8497;
+			white-space: normal;
+			/* Permita que o texto quebre em várias linhas */
+		}
+
+		.nav-link:not(.active) {
+			color: black !important;
+		}
+
+		/* Adicione um estilo para ocultar a barra lateral em telas menores */
+		@media (max-width: 768px) {
+			.sidebar {
+				width: 100%;
+				position: static;
+				padding: 10px;
+			}
+
+			.content {
+				margin-left: 0;
+			}
+		}
+
+		td.quantity {
+			text-align: center;
+		}
+
+		.clickable-link {
+			color: #007BFF !important;
+			text-decoration: underline;
+			cursor: pointer;
+		}
+
+		.clickable-link:hover {
+			color: #0056b3 !important;
+		}
+
+		.custom-modal-header {
+			background-color: #030085;
+			/* Cor de fundo desejada */
+			color: white;
+			/* Cor do texto */
+			/* Adicione outros estilos conforme necessário */
+		}
+
+		.custom-modal-header .close {
+			color: white;
+			background-color: transparent;
+			padding: 0px;
+			font-size: 30px;
+			border: none;
+		}
+
+		/* Estilo para selects */
+		.select-field {
+			width: 100%;
+			max-width: 350px;
+			/* Define a largura máxima desejada */
+		}
+
+		@media (min-width: 768px) {
+			.vh-md-100 {
+				min-height: 100vh;
+			}
+		}
+	</style>
 </head>
 
 <body>
-    <div class="container">
-        <h2>Cadastro de Usuário</h2>
-        <form action="#" th:action="@{/usuario/view/cadastrar}" th:object="${usuario}" method="post">
-              <!-- Mensagens de sucesso e erro aqui -->
-            <div th:if="${param.sucesso}" class="alert alert-success">
-                <p th:text="${param.sucesso}"></p>
-            </div>
-            <div th:if="${param.error}" class="alert alert-danger">
-                <p th:text="${param.error}"></p>
-            </div>
+	<div class="container-fluid">
+		<div class="row">
+			<!-- Barra lateral -->
+			<nav id="sidebar" class="col-md-3 col-lg-2 d-md-flex flex-column justify-content-between sidebar vh-md-100">
+				<a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+					<span class="fs-4">Gestão de Munições</span>
+				</a>
+				<hr>
+				<ul class="nav nav-pills flex-column mb-auto">
+					<li class="nav-item">
+						<a th:href="@{/inicio}" class="nav-link">
+							<img src="/images/painel-de-controle-preto.png" alt="imagem perfil" width="18" height="18"
+								class="me-1">
+							Dashboard
+						</a>
+					</li>
+					<li class="nav-item">
+						<a th:href="@{/municao/view/listar}" class="nav-link">
+							<img src="/images/balas.png" alt="imagem perfil" width="18" height="18" class="me-1">
+							Munição
+						</a>
+					</li>
+					<li class="nav-item">
+						<a th:href="@{/entrega/view/listar}" class="nav-link">
+							<img src="/images/prancheta3.png" alt="imagem perfil" width="18" height="18" class="me-1">
+							Entrega
+						</a>
+					</li>
+					<li class="nav-item">
+						<a th:href="@{/manutencao/view/listar}" class="nav-link">
+							<img src="/images/manutencao.png" alt="imagem entrega" width="18" height="18" class="me-1">
+							Manutenção
+						</a>
+					</li>
+					<li class="nav-item">
+						<a th:href="@{/usuario/view/listar}" class="nav-link active" aria-current="page">
+							<img src="/images/user2.png" alt="imagem entrega" width="18" height="18" class="me-1">
+							Usuário
+						</a>
+					</li>
+					<li class="nav-item clickable-link">
+						<a href="#" data-toggle="modal" class="nav-link" style="color:#007BFF !important;" data-target="#sobreModal">
+							<img src="/images/info.png" alt="imagem info" width="18" height="18" class="me-1">
+							Sobre o sistema
+						</a>
+					</li>
 
-            <div
-            <div class="form-group">
-                <label for="nome">Nome</label>
-                <input type="text" th:field="*{nome}" class="form-control" id="nome">
-                <span class="text-danger" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" th:field="*{email}" class="form-control" id="email">
-                <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
-            </div>
-            <div class="form-group">
-                <label for="senha">Senha</label>
-                <input type="password" th:field="*{senha}" class="form-control" id="senha">
-                <span class="text-danger" th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></span>
-            </div>
-            <div class="form-group">
-                <label for="cargo">Cargo</label>
-                <select th:field="*{role}" class="form-control" id="cargo">
-                    <option value="TECNICO">Técnico</option>
-                    <option value="GESTOR">Gestor</option>
-                </select>
-            </div>
+				</ul>
+				<hr>
+				<div class="dropdown">
+					<a class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
+						href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<img src="/images/perfil.png" alt="imagem perfil" width="32" height="32"
+							class="rounded-circle me-2">
+						<strong id="nomeUsuario">Carregando...</strong>
+					</a>
+					<ul class="dropdown-menu text-small shadow">
+						<li><a class="dropdown-item" href="/perfil">Perfil</a></li>
+						<li>
+							<hr class="dropdown-divider">
+						</li>
+						<li><a class="dropdown-item" th:href="@{/logout}">Sair</a></li>
+					</ul>
+				</div>
+			</nav>
 
-            <div class="mb-3 row">
-                <div class="col-12 d-grid">
-                    <button type="submit" class="mt-4 btn btn-primary">Cadastrar</button>
-                    <a th:href="@{/usuario/view/listar}" class="mt-4 btn btn-secondary">Voltar</a>
-                </div>
-            </div>
-        </form>
-    </div>
+				<!-- Conteúdo principal -->
+				<main role="main" class="col-md-6 ml-sm-auto col-lg-8 px-md-4 content">
+					<!-- Adicione mx-auto para centralizar horizontalmente -->
+					<h1 class="fw-bold display-4 mt-5">Cadastro de Usuário</h1>
+					<form action="#" th:action="@{/usuario/view/cadastrar}" th:object="${usuario}" method="post">
+						<!-- Mensagens de sucesso e erro aqui -->
+						<div th:if="${param.sucesso}" class="alert alert-success">
+							<p th:text="${param.sucesso}"></p>
+						</div>
+						<div th:if="${param.error}" class="alert alert-danger">
+							<p th:text="${param.error}"></p>
+						</div>
 
-    <!-- Overlay para exibir a mensagem de sucesso -->
-    <div class="overlay" id="successOverlay">
-        <div class="overlay-content">
-            <p>Usuário cadastrado com sucesso!!</p>
-            <button class="btn btn-primary overlay-button" onclick="redirectToUsuarios()">OK</button>
-        </div>
-    </div>
+					<div class="form-group">
+						<input type="hidden" th:field="*{id}" class="form-control" id="id">
+					</div>
+					
+						<div class="form-group row d-flex justify-content-center">
+							<div class="col-12 col-md-6">
+							<label for="nome">Nome</label>
+							<input type="text" th:field="*{nome}" class="form-control" id="nome">
+							<span class="text-danger" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+							</div>
+						</div>
+						<div class="form-group row d-flex justify-content-center">
+							<div class="col-12 col-md-6">
+							<label for="email">Email</label>
+							<input type="email" th:field="*{email}" class="form-control" id="email">
+							<span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+							</div>
+						</div>
+						<div class="form-group row d-flex justify-content-center">
+							<div class="col-12 col-md-6">
+							<label for="senha">Senha</label>
+							<input type="password" th:field="*{senha}" class="form-control" id="senha">
+							<span class="text-danger" th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></span>
+							</div>
+						</div>
+						<div class="form-group row d-flex justify-content-center">
+							<div class="col-12 col-md-6">
+							<label for="cargo">Cargo</label>
+							<select th:field="*{role}" class="form-control" id="cargo">
+								<option value="TECNICO">Técnico</option>
+								<option value="GESTOR">Gestor</option>
+							</select>
+							</div>
+						</div>
 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script>
-        // Função para exibir o overlay de sucesso
-        function showSuccessOverlay() {
-            document.getElementById("successOverlay").style.display = "block";
-        }
+						<div class="mb-3">
+							<div class="text-center">
+								<a th:href="@{/usuario/view/listar}" class="mt-4 btn btn-secondary">Voltar</a>
+								<button type="submit" class="mt-4 btn btn-primary">Cadastrar</button>
+							</div>
+						</div>
+					</form>
+				</main>
+		</div>
 
-        // Função para redirecionar para a lista de usuários
-        function redirectToUsuarios() {
-            window.location.href = "/usuario/view/listar"; // Altere o URL conforme necessário
-        }
-    </script>
-    
-      <div vw class="enabled">
-    <div vw-access-button class="active"></div>
-    <div vw-plugin-wrapper>
-      <div class="vw-plugin-top-wrapper"></div>
-    </div>
-  </div>
-  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-  <script>
-    new window.VLibras.Widget('https://vlibras.gov.br/app');
-  </script>
+		<!-- Modal -->
+		<div class="modal fade" id="sobreModal" tabindex="-1" role="dialog" aria-labelledby="sobreModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-scrollable"> <!-- Remova a classe modal-dialog-centered -->
+				<div class="modal-content">
+					<div class="modal-header custom-modal-header">
+						<h5 class="modal-title" id="sobreModalLabel">Sobre o sistema</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<!-- Conteúdo do modal vai aqui -->
+						<Strong>Autor:</Strong> Milton Simplicio Gonçalves Junior<br>
+						<p>Para obter mais informações, visite o meu repositório no <a
+								href="https://github.com/msgj1999/FICDEV_ProjetoFinal" target="_blank">GitHub</a>.</p>
+						<strong>Principais Recursos:</strong><br>
+						Cadastro de Munições: Nosso sistema permite que você registre todos os tipos de munições
+						disponíveis, desde cartuchos de arma de fogo até projéteis especiais. Isso proporciona um
+						controle detalhado do estoque.<br><br>
+						<strong>Edição e Atualização:</strong><br>
+						Mantenha seus registros atualizados e precisos. A funcionalidade de edição permite que você faça
+						correções ou atualize informações sempre que necessário.<br><br>
+						<strong>Exclusão Segura:</strong><br>
+						Quando munições não são mais necessárias, você pode removê-las de seu inventário com segurança e
+						precisão, mantendo o controle total.<br><br>
+						<strong>Gestão de Entregas:</strong><br>
+						Registramos as entregas de munições para Policiais, fornecendo rastreamento e registros
+						detalhados.<br><br>
+						<strong>Manutenção Preventiva:</strong><br>
+						Registre e gerencie a manutenção regular das munições para garantir que elas estejam sempre em
+						perfeito estado de funcionamento.<br><br>
+						<strong>Controle de Usuários:</strong><br>
+						Atribua permissões personalizadas para diferentes usuários do sistema, garantindo que apenas
+						pessoal autorizado tenha acesso a funções críticas.<br><br>
+						<strong>Dashboard Intuitivo:</strong><br>
+						Nosso painel de controle fornece uma visão geral clara do status de suas munições, entregas,
+						manutenções e outros aspectos essenciais.
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+		<script>
+			// Use JavaScript para buscar o nome do usuário logado
+			fetch('/usuario/api/nome-usuario-logado')
+				.then(response => response.text())
+				.then(nomeUsuarioLogado => {
+					// Divida o nome completo em palavras
+					const palavrasNome = nomeUsuarioLogado.split(' ');
+
+					// Pegue apenas a primeira palavra (primeiro nome)
+					const primeiroNome = palavrasNome[0];
+
+					// Atualize o nome do usuário no elemento HTML
+					document.getElementById('nomeUsuario').textContent = primeiroNome;
+				})
+				.catch(error => {
+					console.error('Erro ao buscar o nome do usuário logado:', error);
+				});
+		</script>
+
+		<div vw class="enabled">
+			<div vw-access-button class="active"></div>
+			<div vw-plugin-wrapper>
+				<div class="vw-plugin-top-wrapper"></div>
+			</div>
+		</div>
+		<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+		<script>
+			new window.VLibras.Widget('https://vlibras.gov.br/app');
+		</script>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>

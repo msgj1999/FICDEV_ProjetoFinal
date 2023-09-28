@@ -16,6 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import com.example.demo.entities.Municao;
+import com.example.demo.entities.Entrega;
+import com.example.demo.exceptions.MunicaoAssociadaEntregaException;
+import com.example.demo.repository.EntregaRepository;
 import com.example.demo.repository.MunicaoRepository;
 
 import jakarta.persistence.criteria.Predicate;
@@ -25,6 +28,9 @@ public class MunicaoService {
 
     @Autowired
     private MunicaoRepository municaoRepository;
+    
+    @Autowired
+    private EntregaRepository entregaRepository;
     
     public List<Municao> getAllMunicoes() {
         return municaoRepository.findAllOrderedById();
@@ -53,12 +59,26 @@ public class MunicaoService {
         return atualizada;
     }
 
+    public boolean municaoAssociadaEntrega(int municaoId) {
+        // Verifique se existe alguma entrega associada à munição com o ID especificado
+        List<Entrega> entregas = entregaRepository.findByMunicaoId(municaoId);
 
-    public Municao deleteMunicao(int id) throws NotFoundException {
+        // Se a lista de entregas não estiver vazia, significa que há entregas associadas
+        return !entregas.isEmpty();
+    }
+    
+    public Municao deleteMunicao(int id) throws NotFoundException, MunicaoAssociadaEntregaException {
         Municao deletada = municaoRepository.findById(id).orElseThrow(NotFoundException::new);
+        
+        // Verificar se a munição está associada a alguma entrega
+        if (municaoAssociadaEntrega(id)) {
+            throw new MunicaoAssociadaEntregaException("Não é possível excluir a munição porque está associada a uma entrega.");
+        }
+        
         municaoRepository.delete(deletada);
         return deletada;
     }
+
     
     public Page<Municao> buscarMunicoesPorFiltro(String termo, Pageable pageable) {
         Specification<Municao> spec = (root, query, cb) -> {

@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entities.Municao;
+import com.example.demo.exceptions.MunicaoAssociadaEntregaException;
 import com.example.demo.service.MunicaoService;
 
 import jakarta.validation.Valid;
@@ -64,15 +66,19 @@ public class MunicaoControllerApi {
         }
     }
 
-    @DeleteMapping("/{id}")
+    /*@DeleteMapping("/{id}")
     public ResponseEntity<Municao> deleteMunicao(@PathVariable int id) {
         try {
             Municao municao = municaoService.deleteMunicao(id);
             return ResponseEntity.ok(municao);
         } catch (NotFoundException e) {
             return ResponseEntity.notFound().build();
+        } catch (MunicaoAssociadaEntregaException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("Não é possível excluir a munição porque está associada a uma entrega.");
         }
-    }
+    }*/
+
     
     @GetMapping("/buscar")
     public ResponseEntity<Page<Municao>> buscarMunicoes(
