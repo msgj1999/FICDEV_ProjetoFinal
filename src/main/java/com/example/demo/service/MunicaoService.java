@@ -16,11 +16,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import com.example.demo.entities.Municao;
+import com.example.demo.entities.Usuario;
+import com.example.demo.Expections.BusinessException;
 import com.example.demo.entities.Entrega;
-import com.example.demo.exceptions.MunicaoAssociadaEntregaException;
 import com.example.demo.repository.EntregaRepository;
 import com.example.demo.repository.MunicaoRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
 
 @Service
@@ -32,6 +34,14 @@ public class MunicaoService {
     @Autowired
     private EntregaRepository entregaRepository;
     
+    @Autowired
+    private UserActionService userActionService;
+    
+    @Autowired
+    private UsuarioService usuarioService;
+    
+    
+    
     public List<Municao> getAllMunicoes() {
         return municaoRepository.findAllOrderedById();
     }
@@ -40,9 +50,26 @@ public class MunicaoService {
         return municaoRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
-    public void saveMunicao(Municao municao) {
+    public void saveMunicao(Municao municao) throws BusinessException, NotFoundException {
+        // Valide os campos obrigatórios da munição, por exemplo, o tipo, calibre, quantidade, etc.
+        if (municao.getTipo() == null || municao.getCalibre() == null || municao.getQuantidade() <= 0) {
+            throw new BusinessException("Os campos obrigatórios da munição não foram preenchidos corretamente.");
+        }
+
+        // Certifique-se de que o usuário está autenticado
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado2();
+        if (usuarioLogado == null) {
+            throw new NotFoundException();
+        }
+
+        // Registre a ação do usuário ao cadastrar a munição
+        String username = usuarioLogado.getNome();
+        userActionService.registerUserAction(username, "Cadastrou uma nova munição");
+
+        // Salve a munição no repositório
         municaoRepository.save(municao);
     }
+
 
     public Municao updateMunicao(Municao municao, int id) throws NotFoundException {
         Municao atualizada = municaoRepository.findById(id).orElseThrow(NotFoundException::new);
@@ -54,12 +81,17 @@ public class MunicaoService {
         atualizada.setCoeficienteBalistico(municao.getCoeficienteBalistico());
         atualizada.setDataFabricacao(municao.getDataFabricacao());
         atualizada.setDataValidade(municao.getDataValidade());
+        
+        // Registro da ação do usuário ao editar a munição
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado2(); 
+        String username = usuarioLogado != null ? usuarioLogado.getNome() : "Usuário Desconhecido";
+        userActionService.registerUserAction(username, "Editou uma munição com ID: " + id);
 
         municaoRepository.save(atualizada);
         return atualizada;
     }
 
-    public boolean municaoAssociadaEntrega(int municaoId) {
+    private boolean isMunicaoAssociadaEntrega(int municaoId) {
         // Verifique se existe alguma entrega associada à munição com o ID especificado
         List<Entrega> entregas = entregaRepository.findByMunicaoId(municaoId);
 
@@ -67,14 +99,20 @@ public class MunicaoService {
         return !entregas.isEmpty();
     }
     
-    public Municao deleteMunicao(int id) throws NotFoundException, MunicaoAssociadaEntregaException {
-        Municao deletada = municaoRepository.findById(id).orElseThrow(NotFoundException::new);
+    public Municao deleteMunicao(int id) throws EntityNotFoundException, BusinessException, NotFoundException {
+        Municao deletada = municaoRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         
         // Verificar se a munição está associada a alguma entrega
-        if (municaoAssociadaEntrega(id)) {
-            throw new MunicaoAssociadaEntregaException("Não é possível excluir a munição porque está associada a uma entrega.");
+        if (isMunicaoAssociadaEntrega(id)) {
+            throw new BusinessException("Não é possível excluir a munição porque está associada a uma entrega.");
         }
         
+        // Registro da ação do usuário ao excluir a munição
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado2(); 
+        String username = usuarioLogado != null ? usuarioLogado.getNome() : "Usuário Desconhecido";
+        userActionService.registerUserAction(username, "Excluiu uma munição com ID: " + id);
+
+
         municaoRepository.delete(deletada);
         return deletada;
     }

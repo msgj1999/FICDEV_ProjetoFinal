@@ -61,7 +61,7 @@ public class ManutencaoControllerView {
     }
 
     @PostMapping("/cadastrar")
-    public ModelAndView saveManutencao(@Valid @ModelAttribute("manutencao") Manutencao manutencao, BindingResult result, RedirectAttributes redirectAttributes) {
+    public ModelAndView saveManutencao(@Valid @ModelAttribute("manutencao") Manutencao manutencao, BindingResult result, RedirectAttributes redirectAttributes) throws NotFoundException {
         ModelAndView modelAndView = new ModelAndView("cadastroManutencao");
 
         if (result.hasErrors()) {

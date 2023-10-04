@@ -60,7 +60,7 @@ public class UsuarioControllerView {
     }
     
     @PostMapping("/cadastrar")
-    public ModelAndView saveUsuario(@Valid @ModelAttribute("usuario") Usuario usuario, BindingResult result, RedirectAttributes redirectAttributes) {
+    public ModelAndView saveUsuario(@Valid @ModelAttribute("usuario") Usuario usuario, BindingResult result, RedirectAttributes redirectAttributes) throws NotFoundException {
         ModelAndView modelAndView = new ModelAndView("cadastroUsuario");
 
         if (result.hasErrors()) {

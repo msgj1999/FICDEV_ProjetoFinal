@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.Expections.BusinessException;
 import com.example.demo.entities.Manutencao;
 import com.example.demo.service.ManutencaoService;
 
@@ -47,8 +48,12 @@ public class ManutencaoControllerApi {
 
     @PostMapping
     public ResponseEntity<?> cadastrarManutencao(@RequestBody @Valid Manutencao manutencao) {
-        manutencaoService.saveManutencao(manutencao);
-		return ResponseEntity.ok("Manutenção cadastrada com sucesso!");
+        try {
+            manutencaoService.saveManutencao(manutencao);
+            return ResponseEntity.ok("Manutenção cadastrada com sucesso!");
+        } catch (NotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping("/{id}")

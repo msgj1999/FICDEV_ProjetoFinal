@@ -106,35 +106,37 @@
 		.nav-link:not(.active) {
 			color: black !important;
 		}
-		
-        /* Adicione um estilo para ocultar a barra lateral em telas menores */
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
+
+		/* Adicione um estilo para ocultar a barra lateral em telas menores */
+		@media (max-width: 768px) {
+			.sidebar {
+				width: 100%;
 				position: static;
 				padding: 10px;
-            }
+			}
 
-            .content {
-                margin-left: 0;
-            }
-        }
-        
-        		        .clickable-link {
-            color: #007BFF !important;
-            text-decoration: underline;
-            cursor: pointer;
-        }
+			.content {
+				margin-left: 0;
+			}
+		}
 
-        .clickable-link:hover {
-            color: #0056b3 !important;
-        }
-        
-        .custom-modal-header {
-    background-color: #030085; /* Cor de fundo desejada */
-    color: white; /* Cor do texto */
-    /* Adicione outros estilos conforme necessário */
-}
+		.clickable-link {
+			color: #007BFF !important;
+			text-decoration: underline;
+			cursor: pointer;
+		}
+
+		.clickable-link:hover {
+			color: #0056b3 !important;
+		}
+
+		.custom-modal-header {
+			background-color: #030085;
+			/* Cor de fundo desejada */
+			color: white;
+			/* Cor do texto */
+			/* Adicione outros estilos conforme necessário */
+		}
 
 		.custom-modal-header .close {
 			color: white;
@@ -149,7 +151,6 @@
 				min-height: 100vh;
 			}
 		}
-
 	</style>
 </head>
 
@@ -166,7 +167,8 @@
 				<ul class="nav nav-pills flex-column mb-auto">
 					<li class="nav-item">
 						<a th:href="@{/dashboard}" class="nav-link active" aria-current="page">
-							<img src="/images/painel-de-controle.png" alt="imagem perfil" width="18" height="18" class="me-1">
+							<img src="/images/painel-de-controle.png" alt="imagem perfil" width="18" height="18"
+								class="me-1">
 							Dashboard
 						</a>
 					</li>
@@ -195,17 +197,19 @@
 						</a>
 					</li>
 					<li class="nav-item clickable-link">
-				    <a href="#" data-toggle="modal" class="nav-link" style="color:#007BFF !important;" data-target="#sobreModal">
-						<img src="/images/info.png" alt="imagem info" width="18" height="18" class="me-1">
-				        Sobre o sistema
-				    </a>
+						<a href="#" data-toggle="modal" class="nav-link" style="color:#007BFF !important;"
+							data-target="#sobreModal">
+							<img src="/images/info.png" alt="imagem info" width="18" height="18" class="me-1">
+							Sobre o sistema
+						</a>
 					</li>
 				</ul>
 				<hr>
 				<div class="dropdown">
-					<a class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" href="#"
-						role="button" data-bs-toggle="dropdown" aria-expanded="false">
-						<img src="/images/perfil.png" alt="imagem perfil" width="32" height="32" class="rounded-circle me-2">
+					<a class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
+						href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<img src="/images/perfil.png" alt="imagem perfil" width="32" height="32"
+							class="rounded-circle me-2">
 						<strong id="nomeUsuario">Carregando...</strong>
 					</a>
 					<ul class="dropdown-menu text-small shadow">
@@ -222,22 +226,45 @@
 			<main role="main" class="col-md-6 ml-sm-auto col-lg-8 px-md-4 content">
 				<h1>Dashboard</h1>
 
-<!-- Resumo Geral -->
-<div class="row mt-4">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-body text-center"> <!-- Centralizar o conteúdo -->
-                <h5 class="card-title" style="font-size: 24px;">TOTAL:</h5> <!-- Aumentar o tamanho da fonte -->
-                <div class="d-flex justify-content-between align-items-center" style="font-size: 18px;">
-                    <div>Munições: <span id="totalMunicoesEmEstoque" style="font-size: 24px;">Carregando...</span></div> <!-- Aumentar o tamanho da fonte -->
-                    <div>Entregas: <span id="totalEntregas" style="font-size: 24px;">Carregando...</span></div> <!-- Aumentar o tamanho da fonte -->
-                    <div>Manutenções: <span id="totalManutencoes" style="font-size: 24px;">Carregando...</span></div> <!-- Aumentar o tamanho da fonte -->
-                    <div>Usuários: <span id="totalUsuarios" style="font-size: 24px;">Carregando...</span></div> <!-- Aumentar o tamanho da fonte -->
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+				<!-- Resumo Geral -->
+				<div class="row mt-4">
+								<div class="col-md-3">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Total de Munições</h5>
+						<!-- Use o seu serviço para buscar o total de munições em estoque -->
+						<p class="card-text" id="totalMunicoesEmEstoque">Carregando...</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">Total de Entregas</h5>
+							<!-- Use o seu serviço para buscar o total de entregas feitas -->
+							<p class="card-text" id="totalEntregas">Carregando...</p>
+						</div>
+					</div>
+				</div>
+			<div class="col-md-3">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Total de Manutenções</h5>
+						<!-- Use o seu serviço para buscar o total de manutenções feitas -->
+						<p class="card-text" id="totalManutencoes">Carregando...</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Total de Usuários</h5>
+						<!-- Use o seu serviço para buscar o total de usuários cadastrados -->
+						<p class="card-text" id="totalUsuarios">Carregando...</p>
+					</div>
+				</div>
+			</div>
+		</div>
 
 
 				<!-- Gráfico de Pizza -->
@@ -250,225 +277,280 @@
 							</div>
 						</div>
 					</div>
+					<!-- Tabela de Últimas Ações dos Usuários -->
+					<div class="col-md-6 mt-4 h-100">
+						<div class="card">
+							<div class="card-body">
+								<h5 class="card-title">Últimas Ações dos Usuários</h5>
+								<table class="table">
+									<thead>
+										<tr>
+											<th>Usuário</th>
+											<th>Ação</th>
+											<th>Data e Hora</th>
+										</tr>
+									</thead>
+									<tbody id="userActionsTableBody">
+										<!-- Os dados das ações dos usuários serão preenchidos aqui via JavaScript -->
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
 				</div>
 			</main>
-		</div>
-	</div>
 
-	    <!-- Modal -->
-    <div class="modal fade" id="sobreModal" tabindex="-1" role="dialog" aria-labelledby="sobreModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable"> <!-- Remova a classe modal-dialog-centered -->
-            <div class="modal-content">
-                <div class="modal-header custom-modal-header">
-                    <h5 class="modal-title" id="sobreModalLabel">Sobre o sistema</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-					<!-- Conteúdo do modal vai aqui -->
-					<Strong>Autor:</Strong> Milton Simplicio Gonçalves Junior<br>
-					<p>Para obter mais informações, visite o meu repositório no <a
-							href="https://github.com/msgj1999/FICDEV_ProjetoFinal" target="_blank">GitHub</a>.</p><br><br><br><br>
 
-					<h3 class="text-center">TECNOLOGIAS USADAS:</h3>
-					<strong>Linguagem:</strong> Java 17<br>
-					<strong>Frameworks:</strong> Spring Boot, Bootstrap<br>
-					<strong>Banco de Dados:</strong> PostgreSQL<br>
-					<strong>blabla:</strong> blabla<br>
-					<strong>blabla:</strong> blabla<br><br><br><br><br><br>
 
-					<h3 class="text-center">FUNCIONALIDADES:</h3>
-					
-					<strong>Cadastro de Munições:</strong><br> Nosso sistema permite que você registre todos os tipos de munições
-					disponíveis, desde cartuchos de arma de fogo até projéteis especiais. Isso proporciona um controle
-					detalhado do estoque.<br><br>
-					<strong>Edição e Atualização:</strong><br>
-					Mantenha seus registros atualizados e precisos. A funcionalidade de edição permite que você faça
-					correções ou atualize informações sempre que necessário.<br><br>
-					<strong>Exclusão Segura:</strong><br>
-					Quando munições não são mais necessárias, você pode removê-las de seu inventário com segurança e
-					precisão, mantendo o controle total.<br><br>
-					<strong>Gestão de Entregas:</strong><br>
-					Registramos as entregas de munições para Policiais, fornecendo rastreamento e registros
-					detalhados.<br><br>
-					<strong>Manutenção Preventiva:</strong><br>
-					Registre e gerencie a manutenção regular das munições para garantir que elas estejam sempre em
-					perfeito estado de funcionamento.<br><br>
-					<strong>Controle de Usuários:</strong><br>
-					Atribua permissões personalizadas para diferentes usuários do sistema, garantindo que apenas pessoal
-					autorizado tenha acesso a funções críticas.<br><br>
-					<strong>Dashboard Intuitivo:</strong><br>
-					Nosso painel de controle fornece uma visão geral clara do status de suas munições, entregas,
-					manutenções e outros aspectos essenciais.<br><br>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-	<script>
-		function getTotalMunicoesEmEstoque() {
-			fetch('/municao/api/total-estoque')
-				.then(response => response.json())
-				.then(data => {
-					// Atualize o conteúdo da div com o valor retornado pela API
-					document.getElementById('totalMunicoesEmEstoque').textContent = data;
-				})
-				.catch(error => {
-					console.error('Erro ao buscar o total de munições em estoque:', error);
-				});
-		}
+			<!-- Modal -->
+			<div class="modal fade" id="sobreModal" tabindex="-1" role="dialog" aria-labelledby="sobreModalLabel"
+				aria-hidden="true">
+				<div class="modal-dialog modal-lg modal-dialog-scrollable">
+					<!-- Remova a classe modal-dialog-centered -->
+					<div class="modal-content">
+						<div class="modal-header custom-modal-header">
+							<h5 class="modal-title" id="sobreModalLabel">Sobre o sistema</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<!-- Conteúdo do modal vai aqui -->
+							<Strong>Autor:</Strong> Milton Simplicio Gonçalves Junior<br>
+							<p>Para obter mais informações, visite o meu repositório no <a
+									href="https://github.com/msgj1999/FICDEV_ProjetoFinal" target="_blank">GitHub</a>.
+							</p>
+							<br><br><br><br>
 
-		// Chame a função para buscar o total de munições em estoque quando a página carregar
-		document.addEventListener('DOMContentLoaded', getTotalMunicoesEmEstoque);
-	</script>
+							<h3 class="text-center">TECNOLOGIAS USADAS:</h3>
+							<strong>Linguagem:</strong> Java 17<br>
+							<strong>Frameworks:</strong> Spring Boot, Bootstrap<br>
+							<strong>Banco de Dados:</strong> PostgreSQL<br>
+							<strong>blabla:</strong> blabla<br>
+							<strong>blabla:</strong> blabla<br><br><br><br><br><br>
 
-	<script>
-		function getTotalEntregas() {
-			fetch('/entrega/api/total-entregas')
-				.then(response => response.json())
-				.then(data => {
-					// Atualize o conteúdo da div com o valor retornado pela API
-					document.getElementById('totalEntregas').textContent = data;
-				})
-				.catch(error => {
-					console.error('Erro ao buscar o total de entregas:', error);
-				});
-		}
+							<h3 class="text-center">FUNCIONALIDADES:</h3>
 
-		// Chame a função para buscar o total de entregas quando a página carregar
-		document.addEventListener('DOMContentLoaded', getTotalEntregas);
-	</script>
+							<strong>Cadastro de Munições:</strong><br> Nosso sistema permite que você registre todos os
+							tipos de
+							munições
+							disponíveis, desde cartuchos de arma de fogo até projéteis especiais. Isso proporciona um
+							controle
+							detalhado do estoque.<br><br>
+							<strong>Edição e Atualização:</strong><br>
+							Mantenha seus registros atualizados e precisos. A funcionalidade de edição permite que você
+							faça
+							correções ou atualize informações sempre que necessário.<br><br>
+							<strong>Exclusão Segura:</strong><br>
+							Quando munições não são mais necessárias, você pode removê-las de seu inventário com
+							segurança e
+							precisão, mantendo o controle total.<br><br>
+							<strong>Gestão de Entregas:</strong><br>
+							Registramos as entregas de munições para Policiais, fornecendo rastreamento e registros
+							detalhados.<br><br>
+							<strong>Manutenção Preventiva:</strong><br>
+							Registre e gerencie a manutenção regular das munições para garantir que elas estejam sempre
+							em
+							perfeito estado de funcionamento.<br><br>
+							<strong>Controle de Usuários:</strong><br>
+							Atribua permissões personalizadas para diferentes usuários do sistema, garantindo que apenas
+							pessoal
+							autorizado tenha acesso a funções críticas.<br><br>
+							<strong>Dashboard Intuitivo:</strong><br>
+							Nosso painel de controle fornece uma visão geral clara do status de suas munições, entregas,
+							manutenções e outros aspectos essenciais.<br><br>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
-	<script>
-		function getTotalManutencoes() {
-			fetch('/manutencao/api/total-manutencoes')
-				.then(response => response.json())
-				.then(data => {
-					// Atualize o conteúdo da div com o valor retornado pela API
-					document.getElementById('totalManutencoes').textContent = data;
-				})
-				.catch(error => {
-					console.error('Erro ao buscar o total de manutenções:', error);
-				});
-		}
-
-		// Chame a função para buscar o total de manutenções quando a página carregar
-		document.addEventListener('DOMContentLoaded', getTotalManutencoes);
-	</script>
-
-	<script>
-		function getTotalUsuarios() {
-			fetch('/usuario/api/total-usuarios')
-				.then(response => response.json())
-				.then(data => {
-					// Atualize o conteúdo da div com o valor retornado pela API
-					document.getElementById('totalUsuarios').textContent = data;
-				})
-				.catch(error => {
-					console.error('Erro ao buscar o total de usuários:', error);
-				});
-		}
-
-		// Chame a função para buscar o total de usuários quando a página carregar
-		document.addEventListener('DOMContentLoaded', getTotalUsuarios);
-	</script>
-
-	<!-- Script para criar o gráfico de pizza -->
-	<script>
-		var ctx = document.getElementById('grafico-municoes').getContext('2d');
-		var myChart = new Chart(ctx, {
-			type: 'pie',
-			data: {
-				labels: ['Pistola - .45 Auto', 'Fuzil - 5.56x45mm', 'Caça - .308 Winchester'],
-				datasets: [{
-					data: [500, 250, 250],
-					backgroundColor: ['red', 'green', 'blue']
-				}]
-			}
-		});
-
-		// Função para atualizar o gráfico de munições
-		function atualizarGraficoMunicoes() {
-			fetch('/municao/api/dados-municoes')
-				.then(response => response.json())
-				.then(data => {
-					const labels = data.map(item => `${item.tipo} - ${item.calibre}`);
-					const quantidades = data.map(item => item.quantidade);
-					const backgroundColors = data.map(() => getRandomColor());
-
-					const ctx = document.getElementById('grafico-municoes').getContext('2d');
-					if (myChart) {
-						myChart.destroy(); // Destrua o gráfico anterior, se existir
-					}
-					myChart = new Chart(ctx, {
-						type: 'pie',
-						data: {
-							labels: labels,
-							datasets: [{
-								data: quantidades,
-								backgroundColor: backgroundColors
-							}]
-						}
-					});
-				})
-				.catch(error => {
-					console.error('Erro ao buscar os dados das munições:', error);
-				});
-		}
-
-		function getRandomColor() {
-			const letters = '0123456789ABCDEF';
-			let color = '#';
-			for (let i = 0; i < 6; i++) {
-				color += letters[Math.floor(Math.random() * 16)];
-			}
-			return color;
-		}
-
-		// Chame a função para atualizar o gráfico quando a página carregar
-		document.addEventListener('DOMContentLoaded', atualizarGraficoMunicoes);
-	</script>
-
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Use JavaScript para buscar o nome do usuário logado
-    fetch('/usuario/api/nome-usuario-logado')
-        .then(response => response.text())
-        .then(nomeUsuarioLogado => {
-            // Divida o nome completo em palavras
-            const palavrasNome = nomeUsuarioLogado.split(' ');
-            
-            // Pegue apenas a primeira palavra (primeiro nome)
-            const primeiroNome = palavrasNome[0];
+    function getRecentUserActions() {
+        const limit = 5;
 
-            // Atualize o nome do usuário no elemento HTML
-            document.getElementById('nomeUsuario').textContent = primeiroNome;
-        })
-        .catch(error => {
-            console.error('Erro ao buscar o nome do usuário logado:', error);
-        });
+        fetch(`/api/user-actions/recent-actions?limit=${limit}`)
+            .then(response => response.json())
+            .then(data => {
+                const userActionsTableBody = document.getElementById('userActionsTableBody');
+                userActionsTableBody.innerHTML = '';
+
+                data.forEach(userAction => {
+                    const nomeUsuarioParts = userAction.username.split(' ');
+
+                    const primeiroNome = nomeUsuarioParts[0];
+
+                    const dataHora = new Date(userAction.timestamp);
+                    const dataFormatada = dataHora.toLocaleDateString('pt-BR');
+                    const horaFormatada = dataHora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${primeiroNome}</td>
+                        <td>${userAction.action}</td>
+                        <td>${dataFormatada} às ${horaFormatada}</td>
+                    `;
+                    userActionsTableBody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao buscar as últimas ações dos usuários:', error);
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', getRecentUserActions);
 </script>
 
-	
-	  <div vw class="enabled">
-    <div vw-access-button class="active"></div>
-    <div vw-plugin-wrapper>
-      <div class="vw-plugin-top-wrapper"></div>
-    </div>
-  </div>
-  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-  <script>
-    new window.VLibras.Widget('https://vlibras.gov.br/app');
-  </script>
 
-	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    
+			<script>
+				function getTotalMunicoesEmEstoque() {
+					fetch('/municao/api/total-estoque')
+						.then(response => response.json())
+						.then(data => {
+							// Atualize o conteúdo da div com o valor retornado pela API
+							document.getElementById('totalMunicoesEmEstoque').textContent = data;
+						})
+						.catch(error => {
+							console.error('Erro ao buscar o total de munições em estoque:', error);
+						});
+				}
+
+				// Chame a função para buscar o total de munições em estoque quando a página carregar
+				document.addEventListener('DOMContentLoaded', getTotalMunicoesEmEstoque);
+			</script>
+
+			<script>
+				function getTotalEntregas() {
+					fetch('/entrega/api/total-entregas')
+						.then(response => response.json())
+						.then(data => {
+							// Atualize o conteúdo da div com o valor retornado pela API
+							document.getElementById('totalEntregas').textContent = data;
+						})
+						.catch(error => {
+							console.error('Erro ao buscar o total de entregas:', error);
+						});
+				}
+
+				// Chame a função para buscar o total de entregas quando a página carregar
+				document.addEventListener('DOMContentLoaded', getTotalEntregas);
+			</script>
+
+			<script>
+				function getTotalManutencoes() {
+					fetch('/manutencao/api/total-manutencoes')
+						.then(response => response.json())
+						.then(data => {
+							// Atualize o conteúdo da div com o valor retornado pela API
+							document.getElementById('totalManutencoes').textContent = data;
+						})
+						.catch(error => {
+							console.error('Erro ao buscar o total de manutenções:', error);
+						});
+				}
+
+				// Chame a função para buscar o total de manutenções quando a página carregar
+				document.addEventListener('DOMContentLoaded', getTotalManutencoes);
+			</script>
+
+			<script>
+				function getTotalUsuarios() {
+					fetch('/usuario/api/total-usuarios')
+						.then(response => response.json())
+						.then(data => {
+							// Atualize o conteúdo da div com o valor retornado pela API
+							document.getElementById('totalUsuarios').textContent = data;
+						})
+						.catch(error => {
+							console.error('Erro ao buscar o total de usuários:', error);
+						});
+				}
+
+				// Chame a função para buscar o total de usuários quando a página carregar
+				document.addEventListener('DOMContentLoaded', getTotalUsuarios);
+			</script>
+
+			<!-- Script para criar o gráfico de pizza -->
+			<script>
+
+				// Função para atualizar o gráfico de munições
+				function atualizarGraficoMunicoes() {
+					fetch('/municao/api/dados-municoes')
+						.then(response => response.json())
+						.then(data => {
+							const labels = data.map(item => `${item.tipo} - ${item.calibre}`);
+							const quantidades = data.map(item => item.quantidade);
+							const backgroundColors = data.map(() => getRandomColor());
+
+							const ctx = document.getElementById('grafico-municoes').getContext('2d');
+
+							myChart = new Chart(ctx, {
+								type: 'pie',
+								data: {
+									labels: labels,
+									datasets: [{
+										data: quantidades,
+										backgroundColor: backgroundColors
+									}]
+								}
+							});
+						})
+						.catch(error => {
+							console.error('Erro ao buscar os dados das munições:', error);
+						});
+				}
+
+				function getRandomColor() {
+					const letters = '0123456789ABCDEF';
+					let color = '#';
+					for (let i = 0; i < 6; i++) {
+						color += letters[Math.floor(Math.random() * 16)];
+					}
+					return color;
+				}
+
+				// Chame a função para atualizar o gráfico quando a página carregar
+				document.addEventListener('DOMContentLoaded', atualizarGraficoMunicoes);
+			</script>
+
+			<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+			<script>
+				// Use JavaScript para buscar o nome do usuário logado
+				fetch('/usuario/api/nome-usuario-logado')
+					.then(response => response.text())
+					.then(nomeUsuarioLogado => {
+						// Divida o nome completo em palavras
+						const palavrasNome = nomeUsuarioLogado.split(' ');
+
+						// Pegue apenas a primeira palavra (primeiro nome)
+						const primeiroNome = palavrasNome[0];
+
+						// Atualize o nome do usuário no elemento HTML
+						document.getElementById('nomeUsuario').textContent = primeiroNome;
+					})
+					.catch(error => {
+						console.error('Erro ao buscar o nome do usuário logado:', error);
+					});
+			</script>
+
+
+			<div vw class="enabled">
+				<div vw-access-button class="active"></div>
+				<div vw-plugin-wrapper>
+					<div class="vw-plugin-top-wrapper"></div>
+				</div>
+			</div>
+			<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+			<script>
+				new window.VLibras.Widget('https://vlibras.gov.br/app');
+			</script>
+
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 
 </html>

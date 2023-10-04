@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.Expections.BusinessException;
 import com.example.demo.entities.Usuario;
 import com.example.demo.service.UsuarioService;
 
@@ -47,8 +48,12 @@ public class UsuarioControllerApi {
 
     @PostMapping
     public ResponseEntity<?> cadastrarUsuario(@RequestBody @Valid Usuario usuario) {
-        usuarioService.saveUsuario(usuario);
-		return ResponseEntity.ok("Usuário cadastrada com sucesso!");
+        try {
+            usuarioService.saveUsuario(usuario);
+            return ResponseEntity.ok("Usuário cadastrada com sucesso!");
+        } catch (NotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 

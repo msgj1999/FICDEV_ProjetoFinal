@@ -7,6 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
 	<style>
 		body {
 			background-color: #f8f9fa;
@@ -259,17 +260,23 @@
 				<h1 class="fw-bold display-4 mt-5">Cadastro de Munição</h1>
 				<form action="#" th:action="@{/municao/view/cadastrar}" th:object="${municao}" method="post">
 					<!-- Mensagens de sucesso e erro aqui -->
-					<div th:if="${param.sucesso}" class="alert alert-success">
+					<div th:if="${param.sucesso}" class="alert alert-success alert-dismissible fade show">
 						<p th:text="${param.sucesso}"></p>
+						<button type="button" class="close" data-dismiss="alert">
+							<span aria-hidden="true">&times;</span>
+						</button>
 					</div>
-					<div th:if="${param.error}" class="alert alert-danger">
+					<div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show">
 						<p th:text="${param.error}"></p>
+						<button type="button" class="close" data-dismiss="alert">
+							<span aria-hidden="true">&times;</span>
+						</button>
 					</div>
 
 					<div class="form-group">
 						<input type="hidden" th:field="*{id}" class="form-control" id="id">
 					</div>
-					
+
 					<div class="form-group row d-flex justify-content-center">
 						<div class="col-12 col-md-6">
 							<label for="tipo">Tipo de Munição:</label>
@@ -288,7 +295,8 @@
 					<div class="form-group row d-flex justify-content-center">
 						<div class="col-12 col-md-6">
 							<label for="quantidade">Quantidade</label>
-							<input type="number" th:field="*{quantidade}" class="form-control input-field" id="quantidade">
+							<input type="number" th:field="*{quantidade}" class="form-control input-field"
+								id="quantidade">
 							<span class="text-danger" th:if="${#fields.hasErrors('quantidade')}"
 								th:errors="*{quantidade}"></span>
 						</div>
@@ -303,8 +311,8 @@
 					<div class="form-group row d-flex justify-content-center">
 						<div class="col-12 col-md-6">
 							<label for="coeficienteBalistico">Coeficiente Balístico</label>
-							<input type="number" step="0.001" th:field="*{coeficienteBalistico}" class="form-control input-field"
-								id="coeficienteBalistico">
+							<input type="number" step="0.001" th:field="*{coeficienteBalistico}"
+								class="form-control input-field" id="coeficienteBalistico">
 							<span class="text-danger" th:if="${#fields.hasErrors('coeficienteBalistico')}"
 								th:errors="*{coeficienteBalistico}"></span>
 						</div>
@@ -312,8 +320,8 @@
 					<div class="form-group row d-flex justify-content-center">
 						<div class="col-12 col-md-6">
 							<label for="dataFabricacao">Data de Fabricação</label>
-							<input type="date" th:field="*{dataFabricacao}" class="form-control input-field" id="dataFabricacao"
-								>
+							<input type="date" th:field="*{dataFabricacao}" class="form-control input-field"
+								id="dataFabricacao">
 							<span class="text-danger" th:if="${#fields.hasErrors('dataFabricacao')}"
 								th:errors="*{dataFabricacao}"></span>
 						</div>
@@ -321,8 +329,8 @@
 					<div class="form-group row d-flex justify-content-center">
 						<div class="col-12 col-md-6">
 							<label for="dataValidade">Data de Validade</label>
-							<input type="date" th:field="*{dataValidade}" class="form-control input-field" id="dataValidade"
-								>
+							<input type="date" th:field="*{dataValidade}" class="form-control input-field"
+								id="dataValidade">
 							<span class="text-danger" th:if="${#fields.hasErrors('dataValidade')}"
 								th:errors="*{dataValidade}"></span>
 						</div>
@@ -350,41 +358,45 @@
 						</button>
 					</div>
 					<div class="modal-body">
-					<!-- Conteúdo do modal vai aqui -->
-					<Strong>Autor:</Strong> Milton Simplicio Gonçalves Junior<br>
-					<p>Para obter mais informações, visite o meu repositório no <a
-							href="https://github.com/msgj1999/FICDEV_ProjetoFinal" target="_blank">GitHub</a>.</p><br><br><br><br>
+						<!-- Conteúdo do modal vai aqui -->
+						<Strong>Autor:</Strong> Milton Simplicio Gonçalves Junior<br>
+						<p>Para obter mais informações, visite o meu repositório no <a
+								href="https://github.com/msgj1999/FICDEV_ProjetoFinal" target="_blank">GitHub</a>.</p>
+						<br><br><br><br>
 
-					<h3 class="text-center">TECNOLOGIAS USADAS:</h3>
-					<strong>Linguagem:</strong> Java 17<br>
-					<strong>Frameworks:</strong> Spring Boot, Bootstrap<br>
-					<strong>Banco de Dados:</strong> PostgreSQL<br>
-					<strong>blabla:</strong> blabla<br>
-					<strong>blabla:</strong> blabla<br><br><br><br><br><br>
+						<h3 class="text-center">TECNOLOGIAS USADAS:</h3>
+						<strong>Linguagem:</strong> Java 17<br>
+						<strong>Frameworks:</strong> Spring Boot, Bootstrap<br>
+						<strong>Banco de Dados:</strong> PostgreSQL<br>
+						<strong>blabla:</strong> blabla<br>
+						<strong>blabla:</strong> blabla<br><br><br><br><br><br>
 
-					<h3 class="text-center">FUNCIONALIDADES:</h3>
-					
-					<strong>Cadastro de Munições:</strong><br> Nosso sistema permite que você registre todos os tipos de munições
-					disponíveis, desde cartuchos de arma de fogo até projéteis especiais. Isso proporciona um controle
-					detalhado do estoque.<br><br>
-					<strong>Edição e Atualização:</strong><br>
-					Mantenha seus registros atualizados e precisos. A funcionalidade de edição permite que você faça
-					correções ou atualize informações sempre que necessário.<br><br>
-					<strong>Exclusão Segura:</strong><br>
-					Quando munições não são mais necessárias, você pode removê-las de seu inventário com segurança e
-					precisão, mantendo o controle total.<br><br>
-					<strong>Gestão de Entregas:</strong><br>
-					Registramos as entregas de munições para Policiais, fornecendo rastreamento e registros
-					detalhados.<br><br>
-					<strong>Manutenção Preventiva:</strong><br>
-					Registre e gerencie a manutenção regular das munições para garantir que elas estejam sempre em
-					perfeito estado de funcionamento.<br><br>
-					<strong>Controle de Usuários:</strong><br>
-					Atribua permissões personalizadas para diferentes usuários do sistema, garantindo que apenas pessoal
-					autorizado tenha acesso a funções críticas.<br><br>
-					<strong>Dashboard Intuitivo:</strong><br>
-					Nosso painel de controle fornece uma visão geral clara do status de suas munições, entregas,
-					manutenções e outros aspectos essenciais.<br><br>
+						<h3 class="text-center">FUNCIONALIDADES:</h3>
+
+						<strong>Cadastro de Munições:</strong><br> Nosso sistema permite que você registre todos os
+						tipos de munições
+						disponíveis, desde cartuchos de arma de fogo até projéteis especiais. Isso proporciona um
+						controle
+						detalhado do estoque.<br><br>
+						<strong>Edição e Atualização:</strong><br>
+						Mantenha seus registros atualizados e precisos. A funcionalidade de edição permite que você faça
+						correções ou atualize informações sempre que necessário.<br><br>
+						<strong>Exclusão Segura:</strong><br>
+						Quando munições não são mais necessárias, você pode removê-las de seu inventário com segurança e
+						precisão, mantendo o controle total.<br><br>
+						<strong>Gestão de Entregas:</strong><br>
+						Registramos as entregas de munições para Policiais, fornecendo rastreamento e registros
+						detalhados.<br><br>
+						<strong>Manutenção Preventiva:</strong><br>
+						Registre e gerencie a manutenção regular das munições para garantir que elas estejam sempre em
+						perfeito estado de funcionamento.<br><br>
+						<strong>Controle de Usuários:</strong><br>
+						Atribua permissões personalizadas para diferentes usuários do sistema, garantindo que apenas
+						pessoal
+						autorizado tenha acesso a funções críticas.<br><br>
+						<strong>Dashboard Intuitivo:</strong><br>
+						Nosso painel de controle fornece uma visão geral clara do status de suas munições, entregas,
+						manutenções e outros aspectos essenciais.<br><br>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
@@ -392,42 +404,65 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		// Fecha automaticamente os alertas após um período de tempo (opcional)
+		const autoCloseTimeout = 5000; // 5 segundos (ajuste conforme necessário)
 
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+		// Fecha o alerta quando o botão "Fechar" é clicado
+		const closeButtons = document.querySelectorAll('.alert .close');
+		closeButtons.forEach(button => {
+			button.addEventListener('click', function () {
+				const alert = this.closest('.alert');
+				alert.style.display = 'none';
+			});
+		});
 
-		<script>
-			// Use JavaScript para buscar o nome do usuário logado
-			fetch('/usuario/api/nome-usuario-logado')
-				.then(response => response.text())
-				.then(nomeUsuarioLogado => {
-					// Divida o nome completo em palavras
-					const palavrasNome = nomeUsuarioLogado.split(' ');
+		// Fecha automaticamente os alertas após um período de tempo (opcional)
+		setTimeout(function () {
+			const alerts = document.querySelectorAll('.alert');
+			alerts.forEach(alert => {
+				alert.style.display = 'none';
+			});
+		}, autoCloseTimeout);
+	</script>
 
-					// Pegue apenas a primeira palavra (primeiro nome)
-					const primeiroNome = palavrasNome[0];
+	<script>
+		// Use JavaScript para buscar o nome do usuário logado
+		fetch('/usuario/api/nome-usuario-logado')
+			.then(response => response.text())
+			.then(nomeUsuarioLogado => {
+				// Divida o nome completo em palavras
+				const palavrasNome = nomeUsuarioLogado.split(' ');
 
-					// Atualize o nome do usuário no elemento HTML
-					document.getElementById('nomeUsuario').textContent = primeiroNome;
-				})
-				.catch(error => {
-					console.error('Erro ao buscar o nome do usuário logado:', error);
-				});
-		</script>
+				// Pegue apenas a primeira palavra (primeiro nome)
+				const primeiroNome = palavrasNome[0];
 
-		<div vw class="enabled">
-			<div vw-access-button class="active"></div>
-			<div vw-plugin-wrapper>
-				<div class="vw-plugin-top-wrapper"></div>
-			</div>
+				// Atualize o nome do usuário no elemento HTML
+				document.getElementById('nomeUsuario').textContent = primeiroNome;
+			})
+			.catch(error => {
+				console.error('Erro ao buscar o nome do usuário logado:', error);
+			});
+	</script>
+
+	<div vw class="enabled">
+		<div vw-access-button class="active"></div>
+		<div vw-plugin-wrapper>
+			<div class="vw-plugin-top-wrapper"></div>
 		</div>
-		<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-		<script>
-			new window.VLibras.Widget('https://vlibras.gov.br/app');
-		</script>
+	</div>
+	<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+	<script>
+		new window.VLibras.Widget('https://vlibras.gov.br/app');
+	</script>
 
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
 </body>
 
 </html>

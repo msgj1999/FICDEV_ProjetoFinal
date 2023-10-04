@@ -25,6 +25,10 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+    
+    @Autowired
+    private UserActionService userActionService;
+    
 
     /*public List<Usuario> getAllUsuarios() {
         return usuarioRepository.findAllOrderedById();
@@ -34,7 +38,12 @@ public class UsuarioService {
         return usuarioRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
-    public void saveUsuario(Usuario usuario) {
+    public void saveUsuario(Usuario usuario) throws NotFoundException {
+    	
+        Usuario usuarioLogado = getUsuarioLogado2(); 
+        String username = usuarioLogado.getNome();
+        userActionService.registerUserAction(username, "Cadastrou um novo usuário");
+        
         usuarioRepository.save(usuario);
     }
 
@@ -45,6 +54,10 @@ public class UsuarioService {
         atualizado.setEmail(usuario.getEmail());
         atualizado.setSenha(usuario.getSenha());
         atualizado.setRole(usuario.getRole());
+        
+        Usuario usuarioLogado = getUsuarioLogado2(); 
+        String username = usuarioLogado != null ? usuarioLogado.getNome() : "Usuário Desconhecido";
+        userActionService.registerUserAction(username, "Editou um usuário com ID: " + id);
 
         usuarioRepository.save(atualizado);
         return atualizado;
@@ -52,6 +65,11 @@ public class UsuarioService {
 
     public Usuario deleteUsuario(int id) throws NotFoundException {
         Usuario deletado = usuarioRepository.findById(id).orElseThrow(NotFoundException::new);
+        
+        Usuario usuarioLogado = getUsuarioLogado2(); 
+        String username = usuarioLogado != null ? usuarioLogado.getNome() : "Usuário Desconhecido";
+        userActionService.registerUserAction(username, "Excluiu um usuário com ID: " + id);
+        
         usuarioRepository.delete(deletado);
         return deletado;
     }

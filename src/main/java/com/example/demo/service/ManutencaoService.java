@@ -14,6 +14,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.Manutencao;
+import com.example.demo.entities.Usuario;
 import com.example.demo.repository.ManutencaoRepository;
 
 import jakarta.persistence.criteria.Predicate;
@@ -23,12 +24,23 @@ public class ManutencaoService {
 
     @Autowired
     private ManutencaoRepository manutencaoRepository;
+    
+    @Autowired
+    private UserActionService userActionService;
+    
+    @Autowired
+    private UsuarioService usuarioService;
 
     public Manutencao getManutencao(int id) throws NotFoundException {
         return manutencaoRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
-    public void saveManutencao(Manutencao manutencao) {
+    public void saveManutencao(Manutencao manutencao) throws NotFoundException {
+    	
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado2(); 
+        String username = usuarioLogado.getNome();
+        userActionService.registerUserAction(username, "Cadastrou uma nova manutenção");
+        
         manutencaoRepository.save(manutencao);
     }
 
@@ -37,12 +49,21 @@ public class ManutencaoService {
 
         atualizada.setStatus(manutencao.getStatus());
         atualizada.setDataManutencao(manutencao.getDataManutencao());
+        
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado2(); 
+        String username = usuarioLogado != null ? usuarioLogado.getNome() : "Usuário Desconhecido";
+        userActionService.registerUserAction(username, "Editou uma manutenção com ID: " + id);
 
         manutencaoRepository.save(atualizada);
         return atualizada;
     }
     public Manutencao deleteManutencao(int id) throws NotFoundException {
         Manutencao deletada = manutencaoRepository.findById(id).orElseThrow(NotFoundException::new);
+        
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado2(); 
+        String username = usuarioLogado != null ? usuarioLogado.getNome() : "Usuário Desconhecido";
+        userActionService.registerUserAction(username, "Excluiu uma manutenção com ID: " + id);
+        
         manutencaoRepository.delete(deletada);
         return deletada;
     }

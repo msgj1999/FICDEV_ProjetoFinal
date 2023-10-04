@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.Entrega;
 import com.example.demo.entities.Municao;
+import com.example.demo.entities.Usuario;
 import com.example.demo.repository.EntregaRepository;
 
 import jakarta.persistence.criteria.Predicate;
@@ -28,11 +29,22 @@ public class EntregaService {
     @Autowired
     private MunicaoService municaoService;
 
+    @Autowired
+    private UserActionService userActionService;
+    
+    @Autowired
+    private UsuarioService usuarioService;
+    
     public Entrega getEntrega(int id) throws NotFoundException {
         return entregaRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
-    public void saveEntrega(Entrega entrega) {
+    public void saveEntrega(Entrega entrega) throws NotFoundException {
+    	
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado2(); 
+        String username = usuarioLogado.getNome();
+        userActionService.registerUserAction(username, "Cadastrou uma nova entrega");
+        
         entregaRepository.save(entrega);
     }
 
@@ -43,6 +55,10 @@ public class EntregaService {
         atualizada.setQuantidade(entrega.getQuantidade());
         atualizada.setDataEntrega(entrega.getDataEntrega());
         atualizada.setObservacoes(entrega.getObservacoes());
+        
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado2(); 
+        String username = usuarioLogado != null ? usuarioLogado.getNome() : "Usuário Desconhecido";
+        userActionService.registerUserAction(username, "Editou uma entrega com ID: " + id);
 
         entregaRepository.save(atualizada);
         return atualizada;
@@ -50,6 +66,11 @@ public class EntregaService {
 
     public Entrega deleteEntrega(int id) throws NotFoundException {
         Entrega deletada = entregaRepository.findById(id).orElseThrow(NotFoundException::new);
+        
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado2(); 
+        String username = usuarioLogado != null ? usuarioLogado.getNome() : "Usuário Desconhecido";
+        userActionService.registerUserAction(username, "Excluiu uma entrega com ID: " + id);
+        
         entregaRepository.delete(deletada);
         return deletada;
     }

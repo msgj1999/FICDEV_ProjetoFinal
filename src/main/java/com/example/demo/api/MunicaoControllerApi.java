@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.Expections.BusinessException;
 import com.example.demo.entities.Municao;
-import com.example.demo.exceptions.MunicaoAssociadaEntregaException;
 import com.example.demo.service.MunicaoService;
 
 import jakarta.validation.Valid;
@@ -52,10 +52,16 @@ public class MunicaoControllerApi {
 
     @PostMapping
     public ResponseEntity<?> cadastrarMunicao(@RequestBody @Valid Municao municao) {
-        municaoService.saveMunicao(municao);
-		return ResponseEntity.ok("Munição cadastrada com sucesso!");
+        try {
+            municaoService.saveMunicao(municao);
+            return ResponseEntity.ok("Munição cadastrada com sucesso!");
+        } catch (BusinessException e) {
+            return ResponseEntity.badRequest().body("Erro no cadastro: " + e.getMessage());
+        } catch (NotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
-
+    
     @PutMapping("/{id}")
     public ResponseEntity<Municao> updateMunicao(@PathVariable int id, @RequestBody @Valid Municao municao) {
         try {

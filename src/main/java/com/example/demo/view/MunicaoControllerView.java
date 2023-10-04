@@ -20,10 +20,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.demo.Expections.BusinessException;
 import com.example.demo.entities.Municao;
-import com.example.demo.exceptions.MunicaoAssociadaEntregaException;
 import com.example.demo.service.MunicaoService;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
 
@@ -45,17 +46,20 @@ public class MunicaoControllerView {
     }
 
     @GetMapping("/remover/{id}")
-    public String removerMunicao(@PathVariable("id") int id) {
+    public String removerMunicao(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
         try {
             municaoService.deleteMunicao(id);
-            return "redirect:/municao/view/listar";
-        } catch (NotFoundException e) {
+            redirectAttributes.addFlashAttribute("sucesso", "Munição excluída com sucesso!");
+        } catch (EntityNotFoundException e) {
             // Tratar exceção NotFoundException, se necessário
-            return "redirect:/municao/view/listar";
-        } catch (MunicaoAssociadaEntregaException e) {
+        } catch (BusinessException e) {
             // Tratar exceção MunicaoAssociadaEntregaException e exibir mensagem de erro
-            return "redirect:/municao/view/listar?error=Munição está associada a uma entrega e não pode ser excluída.";
+        	return "redirect:/municao/view/listar?error=rn1";
+        } catch (NotFoundException e) {
+            // Lidar com a exceção NotFoundException, se necessário
         }
+        
+        return "redirect:/municao/view/listar";
     }
 
 
@@ -75,9 +79,16 @@ public class MunicaoControllerView {
             return modelAndView;
         }
 
-        municaoService.saveMunicao(municao);
-		redirectAttributes.addFlashAttribute("sucesso", "Munição cadastrada com sucesso!");
-		return new ModelAndView("redirect:/municao/view/listar");
+        try {
+            municaoService.saveMunicao(municao);
+            redirectAttributes.addFlashAttribute("sucesso", "Munição cadastrada com sucesso!");
+            return new ModelAndView("redirect:/municao/view/listar");
+        } catch (BusinessException e) {
+            modelAndView.addObject("error", "Erro no cadastro: " + e.getMessage());
+            return modelAndView;
+        } catch (NotFoundException e) {
+            return new ModelAndView("redirect:/municao/view/listar");
+        }
     }
 
     @GetMapping("/atualizar/{id}")

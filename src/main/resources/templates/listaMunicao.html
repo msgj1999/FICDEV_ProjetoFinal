@@ -265,7 +265,7 @@
 			<!-- Conteúdo principal -->
 			<main role="main" class="col-md-6 ml-sm-auto col-lg-8 px-md-4 content">
 				<h1 class="fw-bold display-4 mt-5">Munições</h1>
-				
+
 				<div class="search-container mb-5">
 					<form action="/municao/view/buscar" method="get" class="d-flex">
 						<div class="input-group">
@@ -278,50 +278,50 @@
 					<a th:href="@{/municao/view/cadastrar}" class="btn btn-success create-button">Cadastrar Nova
 						Munição</a>
 				</div>
-				
-				<div class="table-responsive">
-				<table class="table">
-					<thead>
-						<tr>
-							<th scope="col">ID</th>
-							<th scope="col">Tipo</th>
-							<th scope="col">Calibre</th>
-							<th scope="col">Quantidade</th>
-							<th scope="col">Peso</th>
-							<th scope="col">Coeficiente Balístico</th>
-							<th scope="col">Data Fabricação</th>
-							<th scope="col">Data Validade</th>
-							<th scope="col" colspan="2">Ações</th>
-						</tr>
-					</thead>
-					<tbody>
-						<!-- Inserir um bloco semelhante para cada munição -->
-						<tr th:each="municao : ${municoes}">
-							<th scope="row" th:text="${municao.id}"></th>
-							<td class="quantity" th:text="${municao.tipo}"></td>
-							<td class="quantity" th:text="${municao.calibre}"></td>
-							<td class="quantity" th:text="${municao.quantidade}"></td>
-							<td class="quantity" th:text="${municao.peso}"></td>
-							<td class="quantity" th:text="${municao.coeficienteBalistico}"></td>
-							<td class="quantity" th:text="${municao.dataFabricacao}"></td>
-							<td class="quantity" th:text="${municao.dataValidade}"></td>
-							<!--td th:text="${#dates.format(municao.dataFabricacao, 'dd/MM/yyyy')}"></td> <! Adicione esta linha -->
-							<!--td th:text="${#dates.format(municao.dataValidade, 'dd/MM/yyyy')}"></td> <! Adicione esta linha -->
-							<td class="d-flex"> <!-- Use a classe d-flex aqui -->
-								<a th:href="@{/municao/view/atualizar/{id}(id=${municao.id})}"
-									class="btn btn-primary me-2 mb-0"> <!-- Adicione mb-0 aqui -->
-									<i class="fas fa-edit"></i> Editar
-								</a>
-								<button type="button" class="btn btn-danger mb-0" data-bs-toggle="modal"
-									data-bs-target="#deleteConfirmModal" th:data-bs-municaoId=${municao.id}>
-									Excluir
-								</button>
-							</td>
 
-						</tr>
-						<!-- Fim do bloco para cada munição -->
-					</tbody>
-				</table>
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">ID</th>
+								<th scope="col">Tipo</th>
+								<th scope="col">Calibre</th>
+								<th scope="col">Quantidade</th>
+								<th scope="col">Peso</th>
+								<th scope="col">Coeficiente Balístico</th>
+								<th scope="col">Data Fabricação</th>
+								<th scope="col">Data Validade</th>
+								<th scope="col" colspan="2">Ações</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- Inserir um bloco semelhante para cada munição -->
+							<tr th:each="municao : ${municoes}">
+								<th scope="row" th:text="${municao.id}"></th>
+								<td class="quantity" th:text="${municao.tipo}"></td>
+								<td class="quantity" th:text="${municao.calibre}"></td>
+								<td class="quantity" th:text="${municao.quantidade}"></td>
+								<td class="quantity" th:text="${municao.peso}"></td>
+								<td class="quantity" th:text="${municao.coeficienteBalistico}"></td>
+								<td class="quantity" th:text="${municao.dataFabricacao}"></td>
+								<td class="quantity" th:text="${municao.dataValidade}"></td>
+								<!--td th:text="${#dates.format(municao.dataFabricacao, 'dd/MM/yyyy')}"></td> <! Adicione esta linha -->
+								<!--td th:text="${#dates.format(municao.dataValidade, 'dd/MM/yyyy')}"></td> <! Adicione esta linha -->
+								<td class="d-flex"> <!-- Use a classe d-flex aqui -->
+									<a th:href="@{/municao/view/atualizar/{id}(id=${municao.id})}"
+										class="btn btn-primary me-2 mb-0"> <!-- Adicione mb-0 aqui -->
+										<i class="fas fa-edit"></i> Editar
+									</a>
+									<button type="button" class="btn btn-danger mb-0" data-bs-toggle="modal"
+										data-bs-target="#deleteConfirmModal" th:data-bs-municaoId=${municao.id}>
+										Excluir
+									</button>
+								</td>
+
+							</tr>
+							<!-- Fim do bloco para cada munição -->
+						</tbody>
+					</table>
 				</div>
 
 				<!-- Código para exibir a mensagem de erro -->
@@ -377,6 +377,33 @@
 		</div>
 	</div>
 
+	<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog"> <!-- Caso queira centralizar a modal adicione a classe modal-dialog-centered -->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="errorModalLabel">Alerta</h1>
+						<form th:action="@{/municao/view/listar}" method="delete" style="cursor: pointer"
+						class="delete-form">
+						<!-- Button trigger modal -->
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</form>
+					
+				</div>
+				<div class="modal-body">
+					Munição está associada a uma entrega e não pode ser excluída.
+				</div>
+				<div class="modal-footer">
+					<form th:action="@{/municao/view/listar}" method="delete" style="cursor: pointer"
+						class="delete-form">
+						<!-- Button trigger modal -->
+						<button type="submit" class="btn btn-primary">Okay</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	<!-- Modal -->
 	<div class="modal fade" id="sobreModal" tabindex="-1" role="dialog" aria-labelledby="sobreModalLabel"
 		aria-hidden="true">
@@ -392,7 +419,8 @@
 					<!-- Conteúdo do modal vai aqui -->
 					<Strong>Autor:</Strong> Milton Simplicio Gonçalves Junior<br>
 					<p>Para obter mais informações, visite o meu repositório no <a
-							href="https://github.com/msgj1999/FICDEV_ProjetoFinal" target="_blank">GitHub</a>.</p><br><br><br><br>
+							href="https://github.com/msgj1999/FICDEV_ProjetoFinal" target="_blank">GitHub</a>.</p>
+					<br><br><br><br>
 
 					<h3 class="text-center">TECNOLOGIAS USADAS:</h3>
 					<strong>Linguagem:</strong> Java 17<br>
@@ -402,8 +430,9 @@
 					<strong>blabla:</strong> blabla<br><br><br><br><br><br>
 
 					<h3 class="text-center">FUNCIONALIDADES:</h3>
-					
-					<strong>Cadastro de Munições:</strong><br> Nosso sistema permite que você registre todos os tipos de munições
+
+					<strong>Cadastro de Munições:</strong><br> Nosso sistema permite que você registre todos os tipos de
+					munições
 					disponíveis, desde cartuchos de arma de fogo até projéteis especiais. Isso proporciona um controle
 					detalhado do estoque.<br><br>
 					<strong>Edição e Atualização:</strong><br>
@@ -457,6 +486,21 @@
 		var municaoId = 0;
 
 		window.addEventListener('load', () => {
+
+			var url_string = window.location.href; // www.test.com?filename=test
+			var url = new URL(url_string);
+			var paramValue = url.searchParams.get("error");
+			if (paramValue == "rn1"){
+
+			const errorModal = document.getElementById('errorModal');	
+			const myModal = new bootstrap.Modal(errorModal, {
+  			keyboard: false
+			})
+			myModal.toggle();
+			} 
+			
+			
+			
 			const deleteConfirmModal = document.getElementById('deleteConfirmModal');
 			if (deleteConfirmModal) {
 				deleteConfirmModal.addEventListener('show.bs.modal', event => {

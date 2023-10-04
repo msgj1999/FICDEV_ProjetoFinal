@@ -176,6 +176,17 @@
 				min-height: 100vh;
 			}
 		}
+
+		.observacoes {
+			display: inline-block;
+			max-width: 150px;
+			/* Ajuste isso para a quantidade máxima de caracteres que você deseja exibir */
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+		
+		
 	</style>
 </head>
 
@@ -248,7 +259,7 @@
 					</ul>
 				</div>
 			</nav>
-			
+
 			<!-- Conteúdo principal -->
 			<main role="main" class="col-md-6 ml-sm-auto col-lg-8 px-md-4 content">
 				<h1 class="fw-bold display-4 mt-5">Entregas</h1>
@@ -288,7 +299,28 @@
 								<td th:text="${entrega.municao.tipo + ' - ' + entrega.municao.calibre}"></td>
 								<td class="quantity" th:text="${entrega.quantidade}"></td>
 								<td th:text="${entrega.dataEntrega}"></td>
-								<td th:text="${entrega.observacoes}"></td>
+								<td>
+									<!-- Dentro do loop th:each para cada entrega -->
+									<div th:if="${#strings.length(entrega.observacoes) > 10}">
+										<span
+											th:text="${#strings.substring(entrega.observacoes, 0, 10)} + '...'"></span>
+										<button class="btn btn-link show-more-btn" data-toggle="collapse"
+											th:data-target="'#observacoesCollapse' + ${entrega.id}">
+											<span class="show-more-label">Mostrar Mais</span>
+											<i class="fas fa-chevron-down"></i>
+										</button>
+
+									</div>
+									<div th:unless="${#strings.length(entrega.observacoes) > 10}">
+										<span th:text="${entrega.observacoes}"></span>
+									</div>
+									<div class="collapse" th:id="'observacoesCollapse' + ${entrega.id}">
+										<span th:text="${entrega.observacoes}"></span>
+									</div>
+								</td>
+
+
+
 								<td class="d-flex"> <!-- Use a classe d-flex aqui -->
 									<a th:href="@{/entrega/view/atualizar/{id}(id=${entrega.id})}"
 										class="btn btn-primary me-2 mb-0"> <!-- Adicione mb-0 aqui -->
@@ -367,7 +399,8 @@
 					<!-- Conteúdo do modal vai aqui -->
 					<Strong>Autor:</Strong> Milton Simplicio Gonçalves Junior<br>
 					<p>Para obter mais informações, visite o meu repositório no <a
-							href="https://github.com/msgj1999/FICDEV_ProjetoFinal" target="_blank">GitHub</a>.</p><br><br><br><br>
+							href="https://github.com/msgj1999/FICDEV_ProjetoFinal" target="_blank">GitHub</a>.</p>
+					<br><br><br><br>
 
 					<h3 class="text-center">TECNOLOGIAS USADAS:</h3>
 					<strong>Linguagem:</strong> Java 17<br>
@@ -377,8 +410,9 @@
 					<strong>blabla:</strong> blabla<br><br><br><br><br><br>
 
 					<h3 class="text-center">FUNCIONALIDADES:</h3>
-					
-					<strong>Cadastro de Munições:</strong><br> Nosso sistema permite que você registre todos os tipos de munições
+
+					<strong>Cadastro de Munições:</strong><br> Nosso sistema permite que você registre todos os tipos de
+					munições
 					disponíveis, desde cartuchos de arma de fogo até projéteis especiais. Isso proporciona um controle
 					detalhado do estoque.<br><br>
 					<strong>Edição e Atualização:</strong><br>
@@ -451,6 +485,15 @@
 					entregaId = 0;
 				});
 			}
+
+			const showMoreButtons = document.querySelectorAll('.show-more-btn');
+			showMoreButtons.forEach(button => {
+				button.addEventListener('click', () => {
+					const entregaId = button.getAttribute('th:data-target').replace('#observacoesCollapse', '');
+					const observacoesCollapse = document.getElementById(`observacoesCollapse${entregaId}`);
+					observacoesCollapse.classList.toggle('show');
+				});
+			});
 		});
 	</script>
 
