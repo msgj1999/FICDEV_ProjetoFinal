@@ -256,25 +256,25 @@
 				</div>
 			</nav>
 
-				<!-- Conteúdo principal -->
-				<main role="main" class="col-md-6 ml-sm-auto col-lg-8 px-md-4 content">
-					<!-- Adicione mx-auto para centralizar horizontalmente -->
-					<h1 class="fw-bold display-4 mt-5">Cadastro de Usuário</h1>
-					<form action="#" th:action="@{/manutencao/view/cadastrar}" th:object="${manutencao}" method="post">
-						<!-- Mensagens de sucesso e erro aqui -->
-						<div th:if="${param.sucesso}" class="alert alert-success">
-							<p th:text="${param.sucesso}"></p>
-						</div>
-						<div th:if="${param.error}" class="alert alert-danger">
-							<p th:text="${param.error}"></p>
-						</div>
+			<!-- Conteúdo principal -->
+			<main role="main" class="col-md-6 ml-sm-auto col-lg-8 px-md-4 content">
+				<!-- Adicione mx-auto para centralizar horizontalmente -->
+				<h1 class="fw-bold display-4 mt-5">Cadastro de Usuário</h1>
+				<form action="#" th:action="@{/manutencao/view/cadastrar}" th:object="${manutencao}" method="post">
 
-						<div class="form-group">
-							<input type="hidden" th:field="*{id}" class="form-control" id="id">
-						</div>
-						
-						<div class="form-group form-group row d-flex justify-content-center">
-							<div class="col-12 col-md-6">
+					<div th:if="${param.sucesso}" class="alert alert-success">
+						<p th:text="${param.sucesso}"></p>
+					</div>
+					<div th:if="${param.error}" class="alert alert-danger">
+						<p th:text="${param.error}"></p>
+					</div>
+
+					<div class="form-group">
+						<input type="hidden" th:field="*{id}" class="form-control" id="id">
+					</div>
+
+					<div class="form-group form-group row d-flex justify-content-center">
+						<div class="col-12 col-md-6">
 							<label for="status">Status</label>
 							<select th:field="*{status}" class="form-control" id="status">
 								<option th:selected="${manutencao.status == 'Concluída'}" th:text="Concluída"
@@ -284,28 +284,26 @@
 									value="Pendente">
 								</option>
 							</select>
-							</div>
 						</div>
+					</div>
 
-
-
-						<div class="form-group form-group row d-flex justify-content-center">
-							<div class="col-12 col-md-6">
+					<div class="form-group form-group row d-flex justify-content-center">
+						<div class="col-12 col-md-6">
 							<label for="dataManutencao">Data de Manutenção</label>
 							<input type="date" th:field="*{dataManutencao}" class="form-control" id="dataManutencao">
 							<span class="text-danger" th:if="${#fields.hasErrors('dataManutencao')}"
 								th:errors="*{dataManutencao}"></span>
-								</div>
 						</div>
+					</div>
 
-						<div class="mb-3">
-							<div class="text-center">
-								<a th:href="@{/manutencao/view/listar}" class="mt-4 btn btn-secondary">Voltar</a>
-								<button type="submit" class="mt-4 btn btn-primary">Cadastrar</button>
-							</div>
+					<div class="mb-3">
+						<div class="text-center">
+							<a th:href="@{/manutencao/view/listar}" class="mt-4 btn btn-secondary">Voltar</a>
+							<button type="submit" class="mt-4 btn btn-primary">Cadastrar</button>
 						</div>
-					</form>
-				</main>
+					</div>
+				</form>
+			</main>
 		</div>
 
 		<!-- Modal -->
@@ -320,41 +318,45 @@
 						</button>
 					</div>
 					<div class="modal-body">
-					<!-- Conteúdo do modal vai aqui -->
-					<Strong>Autor:</Strong> Milton Simplicio Gonçalves Junior<br>
-					<p>Para obter mais informações, visite o meu repositório no <a
-							href="https://github.com/msgj1999/FICDEV_ProjetoFinal" target="_blank">GitHub</a>.</p><br><br><br><br>
+						<!-- Conteúdo do modal vai aqui -->
+						<Strong>Autor:</Strong> Milton Simplicio Gonçalves Junior<br>
+						<p>Para obter mais informações, visite o meu repositório no <a
+								href="https://github.com/msgj1999/FICDEV_ProjetoFinal" target="_blank">GitHub</a>.</p>
+						<br><br><br><br>
 
-					<h3 class="text-center">TECNOLOGIAS USADAS:</h3>
-					<strong>Linguagem:</strong> Java 17<br>
-					<strong>Frameworks:</strong> Spring Boot, Bootstrap<br>
-					<strong>Banco de Dados:</strong> PostgreSQL<br>
-					<strong>blabla:</strong> blabla<br>
-					<strong>blabla:</strong> blabla<br><br><br><br><br><br>
+						<h3 class="text-center">TECNOLOGIAS USADAS:</h3>
+						<strong>Linguagem:</strong> Java 17<br>
+						<strong>Frameworks:</strong> Spring Boot, Bootstrap<br>
+						<strong>Banco de Dados:</strong> PostgreSQL<br>
+						<strong>blabla:</strong> blabla<br>
+						<strong>blabla:</strong> blabla<br><br><br><br><br><br>
 
-					<h3 class="text-center">FUNCIONALIDADES:</h3>
-					
-					<strong>Cadastro de Munições:</strong><br> Nosso sistema permite que você registre todos os tipos de munições
-					disponíveis, desde cartuchos de arma de fogo até projéteis especiais. Isso proporciona um controle
-					detalhado do estoque.<br><br>
-					<strong>Edição e Atualização:</strong><br>
-					Mantenha seus registros atualizados e precisos. A funcionalidade de edição permite que você faça
-					correções ou atualize informações sempre que necessário.<br><br>
-					<strong>Exclusão Segura:</strong><br>
-					Quando munições não são mais necessárias, você pode removê-las de seu inventário com segurança e
-					precisão, mantendo o controle total.<br><br>
-					<strong>Gestão de Entregas:</strong><br>
-					Registramos as entregas de munições para Policiais, fornecendo rastreamento e registros
-					detalhados.<br><br>
-					<strong>Manutenção Preventiva:</strong><br>
-					Registre e gerencie a manutenção regular das munições para garantir que elas estejam sempre em
-					perfeito estado de funcionamento.<br><br>
-					<strong>Controle de Usuários:</strong><br>
-					Atribua permissões personalizadas para diferentes usuários do sistema, garantindo que apenas pessoal
-					autorizado tenha acesso a funções críticas.<br><br>
-					<strong>Dashboard Intuitivo:</strong><br>
-					Nosso painel de controle fornece uma visão geral clara do status de suas munições, entregas,
-					manutenções e outros aspectos essenciais.<br><br>
+						<h3 class="text-center">FUNCIONALIDADES:</h3>
+
+						<strong>Cadastro de Munições:</strong><br> Nosso sistema permite que você registre todos os
+						tipos de munições
+						disponíveis, desde cartuchos de arma de fogo até projéteis especiais. Isso proporciona um
+						controle
+						detalhado do estoque.<br><br>
+						<strong>Edição e Atualização:</strong><br>
+						Mantenha seus registros atualizados e precisos. A funcionalidade de edição permite que você faça
+						correções ou atualize informações sempre que necessário.<br><br>
+						<strong>Exclusão Segura:</strong><br>
+						Quando munições não são mais necessárias, você pode removê-las de seu inventário com segurança e
+						precisão, mantendo o controle total.<br><br>
+						<strong>Gestão de Entregas:</strong><br>
+						Registramos as entregas de munições para Policiais, fornecendo rastreamento e registros
+						detalhados.<br><br>
+						<strong>Manutenção Preventiva:</strong><br>
+						Registre e gerencie a manutenção regular das munições para garantir que elas estejam sempre em
+						perfeito estado de funcionamento.<br><br>
+						<strong>Controle de Usuários:</strong><br>
+						Atribua permissões personalizadas para diferentes usuários do sistema, garantindo que apenas
+						pessoal
+						autorizado tenha acesso a funções críticas.<br><br>
+						<strong>Dashboard Intuitivo:</strong><br>
+						Nosso painel de controle fornece uma visão geral clara do status de suas munições, entregas,
+						manutenções e outros aspectos essenciais.<br><br>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>

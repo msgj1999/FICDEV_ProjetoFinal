@@ -24,7 +24,6 @@
 
 		.sidebar {
 			width: 280px;
-			min-height: 100vh;
 			background-color: #f8f9fa;
 			padding: 20px;
 			position: fixed;
@@ -137,9 +136,20 @@
     /* Adicione outros estilos conforme necessário */
 }
 
-.custom-modal-header .close {
-    color: white;
-}
+		.custom-modal-header .close {
+			color: white;
+			background-color: transparent;
+			padding: 0px;
+			font-size: 30px;
+			border: none;
+		}
+
+		@media (min-width: 768px) {
+			.vh-md-100 {
+				min-height: 100vh;
+			}
+		}
+
 	</style>
 </head>
 
@@ -147,7 +157,7 @@
 	<div class="container-fluid">
 		<div class="row">
 			<!-- Barra lateral -->
-			<nav id="sidebar" class="col-md-3 col-lg-2 d-md-flex flex-column justify-content-between sidebar">
+			<nav id="sidebar" class="col-md-3 col-lg-2 d-md-flex flex-column justify-content-between sidebar vh-md-100">
 
 				<a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
 					<span class="fs-4">Gestão de Munições</span>

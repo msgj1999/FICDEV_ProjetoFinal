@@ -14,7 +14,6 @@
 
 		.sidebar {
 			width: 280px;
-			min-height: 100vh;
 			background-color: #f8f9fa;
 			padding: 20px;
 			position: fixed;
@@ -166,14 +165,10 @@
 
 		.custom-modal-header .close {
 			color: white;
-		}
-
-
-		/* Estilo para campos de entrada */
-		.input-field {
-			width: 100%;
-			max-width: 350px;
-			/* Define a largura máxima desejada */
+			background-color: transparent;
+			padding: 0px;
+			font-size: 30px;
+			border: none;
 		}
 
 		/* Estilo para selects */
@@ -182,90 +177,12 @@
 			max-width: 350px;
 			/* Define a largura máxima desejada */
 		}
-		
-				h1 {
-			text-align: center;
+
+		@media (min-width: 768px) {
+			.vh-md-100 {
+				min-height: 100vh;
+			}
 		}
-
-		.form-container {
-			max-width: 500px;
-			margin: 0 auto;
-			padding: 20px;
-			background-color: #fff;
-			border: 1px solid #ccc;
-			border-radius: 5px;
-			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-		}
-
-		.form-container label,
-		.form-container input,
-		.form-container select {
-			display: block;
-			margin-bottom: 10px;
-		}
-
-		.form-container input[type="text"],
-		.form-container select {
-			width: 100%;
-			padding: 10px;
-			border: 1px solid #ccc;
-			border-radius: 5px;
-		}
-
-        button[type="submit"] {
-            background-color: #a573ef;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            height: 100%; /* Define a altura para corresponder ao botão "Voltar" */
-            display: flex;
-            align-items: center; /* Alinha o conteúdo verticalmente ao centro */
-        }
-
-        button[type="submit"]:hover {
-            background-color: #45a049;
-        }
-
-		/* Estilos para a mensagem de sucesso */
-		.message-container {
-			background-color: #4CAF50;
-			color: white;
-			padding: 10px;
-			border-radius: 5px;
-			text-align: center;
-			margin-top: 20px;
-			display: none;
-		}
-
-		.overlay {
-			display: none;
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background-color: rgba(0, 0, 0, 0.7);
-			z-index: 999;
-		}
-		
-		                /* Estilo personalizado para o botão "Voltar" */
-        .button-voltar {
-            background-color: #6c757d;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            height: 100%; /* Define a altura para corresponder ao botão "Salvar" */
-            display: flex;
-            align-items: center; /* Alinha o conteúdo verticalmente ao centro */
-        }
-
-        .button-voltar:hover {
-            background-color: #495057;
-        }
 	</style>
 </head>
 
@@ -273,7 +190,7 @@
 	<div class="container-fluid">
 		<div class="row">
 			<!-- Barra lateral -->
-			<nav id="sidebar" class="col-md-3 col-lg-2 d-md-flex flex-column justify-content-between sidebar">
+			<nav id="sidebar" class="col-md-3 col-lg-2 d-md-flex flex-column justify-content-between sidebar vh-md-100">
 				<a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
 					<span class="fs-4">Gestão de Munições</span>
 				</a>
@@ -314,7 +231,8 @@
 						</a>
 					</li>
 					<li class="nav-item clickable-link">
-						<a href="#" data-toggle="modal" class="nav-link" data-target="#sobreModal">
+						<a href="#" data-toggle="modal" class="nav-link" style="color:#007BFF !important;"
+							data-target="#sobreModal">
 							<img src="/images/info.png" alt="imagem info" width="18" height="18" class="me-1">
 							Sobre o sistema
 						</a>
@@ -338,33 +256,45 @@
 				</div>
 			</nav>
 
-			<div class="container">
-				<!-- Conteúdo principal -->
-				<main role="main" class="col-md-8 mx-auto px-md-4 content">
-					<!-- Adicione mx-auto para centralizar horizontalmente -->
-					<h1 class="fw-bold display-4 mt-5">Editar Manutenção</h1>
-					
-					<form th:action="@{/manutencao/view/atualizar/{id}(id=${manutencao.id})}" method="post">
-						<label for="dataManutencao">Data de Manutenção:</label>
-						<input type="date" id="dataManutencao" name="dataManutencao"
-							th:value="*{manutencao.dataManutencao}" required>
+			<!-- Conteúdo principal -->
+			<main role="main" class="col-md-6 ml-sm-auto col-lg-8 px-md-4 content">
+				<!-- Adicione mx-auto para centralizar horizontalmente -->
+				<h1 class="fw-bold display-4 mt-5">Editar Manutenção</h1>
 
-						<label for="status">Status:</label>
-						<select id="status" name="status" th:value="*{manutencao.status}" required>
-							<option th:selected="${manutencao.status == 'Concluída'}" th:text="Concluída"
-								value="Concluída"></option>
-							<option th:selected="${manutencao.status == 'Pendente'}" th:text="Pendente"
-								value="Pendente"></option>
-						</select>
+				<form id="formManutencao" th:action="@{/manutencao/view/atualizar/{id}(id=${manutencao.id})}" method="post">
 
-						<div style="display: flex; justify-content: space-between; margin-top: 20px;">
-							<button type="button" class="button-voltar"
-								onclick="window.location.href = '/manutencao/view/listar';">Voltar</button>
-							<button type="submit">Salvar</button>
+					<div class="form-group form-group row d-flex justify-content-center">
+						<div class="col-12 col-md-6">
+							<label for="status">Status:</label>
+							<select id="status" name="status" class="form-control" th:value="*{manutencao.status}"
+								required>
+								<option th:selected="${manutencao.status == 'Concluída'}" th:text="Concluída"
+									value="Concluída">
+								</option>
+								<option th:selected="${manutencao.status == 'Pendente'}" th:text="Pendente"
+									value="Pendente">
+								</option>
+							</select>
 						</div>
-					</form>
-				</main>
-			</div>
+					</div>
+
+					<div class="form-group form-group row d-flex justify-content-center">
+						<div class="col-12 col-md-6">
+							<label for="dataManutencao">Data de Manutenção:</label>
+							<input type="date" id="dataManutencao" class="form-control" name="dataManutencao"
+								th:value="*{manutencao.dataManutencao}" required>
+						</div>
+					</div>
+
+					<div class="mb-3">
+						<div class="text-center">
+							<a th:href="@{/manutencao/view/listar}" class="mt-4 btn btn-secondary">Voltar</a>
+							<button type="submit" class="mt-4 btn btn-primary">Salvar</button>
+						</div>
+					</div>
+
+				</form>
+			</main>
 		</div>
 
 		<!-- Modal -->
@@ -434,6 +364,7 @@
 				});
 		</script>
 
+
 		<div vw class="enabled">
 			<div vw-access-button class="active"></div>
 			<div vw-plugin-wrapper>
@@ -448,6 +379,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+		
 </body>
 
 </html>
