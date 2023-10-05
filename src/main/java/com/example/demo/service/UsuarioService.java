@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.UsuarioDTO;
@@ -28,6 +29,9 @@ public class UsuarioService {
     
     @Autowired
     private UserActionService userActionService;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     
 
     /*public List<Usuario> getAllUsuarios() {
@@ -52,7 +56,13 @@ public class UsuarioService {
 
         atualizado.setNome(usuario.getNome());
         atualizado.setEmail(usuario.getEmail());
-        atualizado.setSenha(usuario.getSenha());
+        
+        // Verifique se a nova senha não está vazia antes de atualizar
+        if (!usuario.getSenha().isEmpty()) {
+            // Criptografe a nova senha antes de atualizar
+            atualizado.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        }
+        
         atualizado.setRole(usuario.getRole());
         
         Usuario usuarioLogado = getUsuarioLogado2(); 

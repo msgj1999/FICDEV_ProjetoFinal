@@ -83,6 +83,7 @@ public class MunicaoControllerView {
             municaoService.saveMunicao(municao);
             redirectAttributes.addFlashAttribute("sucesso", "Munição cadastrada com sucesso!");
             return new ModelAndView("redirect:/municao/view/listar");
+            
         } catch (BusinessException e) {
             modelAndView.addObject("error", "Erro no cadastro: " + e.getMessage());
             return modelAndView;
