@@ -59,7 +59,7 @@ public class MunicaoControllerView {
             // Lidar com a exceção NotFoundException, se necessário
         }
         
-        return "redirect:/municao/view/listar";
+        return "redirect:/municao/view/listar?success=s2";
     }
 
 
@@ -71,7 +71,7 @@ public class MunicaoControllerView {
     }
 
     @PostMapping("/cadastrar")
-    public ModelAndView saveMunicao(@Valid @ModelAttribute("municao") Municao municao, BindingResult result, RedirectAttributes redirectAttributes) {
+    public ModelAndView saveMunicao(@Valid @ModelAttribute("municao") Municao municao, BindingResult result) {
         ModelAndView modelAndView = new ModelAndView("cadastroMunicao");
 
         if (result.hasErrors()) {
@@ -81,8 +81,8 @@ public class MunicaoControllerView {
 
         try {
             municaoService.saveMunicao(municao);
-            redirectAttributes.addFlashAttribute("sucesso", "Munição cadastrada com sucesso!");
-            return new ModelAndView("redirect:/municao/view/listar");
+
+            return new ModelAndView("redirect:/municao/view/listar?success=s1");
             
         } catch (BusinessException e) {
             modelAndView.addObject("error", "Erro no cadastro: " + e.getMessage());
@@ -109,7 +109,7 @@ public class MunicaoControllerView {
 
         municaoService.updateMunicao(municao, id);
         model.addAttribute("sucesso", "Munição atualizada com sucesso!");
-        return new ModelAndView("redirect:/municao/view/listar");
+        return new ModelAndView("redirect:/municao/view/listar?success=s3");
     }
 
 
