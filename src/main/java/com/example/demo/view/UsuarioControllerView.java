@@ -39,7 +39,7 @@ public class UsuarioControllerView {
     
     @GetMapping("/listar")
     public ModelAndView listaUsuarios(
-        @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        @PageableDefault(size = 7, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         ModelAndView view = new ModelAndView("listaUsuario");
         Page<Usuario> usuarios = usuarioService.getAllUsuarios(pageable);
         view.addObject("usuarios", usuarios);
@@ -49,7 +49,7 @@ public class UsuarioControllerView {
     @GetMapping("/remover/{id}")
     public String removerUsuario(@PathVariable("id") int id) throws NotFoundException {
         usuarioService.deleteUsuario(id);
-        return "redirect:/usuario/view/listar";
+        return "redirect:/usuario/view/listar?success=s2";
     }
     
     @GetMapping("/cadastrar")
@@ -70,7 +70,7 @@ public class UsuarioControllerView {
         usuario.setSenha(passwordEncode.encode(usuario.getSenha()));
         usuarioService.saveUsuario(usuario);
 		redirectAttributes.addFlashAttribute("sucesso", "Usuário cadastrado com sucesso!");
-		return new ModelAndView("redirect:/usuario/view/listar");
+		return new ModelAndView("redirect:/usuario/view/listar?success=s1");
     }
 
     
@@ -91,7 +91,7 @@ public class UsuarioControllerView {
 
         usuarioService.updateUsuario(usuario, id);
         model.addAttribute("sucesso", "Usuário atualizado com sucesso!");
-        return new ModelAndView("redirect:/usuario/view/listar");
+        return new ModelAndView("redirect:/usuario/view/listar?success=s3");
     }
     
     @GetMapping("/buscar")

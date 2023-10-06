@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface UserActionRepository extends JpaRepository<UserAction, Long> {
 
-    @Query("SELECT ua FROM UserAction ua ORDER BY ua.timestamp DESC LIMIT 5")
+    @Query("SELECT ua FROM UserAction ua ORDER BY ua.timestamp DESC LIMIT 7")
     List<UserAction> findLastUserActions(int limit);
 
 }

@@ -38,7 +38,7 @@ public class EntregaControllerView {
 
     @GetMapping("/listar")
     public ModelAndView listaEntregas(
-        @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        @PageableDefault(size = 7, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         ModelAndView view = new ModelAndView("listaEntrega");
         Page<Entrega> entregas = entregaService.getAllEntregas(pageable);
         view.addObject("entregas", entregas);
@@ -49,7 +49,7 @@ public class EntregaControllerView {
     @GetMapping("/remover/{id}")
     public String removerEntrega(@PathVariable("id") int id) throws NotFoundException {
         entregaService.deleteEntrega(id);
-        return "redirect:/entrega/view/listar";
+        return "redirect:/entrega/view/listar?success=s2";
     }
 
     @GetMapping("/cadastrar")
@@ -73,7 +73,7 @@ public class EntregaControllerView {
         try {
             entregaService.cadastrarEntrega(entrega);
             redirectAttributes.addFlashAttribute("sucesso", "Entrega cadastrada com sucesso!");
-            return new ModelAndView("redirect:/entrega/view/listar");
+            return new ModelAndView("redirect:/entrega/view/listar?success=s1");
         } catch (NotFoundException e) {
             modelAndView.addObject("error", e.getMessage());
             modelAndView.addObject("municoes", municaoService.getAllMunicoes());
@@ -104,7 +104,7 @@ public class EntregaControllerView {
         try {
             entregaService.updateEntrega(entrega, id);
             redirectAttributes.addFlashAttribute("sucesso", "Entrega atualizada com sucesso!");
-            return new ModelAndView("redirect:/entrega/view/listar");
+            return new ModelAndView("redirect:/entrega/view/listar?success=s3");
         } catch (NotFoundException e) {
             modelAndView.addObject("error", e.getMessage());
             modelAndView.addObject("municoes", municaoService.getAllMunicoes());

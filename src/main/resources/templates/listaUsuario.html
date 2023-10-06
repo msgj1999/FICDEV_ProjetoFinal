@@ -179,8 +179,8 @@
 	</style>
 </head>
 
-<body>
-	<div class="container-fluid">
+<div class="container-fluid">
+	<div class="row">
 		<!-- Barra lateral -->
 		<nav id="sidebar" class="col-md-3 col-lg-2 d-md-flex flex-column justify-content-between sidebar vh-md-100">
 			<a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
@@ -280,12 +280,13 @@
 							<td th:text="${usuario.nome}"></td>
 							<td th:text="${usuario.role}"></td>
 							<td th:text="${usuario.email}"></td>
-							<td class="d-flex"> <!-- Use a classe d-flex aqui -->
+							
+							<td>
 								<a th:href="@{/usuario/view/atualizar/{id}(id=${usuario.id})}"
-									class="btn btn-primary me-2 mb-0"> <!-- Adicione mb-0 aqui -->
+									class="btn btn-primary me-2 me-2 mb-2 mb-xlg-0 mt-2"> <!-- Adicione mb-0 aqui -->
 									<i class="fas fa-edit"></i> Editar
 								</a>
-								<button type="button" class="btn btn-danger mb-0" data-bs-toggle="modal"
+								<button type="button" class="btn btn-danger mb-2 mb-xlg-0 mt-2" data-bs-toggle="modal"
 									data-bs-target="#deleteConfirmModal" th:data-bs-usuarioId=${usuario.id}>
 									Excluir
 								</button>
@@ -317,198 +318,274 @@
 			</nav>
 		</main>
 	</div>
+</div>
 
-	<!-- Modal -->
-	<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel"
-		aria-hidden="true">
-		<div class="modal-dialog"> <!-- Caso queira centralizar a modal adicione a classe modal-dialog-centered -->
-			<div class="modal-content">
-				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="deleteConfirmModalLabel">Excluir Registro</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					Tem Certeza que deseja excluir
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-					<form th:action="@{/usuario/view/remover/}" method="delete" style="cursor: pointer"
-						class="delete-form">
-						<!-- Button trigger modal -->
-						<button type="submit" class="btn btn-danger">Sim, Excluir</button>
-					</form>
-				</div>
+	<!-- TOAST -->
+	<div class="toast-container p-3 top-0 end-0">
+		<div class="toast text-bg-success" id="toast-success-edit">
+			<div class="toast-header">
+				<strong class="me-auto fs-4">Sucesso</strong>
+				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
 			</div>
-		</div>
-	</div>
-	<!-- Modal para exibir o perfil do usuário -->
-	<div class="modal fade" id="perfilModal" tabindex="-1" aria-labelledby="perfilModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="perfilModalLabel">Perfil do Usuário</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body" id="perfilModalBody">
-					<!-- Aqui as informações do perfil do usuário serão inseridas dinamicamente -->
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-				</div>
+			<div class="toast-body fs-5">
+				Usuário editado com sucesso.
 			</div>
 		</div>
 	</div>
 
-	<!-- Modal -->
-	<div class="modal fade" id="sobreModal" tabindex="-1" role="dialog" aria-labelledby="sobreModalLabel"
-		aria-hidden="true">
-		<div class="modal-dialog modal-lg modal-dialog-scrollable"> <!-- Remova a classe modal-dialog-centered -->
-			<div class="modal-content">
-				<div class="modal-header custom-modal-header">
-					<h5 class="modal-title" id="sobreModalLabel">Sobre o sistema</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<!-- Conteúdo do modal vai aqui -->
-					<Strong>Autor:</Strong> Milton Simplicio Gonçalves Junior<br>
-					<p>Para obter mais informações, visite o meu repositório no <a
-							href="https://github.com/msgj1999/FICDEV_ProjetoFinal" target="_blank">GitHub</a>.</p><br><br><br><br>
-
-					<h3 class="text-center">TECNOLOGIAS USADAS:</h3>
-					<strong>Linguagem:</strong> Java 17<br>
-					<strong>Frameworks:</strong> Spring Boot, Bootstrap<br>
-					<strong>Banco de Dados:</strong> PostgreSQL<br>
-					<strong>blabla:</strong> blabla<br>
-					<strong>blabla:</strong> blabla<br><br><br><br><br><br>
-
-					<h3 class="text-center">FUNCIONALIDADES:</h3>
-					
-					<strong>Cadastro de Munições:</strong><br> Nosso sistema permite que você registre todos os tipos de munições
-					disponíveis, desde cartuchos de arma de fogo até projéteis especiais. Isso proporciona um controle
-					detalhado do estoque.<br><br>
-					<strong>Edição e Atualização:</strong><br>
-					Mantenha seus registros atualizados e precisos. A funcionalidade de edição permite que você faça
-					correções ou atualize informações sempre que necessário.<br><br>
-					<strong>Exclusão Segura:</strong><br>
-					Quando munições não são mais necessárias, você pode removê-las de seu inventário com segurança e
-					precisão, mantendo o controle total.<br><br>
-					<strong>Gestão de Entregas:</strong><br>
-					Registramos as entregas de munições para Policiais, fornecendo rastreamento e registros
-					detalhados.<br><br>
-					<strong>Manutenção Preventiva:</strong><br>
-					Registre e gerencie a manutenção regular das munições para garantir que elas estejam sempre em
-					perfeito estado de funcionamento.<br><br>
-					<strong>Controle de Usuários:</strong><br>
-					Atribua permissões personalizadas para diferentes usuários do sistema, garantindo que apenas pessoal
-					autorizado tenha acesso a funções críticas.<br><br>
-					<strong>Dashboard Intuitivo:</strong><br>
-					Nosso painel de controle fornece uma visão geral clara do status de suas munições, entregas,
-					manutenções e outros aspectos essenciais.<br><br>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-				</div>
+	<div class="toast-container p-3 top-0 end-0">
+		<div class="toast text-bg-success" id="toast-success-create">
+			<div class="toast-header">
+				<strong class="me-auto">Sucesso</strong>
+				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+			<div class="toast-body">
+				Usuário cadastrado com sucesso.
 			</div>
 		</div>
 	</div>
 
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<div class="toast-container p-3 top-0 end-0">
+		<div class="toast text-bg-success" id="toast-success-delete">
+			<div class="toast-header">
+				<strong class="me-auto">Sucesso</strong>
+				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+			<div class="toast-body">
+				Usuário deletado com sucesso.
+			</div>
+		</div>
+	</div>
+	
+<!-- Modal -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog"> <!-- Caso queira centralizar a modal adicione a classe modal-dialog-centered -->
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="deleteConfirmModalLabel">Excluir Registro</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				Tem Certeza que deseja excluir
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+				<form th:action="@{/usuario/view/remover/}" method="delete" style="cursor: pointer" class="delete-form">
+					<!-- Button trigger modal -->
+					<button type="submit" class="btn btn-danger">Sim, Excluir</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal para exibir o perfil do usuário -->
+<div class="modal fade" id="perfilModal" tabindex="-1" aria-labelledby="perfilModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="perfilModalLabel">Perfil do Usuário</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="perfilModalBody">
+				<!-- Aqui as informações do perfil do usuário serão inseridas dinamicamente -->
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+			</div>
+		</div>
+	</div>
+</div>
 
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Modal -->
+<div class="modal fade" id="sobreModal" tabindex="-1" role="dialog" aria-labelledby="sobreModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog modal-lg modal-dialog-scrollable"> <!-- Remova a classe modal-dialog-centered -->
+		<div class="modal-content">
+			<div class="modal-header custom-modal-header">
+				<h5 class="modal-title" id="sobreModalLabel">Sobre o sistema</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<!-- Conteúdo do modal vai aqui -->
+				<Strong>Autor:</Strong> Milton Simplicio Gonçalves Junior<br>
+				<p>Para obter mais informações, visite o meu repositório no <a
+						href="https://github.com/msgj1999/FICDEV_ProjetoFinal" target="_blank">GitHub</a>.</p>
+				<br><br><br><br>
+
+				<h3 class="text-center">TECNOLOGIAS USADAS:</h3>
+				<strong>Linguagem:</strong> Java 17<br>
+				<strong>Frameworks:</strong> Spring Boot, Bootstrap<br>
+				<strong>Banco de Dados:</strong> PostgreSQL<br>
+				<strong>blabla:</strong> blabla<br>
+				<strong>blabla:</strong> blabla<br><br><br><br><br><br>
+
+				<h3 class="text-center">FUNCIONALIDADES:</h3>
+
+				<strong>Cadastro de Munições:</strong><br> Nosso sistema permite que você registre todos os tipos de
+				munições
+				disponíveis, desde cartuchos de arma de fogo até projéteis especiais. Isso proporciona um controle
+				detalhado do estoque.<br><br>
+				<strong>Edição e Atualização:</strong><br>
+				Mantenha seus registros atualizados e precisos. A funcionalidade de edição permite que você faça
+				correções ou atualize informações sempre que necessário.<br><br>
+				<strong>Exclusão Segura:</strong><br>
+				Quando munições não são mais necessárias, você pode removê-las de seu inventário com segurança e
+				precisão, mantendo o controle total.<br><br>
+				<strong>Gestão de Entregas:</strong><br>
+				Registramos as entregas de munições para Policiais, fornecendo rastreamento e registros
+				detalhados.<br><br>
+				<strong>Manutenção Preventiva:</strong><br>
+				Registre e gerencie a manutenção regular das munições para garantir que elas estejam sempre em
+				perfeito estado de funcionamento.<br><br>
+				<strong>Controle de Usuários:</strong><br>
+				Atribua permissões personalizadas para diferentes usuários do sistema, garantindo que apenas pessoal
+				autorizado tenha acesso a funções críticas.<br><br>
+				<strong>Dashboard Intuitivo:</strong><br>
+				Nosso painel de controle fornece uma visão geral clara do status de suas munições, entregas,
+				manutenções e outros aspectos essenciais.<br><br>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+	// Use JavaScript para buscar o nome do usuário logado
+	fetch('/usuario/api/nome-usuario-logado')
+		.then(response => response.text())
+		.then(nomeUsuarioLogado => {
+			// Divida o nome completo em palavras
+			const palavrasNome = nomeUsuarioLogado.split(' ');
+
+			// Pegue apenas a primeira palavra (primeiro nome)
+			const primeiroNome = palavrasNome[0];
+
+			// Atualize o nome do usuário no elemento HTML
+			document.getElementById('nomeUsuario').textContent = primeiroNome;
+		})
+		.catch(error => {
+			console.error('Erro ao buscar o nome do usuário logado:', error);
+		});
+</script>
+
 	<script>
-		// Use JavaScript para buscar o nome do usuário logado
-		fetch('/usuario/api/nome-usuario-logado')
-			.then(response => response.text())
-			.then(nomeUsuarioLogado => {
-				// Divida o nome completo em palavras
-				const palavrasNome = nomeUsuarioLogado.split(' ');
 
-				// Pegue apenas a primeira palavra (primeiro nome)
-				const primeiroNome = palavrasNome[0];
-
-				// Atualize o nome do usuário no elemento HTML
-				document.getElementById('nomeUsuario').textContent = primeiroNome;
-			})
-			.catch(error => {
-				console.error('Erro ao buscar o nome do usuário logado:', error);
-			});
-	</script>
+		const toggleSuccessCreateToast = () => {
+			$('#toast-success-create').toast('show');
+		}
+		const toggleSuccessDeleteToast = () => {
+			$('#toast-success-delete').toast('show');
+		}
+		const toggleSuccessEditToast = () => {
+			$('#toast-success-edit').toast('show');
+		}
 
 
-	<script>
-		var usuarioId = 0;
+		const checkSuccessFailure = () => {
+			var url_string = window.location.href; // www.test.com?filename=test
+			var url = new URL(url_string);
+			var paramFail = url.searchParams.get("error");
+			var paramSuccess = url.searchParams.get("success");
+			if (paramFail == "rn1") {
+				toggleErrorModal();
+			} else if (paramSuccess == "s1") {
+				toggleSuccessCreateToast();
+			} else if (paramSuccess == "s2") {
+				toggleSuccessDeleteToast();
+			} else if (paramSuccess == "s3") {
+				toggleSuccessEditToast();
+			}
+
+		}
+
 
 		window.addEventListener('load', () => {
-			const deleteConfirmModal = document.getElementById('deleteConfirmModal');
-			if (deleteConfirmModal) {
-				deleteConfirmModal.addEventListener('show.bs.modal', event => {
-					// Button that triggered the modal
-					const button = event.relatedTarget;
-					// Extract info from data-bs-* attributes
-					const uId = button.getAttribute('data-bs-usuarioId');
-					usuarioId = uId;
 
-					let deleteForm = deleteConfirmModal.getElementsByClassName('delete-form')[0];
-					deleteForm.action = `/usuario/view/remover/${uId}`;
+			checkSuccessFailure();
 
-					const modalBodyInput = deleteConfirmModal.querySelector('.modal-body');
-					modalBodyInput.textContent = `Tem certeza que deseja excluir o usuário de ID ${uId} ?`;
-				});
-
-				deleteConfirmModal.addEventListener('hidden.bs.modal', () => {
-					usuarioId = 0;
-				});
-			}
 		});
 	</script>
 
-	<script type="text/javascript">
-		// Use JavaScript para buscar e exibir o perfil do usuário no modal
-		document.addEventListener('DOMContentLoaded', () => {
-			const perfilModal = document.getElementById('perfilModal');
-			const perfilModalBody = document.getElementById('perfilModalBody');
+<script>
+	var usuarioId = 0;
 
-			// Event listener para abrir o modal quando o link do perfil for clicado
-			const linkPerfil = document.querySelector('a[href="/perfil"]');
-			linkPerfil.addEventListener('click', () => {
-				// Faça uma solicitação AJAX para buscar as informações do perfil do usuário
-				fetch('/perfil')
-					.then(response => response.text())
-					.then(perfilHTML => {
-						// Preencha o corpo do modal com as informações do perfil
-						perfilModalBody.innerHTML = perfilHTML;
+	window.addEventListener('load', () => {
+		const deleteConfirmModal = document.getElementById('deleteConfirmModal');
+		if (deleteConfirmModal) {
+			deleteConfirmModal.addEventListener('show.bs.modal', event => {
+				// Button that triggered the modal
+				const button = event.relatedTarget;
+				// Extract info from data-bs-* attributes
+				const uId = button.getAttribute('data-bs-usuarioId');
+				usuarioId = uId;
 
-						// Abra o modal
-						$(perfilModal).modal('show');
-					})
-					.catch(error => {
-						console.error('Erro ao buscar as informações do perfil:', error);
-					});
+				let deleteForm = deleteConfirmModal.getElementsByClassName('delete-form')[0];
+				deleteForm.action = `/usuario/view/remover/${uId}`;
+
+				const modalBodyInput = deleteConfirmModal.querySelector('.modal-body');
+				modalBodyInput.textContent = `Tem certeza que deseja excluir o usuário de ID ${uId} ?`;
 			});
+
+			deleteConfirmModal.addEventListener('hidden.bs.modal', () => {
+				usuarioId = 0;
+			});
+		}
+	});
+</script>
+
+<script type="text/javascript">
+	// Use JavaScript para buscar e exibir o perfil do usuário no modal
+	document.addEventListener('DOMContentLoaded', () => {
+		const perfilModal = document.getElementById('perfilModal');
+		const perfilModalBody = document.getElementById('perfilModalBody');
+
+		// Event listener para abrir o modal quando o link do perfil for clicado
+		const linkPerfil = document.querySelector('a[href="/perfil"]');
+		linkPerfil.addEventListener('click', () => {
+			// Faça uma solicitação AJAX para buscar as informações do perfil do usuário
+			fetch('/perfil')
+				.then(response => response.text())
+				.then(perfilHTML => {
+					// Preencha o corpo do modal com as informações do perfil
+					perfilModalBody.innerHTML = perfilHTML;
+
+					// Abra o modal
+					$(perfilModal).modal('show');
+				})
+				.catch(error => {
+					console.error('Erro ao buscar as informações do perfil:', error);
+				});
 		});
+	});
 
 
-	</script>
+</script>
 
 
-	<div vw class="enabled">
-		<div vw-access-button class="active"></div>
-		<div vw-plugin-wrapper>
-			<div class="vw-plugin-top-wrapper"></div>
-		</div>
+<div vw class="enabled">
+	<div vw-access-button class="active"></div>
+	<div vw-plugin-wrapper>
+		<div class="vw-plugin-top-wrapper"></div>
 	</div>
-	<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-	<script>
-		new window.VLibras.Widget('https://vlibras.gov.br/app');
-	</script>
+</div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>
+	new window.VLibras.Widget('https://vlibras.gov.br/app');
+</script>
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 

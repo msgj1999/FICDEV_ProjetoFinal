@@ -305,14 +305,13 @@
 								<td class="quantity" th:text="${municao.coeficienteBalistico}"></td>
 								<td class="quantity" th:text="${municao.dataFabricacao}"></td>
 								<td class="quantity" th:text="${municao.dataValidade}"></td>
-								<!--td th:text="${#dates.format(municao.dataFabricacao, 'dd/MM/yyyy')}"></td> <! Adicione esta linha -->
-								<!--td th:text="${#dates.format(municao.dataValidade, 'dd/MM/yyyy')}"></td> <! Adicione esta linha -->
-								<td class="d-flex"> <!-- Use a classe d-flex aqui -->
+								
+								<td> 
 									<a th:href="@{/municao/view/atualizar/{id}(id=${municao.id})}"
-										class="btn btn-primary me-2 mb-0"> <!-- Adicione mb-0 aqui -->
+										class="btn btn-primary me-2 me-2 mb-2 mb-xlg-0 mt-2"> <!-- Adicione mb-0 aqui -->
 										<i class="fas fa-edit"></i> Editar
 									</a>
-									<button type="button" class="btn btn-danger mb-0" data-bs-toggle="modal"
+									<button type="button" class="btn btn-danger mb-2 mb-xlg-0 mt-2" data-bs-toggle="modal"
 										data-bs-target="#deleteConfirmModal" th:data-bs-municaoId=${municao.id}>
 										Excluir
 									</button>
@@ -354,7 +353,7 @@
 	
 	<!-- TOAST -->
 		<div class="toast-container p-3 top-0 end-0" >
-			<div class="toast" id="toast-success-edit">
+			<div class="toast text-bg-success" id="toast-success-edit">
 			<div class="toast-header">
 				<strong class="me-auto">Sucesso</strong>
 				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -366,7 +365,7 @@
 	  	</div>
 
 		<div class="toast-container p-3 top-0 end-0" >
-		  <div class="toast" id="toast-success-create">
+		  <div class="toast text-bg-success" id="toast-success-create">
 			<div class="toast-header">
 			  <strong class="me-auto">Sucesso</strong>
 			  <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -378,7 +377,7 @@
 		</div>
 
 		<div class="toast-container p-3 top-0 end-0" >
-			<div class="toast" id="toast-success-delete">
+			<div class="toast text-bg-success" id="toast-success-delete">
 			  <div class="toast-header">
 				<strong class="me-auto">Sucesso</strong>
 				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -552,7 +551,6 @@
 			var paramFail = url.searchParams.get("error");
 			var paramSuccess = url.searchParams.get("success");
 			if (paramFail == "rn1"){
-				console.log("toggle")
 				toggleErrorModal();
 			} else if (paramSuccess == "s1") {
 				toggleSuccessCreateToast();

@@ -38,7 +38,7 @@ public class MunicaoControllerView {
 
     @GetMapping("/listar")
     public ModelAndView listaMunicoes(
-        @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        @PageableDefault(size = 7, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         ModelAndView view = new ModelAndView("listaMunicao");
         Page<Municao> municoes = municaoService.getAllMunicoes(pageable);
         view.addObject("municoes", municoes);

@@ -38,7 +38,7 @@ public class ManutencaoControllerView {
 
     @GetMapping("/listar")
     public ModelAndView listaManutencoes(
-        @PageableDefault(size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        @PageableDefault(size = 7, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         ModelAndView view = new ModelAndView("listaManutencao");
         Page<Manutencao> manutencoes = manutencaoService.getAllManutencoes(pageable);
         view.addObject("manutencoes", manutencoes);
@@ -49,7 +49,7 @@ public class ManutencaoControllerView {
     @GetMapping("/remover/{id}")
     public String removerManutencao(@PathVariable("id") int id) throws NotFoundException {
         manutencaoService.deleteManutencao(id);
-        return "redirect:/manutencao/view/listar";
+        return "redirect:/manutencao/view/listar?success=s2";
     }
 
     @GetMapping("/cadastrar")
@@ -71,7 +71,7 @@ public class ManutencaoControllerView {
 
         manutencaoService.saveManutencao(manutencao);
 		redirectAttributes.addFlashAttribute("sucesso", "Manutenção cadastrada com sucesso!");
-		return new ModelAndView("redirect:/manutencao/view/listar");
+		return new ModelAndView("redirect:/manutencao/view/listar?success=s1");
     }
 
     @GetMapping("/atualizar/{id}")
@@ -86,7 +86,7 @@ public class ManutencaoControllerView {
     @PostMapping("/atualizar/{id}")
     public String atualizarManutencao(@PathVariable("id") int id, Manutencao manutencao) throws NotFoundException {
         manutencaoService.updateManutencao(manutencao, id);
-        return "redirect:/manutencao/view/listar";
+        return "redirect:/manutencao/view/listar?success=s3";
     }
 
 

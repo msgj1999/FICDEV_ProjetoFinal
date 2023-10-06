@@ -288,7 +288,7 @@
 								<th scope="col">Quantidade</th>
 								<th scope="col">Data de Entrega</th>
 								<th scope="col">Observações</th>
-								<th scope="col" colspan="2">Ações</th>
+								<th scope="col">Ações</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -299,7 +299,7 @@
 								<td th:text="${entrega.municao.tipo + ' - ' + entrega.municao.calibre}"></td>
 								<td class="quantity" th:text="${entrega.quantidade}"></td>
 								<td th:text="${entrega.dataEntrega}"></td>
-								<td>
+								<td style="max-width: 150px;">
 									<!-- Dentro do loop th:each para cada entrega -->
 									<div th:if="${#strings.length(entrega.observacoes) > 10}">
 										<span
@@ -319,14 +319,12 @@
 									</div>
 								</td>
 
-
-
-								<td class="d-flex"> <!-- Use a classe d-flex aqui -->
+								<td> 
 									<a th:href="@{/entrega/view/atualizar/{id}(id=${entrega.id})}"
-										class="btn btn-primary me-2 mb-0"> <!-- Adicione mb-0 aqui -->
+										class="btn btn-primary me-2 mb-2 mb-xlg-0 mt-2"> <!-- Adicione mb-0 aqui -->
 										<i class="fas fa-edit"></i> Editar
 									</a>
-									<button type="button" class="btn btn-danger mb-0" data-bs-toggle="modal"
+									<button type="button" class="btn btn-danger mb-2 mb-xlg-0 mt-2" data-bs-toggle="modal"
 										data-bs-target="#deleteConfirmModal" th:data-bs-entregaId=${entrega.id}>
 										Excluir
 									</button>
@@ -359,6 +357,44 @@
 			</main>
 		</div>
 	</div>
+	
+		<!-- TOAST -->
+		<div class="toast-container p-3 top-0 end-0" >
+			<div class="toast text-bg-success" id="toast-success-edit">
+			<div class="toast-header">
+				<strong class="me-auto">Sucesso</strong>
+				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+			<div class="toast-body">
+				Entrega editada com sucesso.
+			</div>
+			</div>
+	  	</div>
+
+		<div class="toast-container p-3 top-0 end-0" >
+		  <div class="toast text-bg-success" id="toast-success-create">
+			<div class="toast-header">
+			  <strong class="me-auto">Sucesso</strong>
+			  <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+			<div class="toast-body">
+			  Entrega cadastrada com sucesso.
+			</div>
+		  </div>
+		</div>
+
+		<div class="toast-container p-3 top-0 end-0" >
+			<div class="toast text-bg-success" id="toast-success-delete">
+			  <div class="toast-header">
+				<strong class="me-auto">Sucesso</strong>
+				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			  </div>
+			  <div class="toast-body">
+				Entrega deletada com sucesso.
+			  </div>
+			</div>
+		  </div>
+	
 
 	<!-- Modal -->
 	<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel"
@@ -460,6 +496,43 @@
 			});
 	</script>
 
+	<script>
+
+		const toggleSuccessCreateToast = () => {
+			$('#toast-success-create').toast('show');
+		}
+		const toggleSuccessDeleteToast = () => {
+			$('#toast-success-delete').toast('show');
+		}
+		const toggleSuccessEditToast = () => {
+			$('#toast-success-edit').toast('show');
+		}
+
+
+		const checkSuccessFailure = () => {
+			var url_string = window.location.href; // www.test.com?filename=test
+			var url = new URL(url_string);
+			var paramFail = url.searchParams.get("error");
+			var paramSuccess = url.searchParams.get("success");
+			if (paramFail == "rn1"){
+				toggleErrorModal();
+			} else if (paramSuccess == "s1") {
+				toggleSuccessCreateToast();
+			} else if (paramSuccess == "s2") {
+				toggleSuccessDeleteToast();
+			} else if (paramSuccess == "s3") {
+				toggleSuccessEditToast();
+			}
+
+		}
+		
+		
+		window.addEventListener('load', () => {
+
+			checkSuccessFailure();
+			
+		});
+	</script>
 
 	<script>
 		var entregaId = 0;

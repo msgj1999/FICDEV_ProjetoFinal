@@ -287,12 +287,13 @@
 								</td>
 
 								<td th:text="${manutencao.dataManutencao}"></td>
-								<td class="d-flex"> <!-- Use a classe d-flex aqui -->
+								
+								<td> 
 									<a th:href="@{/manutencao/view/atualizar/{id}(id=${manutencao.id})}"
-										class="btn btn-primary me-2 mb-0"> <!-- Adicione mb-0 aqui -->
+										class="btn btn-primary me-2 me-2 mb-2 mb-xlg-0 mt-2"> <!-- Adicione mb-0 aqui -->
 										<i class="fas fa-edit"></i> Editar
 									</a>
-									<button type="button" class="btn btn-danger mb-0" data-bs-toggle="modal"
+									<button type="button" class="btn btn-danger mb-2 mb-xlg-0 mt-2" data-bs-toggle="modal"
 										data-bs-target="#deleteConfirmModal" th:data-bs-manutencaoId=${manutencao.id}>
 										Excluir
 									</button>
@@ -327,6 +328,44 @@
 			</main>
 		</div>
 	</div>
+
+	<!-- TOAST -->
+	<div class="toast-container p-3 top-0 end-0">
+		<div class="toast text-bg-success" id="toast-success-edit">
+			<div class="toast-header">
+				<strong class="me-auto">Sucesso</strong>
+				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+			<div class="toast-body">
+				Manutenção editada com sucesso.
+			</div>
+		</div>
+	</div>
+
+	<div class="toast-container p-3 top-0 end-0">
+		<div class="toast text-bg-success" id="toast-success-create">
+			<div class="toast-header">
+				<strong class="me-auto">Sucesso</strong>
+				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+			<div class="toast-body">
+				Manutenção cadastrada com sucesso.
+			</div>
+		</div>
+	</div>
+
+	<div class="toast-container p-3 top-0 end-0">
+		<div class="toast text-bg-success" id="toast-success-delete">
+			<div class="toast-header">
+				<strong class="me-auto">Sucesso</strong>
+				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+			<div class="toast-body">
+				Manutenção deletada com sucesso.
+			</div>
+		</div>
+	</div>
+
 	<!-- Modal -->
 	<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel"
 		aria-hidden="true">
@@ -426,6 +465,44 @@
 			.catch(error => {
 				console.error('Erro ao buscar o nome do usuário logado:', error);
 			});
+	</script>
+
+	<script>
+
+		const toggleSuccessCreateToast = () => {
+			$('#toast-success-create').toast('show');
+		}
+		const toggleSuccessDeleteToast = () => {
+			$('#toast-success-delete').toast('show');
+		}
+		const toggleSuccessEditToast = () => {
+			$('#toast-success-edit').toast('show');
+		}
+
+
+		const checkSuccessFailure = () => {
+			var url_string = window.location.href; // www.test.com?filename=test
+			var url = new URL(url_string);
+			var paramFail = url.searchParams.get("error");
+			var paramSuccess = url.searchParams.get("success");
+			if (paramFail == "rn1") {
+				toggleErrorModal();
+			} else if (paramSuccess == "s1") {
+				toggleSuccessCreateToast();
+			} else if (paramSuccess == "s2") {
+				toggleSuccessDeleteToast();
+			} else if (paramSuccess == "s3") {
+				toggleSuccessEditToast();
+			}
+
+		}
+
+
+		window.addEventListener('load', () => {
+
+			checkSuccessFailure();
+
+		});
 	</script>
 
 
