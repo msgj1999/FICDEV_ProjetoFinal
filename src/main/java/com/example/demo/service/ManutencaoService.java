@@ -74,20 +74,16 @@ public class ManutencaoService {
 
             predicates.add(cb.like(cb.lower(root.get("status")), "%" + termo.toLowerCase() + "%"));
 
-            // Busca por data de Manutenção
             try {
                 LocalDate dataManutencao = LocalDate.parse(termo, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 predicates.add(cb.equal(root.get("dataManutencao"), dataManutencao));
             } catch (DateTimeParseException e) {
-                // Ignorar se o termo não for uma data válida
             }
 
-            // Busca por ID
             try {
                 int id = Integer.parseInt(termo);
                 predicates.add(cb.equal(root.get("id"), id));
             } catch (NumberFormatException e) {
-                // Ignorar se o termo não for um número válido
             }
 
             return cb.or(predicates.toArray(new Predicate[0]));

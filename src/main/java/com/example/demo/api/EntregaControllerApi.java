@@ -49,7 +49,7 @@ public class EntregaControllerApi {
     @PostMapping
     public ResponseEntity<?> cadastrarEntrega(@RequestBody @Valid Entrega entrega) {
         try {
-            entregaService.cadastrarEntrega(entrega);
+            entregaService.cadastrarEntrega(entrega, null);
             return ResponseEntity.ok("Entrega cadastrada com sucesso!");
         } catch (NotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

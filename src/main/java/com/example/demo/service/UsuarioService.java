@@ -57,9 +57,7 @@ public class UsuarioService {
         atualizado.setNome(usuario.getNome());
         atualizado.setEmail(usuario.getEmail());
         
-        // Verifique se a nova senha não está vazia antes de atualizar
         if (!usuario.getSenha().isEmpty()) {
-            // Criptografe a nova senha antes de atualizar
             atualizado.setSenha(passwordEncoder.encode(usuario.getSenha()));
         }
         
@@ -92,15 +90,12 @@ public class UsuarioService {
 
             predicates.add(cb.like(cb.lower(root.get("email")), "%" + termo.toLowerCase() + "%"));
 
-            // Busca por ID
             try {
                 int id = Integer.parseInt(termo);
                 predicates.add(cb.equal(root.get("id"), id));
             } catch (NumberFormatException e) {
-                // Ignorar se o termo não for um número válido
             }
             
-            // Busca por Role (se o termo corresponder a um UserRole válido)
             if (Arrays.stream(UserRole.values()).anyMatch(role -> role.name().equalsIgnoreCase(termo))) {
                 predicates.add(cb.equal(root.get("role"), UserRole.valueOf(termo.toUpperCase())));
             }
@@ -121,20 +116,15 @@ public class UsuarioService {
     }
     
     public Usuario getUsuarioLogado2() throws NotFoundException {
-        // Obtém o contexto de segurança atual
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        // Verifica se o usuário está autenticado
         if (authentication != null && authentication.isAuthenticated()) {
-            // O nome de usuário (email) do usuário logado
             String nomeUsuarioLogado = authentication.getName();
 
-            // Use o nome de usuário para buscar o usuário correspondente no seu repositório
             return usuarioRepository.findByLogin(nomeUsuarioLogado)
                 .orElseThrow(() -> new NotFoundException());
         }
 
-        // Se o usuário não estiver autenticado, retorne null ou trate conforme necessário
         return null;
     }
     
@@ -147,7 +137,6 @@ public class UsuarioService {
             Usuario usuario = usuarioRepository.findByLogin(nomeUsuarioLogado)
                     .orElseThrow(() -> new NotFoundException());
 
-            // Crie um UsuarioDTO com as informações desejadas
             UsuarioDTO usuarioDTO = new UsuarioDTO();
             usuarioDTO.setId(usuario.getId());
             usuarioDTO.setNome(usuario.getNome());

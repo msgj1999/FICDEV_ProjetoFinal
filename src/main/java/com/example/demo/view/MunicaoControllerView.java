@@ -51,12 +51,9 @@ public class MunicaoControllerView {
             municaoService.deleteMunicao(id);
             redirectAttributes.addFlashAttribute("sucesso", "Munição excluída com sucesso!");
         } catch (EntityNotFoundException e) {
-            // Tratar exceção NotFoundException, se necessário
         } catch (BusinessException e) {
-            // Tratar exceção MunicaoAssociadaEntregaException e exibir mensagem de erro
         	return "redirect:/municao/view/listar?error=rn1";
         } catch (NotFoundException e) {
-            // Lidar com a exceção NotFoundException, se necessário
         }
         
         return "redirect:/municao/view/listar?success=s2";

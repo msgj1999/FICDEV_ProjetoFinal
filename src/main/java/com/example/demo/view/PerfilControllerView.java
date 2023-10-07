@@ -19,9 +19,7 @@ public class PerfilControllerView {
         try {
             UsuarioDTO usuarioDTO = usuarioService.getUsuarioLogado();
             model.addAttribute("usuario", usuarioDTO);
-            // Adicione outras informações necessárias ao modelo, se houver
         } catch (NotFoundException e) {
-            // Lide com a exceção, se necessário
         }
         return "perfil";
     }

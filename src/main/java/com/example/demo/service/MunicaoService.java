@@ -51,22 +51,18 @@ public class MunicaoService {
     }
 
     public void saveMunicao(Municao municao) throws BusinessException, NotFoundException {
-        // Valide os campos obrigatórios da munição, por exemplo, o tipo, calibre, quantidade, etc.
         if (municao.getTipo() == null || municao.getCalibre() == null || municao.getQuantidade() <= 0) {
             throw new BusinessException("Os campos obrigatórios da munição não foram preenchidos corretamente.");
         }
 
-        // Certifique-se de que o usuário está autenticado
         Usuario usuarioLogado = usuarioService.getUsuarioLogado2();
         if (usuarioLogado == null) {
             throw new NotFoundException();
         }
 
-        // Registre a ação do usuário ao cadastrar a munição
         String username = usuarioLogado.getNome();
         userActionService.registerUserAction(username, "Cadastrou uma nova munição");
 
-        // Salve a munição no repositório
         municaoRepository.save(municao);
     }
 
@@ -82,7 +78,6 @@ public class MunicaoService {
         atualizada.setDataFabricacao(municao.getDataFabricacao());
         atualizada.setDataValidade(municao.getDataValidade());
         
-        // Registro da ação do usuário ao editar a munição
         Usuario usuarioLogado = usuarioService.getUsuarioLogado2(); 
         String username = usuarioLogado != null ? usuarioLogado.getNome() : "Usuário Desconhecido";
         userActionService.registerUserAction(username, "Editou uma munição com ID: " + id);
@@ -92,22 +87,18 @@ public class MunicaoService {
     }
 
     private boolean isMunicaoAssociadaEntrega(int municaoId) {
-        // Verifique se existe alguma entrega associada à munição com o ID especificado
         List<Entrega> entregas = entregaRepository.findByMunicaoId(municaoId);
 
-        // Se a lista de entregas não estiver vazia, significa que há entregas associadas
         return !entregas.isEmpty();
     }
     
     public Municao deleteMunicao(int id) throws EntityNotFoundException, BusinessException, NotFoundException {
         Municao deletada = municaoRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         
-        // Verificar se a munição está associada a alguma entrega
         if (isMunicaoAssociadaEntrega(id)) {
             throw new BusinessException("Não é possível excluir a munição porque está associada a uma entrega.");
         }
         
-        // Registro da ação do usuário ao excluir a munição
         Usuario usuarioLogado = usuarioService.getUsuarioLogado2(); 
         String username = usuarioLogado != null ? usuarioLogado.getNome() : "Usuário Desconhecido";
         userActionService.registerUserAction(username, "Excluiu uma munição com ID: " + id);
@@ -127,26 +118,22 @@ public class MunicaoService {
 	    predicates.add(cb.like(cb.lower(root.get("calibre")), "%" + termo.toLowerCase() + "%"));
 
 
-            // Busca por quantidade
             try {
                 int quantidade = Integer.parseInt(termo);
                 predicates.add(cb.equal(root.get("quantidade"), quantidade));
             } catch (NumberFormatException e) {
-                // Ignorar se o termo não for um número válido
             }
 
 	    try {
             	float peso = Float.parseFloat(termo);
             	predicates.add(cb.equal(root.get("peso"), peso));
             } catch (NumberFormatException e) {
-            	// Ignorar se o termo não for um número válido
             }
 
 	    try {
             	float coeficienteBalistico = Float.parseFloat(termo);
             	predicates.add(cb.equal(root.get("coeficienteBalistico"), coeficienteBalistico));
             } catch (NumberFormatException e) {
-            	// Ignorar se o termo não for um número válido
             }
 
 
@@ -154,22 +141,18 @@ public class MunicaoService {
                 LocalDate dataFabricacao = LocalDate.parse(termo, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 predicates.add(cb.equal(root.get("dataFabricacao"), dataFabricacao));
             } catch (DateTimeParseException e) {
-                // Ignorar se o termo não for uma data válida
             }
 
             try {
                 LocalDate dataValidade = LocalDate.parse(termo, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 predicates.add(cb.equal(root.get("dataValidade"), dataValidade));
             } catch (DateTimeParseException e) {
-                // Ignorar se o termo não for uma data válida
             }
 
-            // Busca por ID
             try {
                 int id = Integer.parseInt(termo);
                 predicates.add(cb.equal(root.get("id"), id));
             } catch (NumberFormatException e) {
-                // Ignorar se o termo não for um número válido
             }
 
             return cb.or(predicates.toArray(new Predicate[0]));

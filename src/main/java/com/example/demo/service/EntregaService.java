@@ -12,6 +12,7 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import com.example.demo.entities.Entrega;
 import com.example.demo.entities.Municao;
@@ -40,10 +41,6 @@ public class EntregaService {
     }
 
     public void saveEntrega(Entrega entrega) throws NotFoundException {
-    	
-        Usuario usuarioLogado = usuarioService.getUsuarioLogado2(); 
-        String username = usuarioLogado.getNome();
-        userActionService.registerUserAction(username, "Cadastrou uma nova entrega");
         
         entregaRepository.save(entrega);
     }
@@ -75,57 +72,52 @@ public class EntregaService {
         return deletada;
     }
     
-    public void cadastrarEntrega(Entrega entrega) throws NotFoundException {
+    public void cadastrarEntrega(Entrega entrega, BindingResult result) throws NotFoundException {
         Municao municao = municaoService.findById(entrega.getMunicao().getId()).orElseThrow();
-        
+
         if (municao != null && entrega.getQuantidade() <= municao.getQuantidade()) {
             try {
-                municao.setQuantidade(municao.getQuantidade() - entrega.getQuantidade()); // Reduza a quantidade de munição
-                municaoService.saveMunicao(municao); // Atualize a quantidade de munição
+                municao.setQuantidade(municao.getQuantidade() - entrega.getQuantidade());
+                entregaRepository.save(entrega);
 
-                entregaRepository.save(entrega); // Salve a entrega
+                Usuario usuarioLogado = usuarioService.getUsuarioLogado2();
+                String username = usuarioLogado.getNome();
+                userActionService.registerUserAction(username, "Cadastrou uma nova entrega");
             } catch (Exception e) {
-                // Lide com qualquer exceção de salvamento aqui
                 throw new NotFoundException();
             }
         } else {
-            throw new NotFoundException();
+            result.rejectValue("quantidade", "error.entrega", "Quantidade insuficiente em estoque");
         }
     }
+
+
     
     public Page<Entrega> buscarEntregasPorFiltro(String termo, Pageable pageable) {
         Specification<Entrega> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            // Busca por munição (tipo + calibre)
             predicates.add(cb.like(cb.lower(root.get("municao").get("tipo")), "%" + termo.toLowerCase() + "%"));
             predicates.add(cb.like(cb.lower(root.get("municao").get("calibre")), "%" + termo.toLowerCase() + "%"));
 
-            // Busca por quantidade
             try {
                 int quantidade = Integer.parseInt(termo);
                 predicates.add(cb.equal(root.get("quantidade"), quantidade));
             } catch (NumberFormatException e) {
-                // Ignorar se o termo não for um número válido
             }
 
-            // Busca por data de entrega
             try {
                 LocalDate dataEntrega = LocalDate.parse(termo, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 predicates.add(cb.equal(root.get("dataEntrega"), dataEntrega));
             } catch (DateTimeParseException e) {
-                // Ignorar se o termo não for uma data válida
             }
 
-            // Busca por observações
             predicates.add(cb.like(cb.lower(root.get("observacoes")), "%" + termo.toLowerCase() + "%"));
 
-            // Busca por ID
             try {
                 int id = Integer.parseInt(termo);
                 predicates.add(cb.equal(root.get("id"), id));
             } catch (NumberFormatException e) {
-                // Ignorar se o termo não for um número válido
             }
 
             return cb.or(predicates.toArray(new Predicate[0]));

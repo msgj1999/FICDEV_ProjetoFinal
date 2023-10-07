@@ -61,25 +61,28 @@ public class EntregaControllerView {
     }
 
     @PostMapping("/cadastrar")
-    public ModelAndView saveEntrega(@Valid @ModelAttribute("entrega") Entrega entrega, BindingResult result, RedirectAttributes redirectAttributes) {
+    public ModelAndView cadastrarEntrega(@Valid @ModelAttribute("entrega") Entrega entrega, BindingResult result, RedirectAttributes redirectAttributes) {
         ModelAndView modelAndView = new ModelAndView("cadastroEntrega");
 
-        if (result.hasErrors()) {
-            modelAndView.addObject("error", "Erro na validação. Por favor, verifique os campos.");
-            modelAndView.addObject("municoes", municaoService.getAllMunicoes());
-            return modelAndView;
-        }
-
         try {
-            entregaService.cadastrarEntrega(entrega);
-            redirectAttributes.addFlashAttribute("sucesso", "Entrega cadastrada com sucesso!");
-            return new ModelAndView("redirect:/entrega/view/listar?success=s1");
+            entregaService.cadastrarEntrega(entrega, result);
+
+            if (result.hasErrors()) {
+                modelAndView.addObject("error", "Erro na validação. Por favor, verifique os campos.");
+                modelAndView.addObject("municoes", municaoService.getAllMunicoes());
+                return modelAndView;
+            } else {
+                redirectAttributes.addFlashAttribute("sucesso", "Entrega cadastrada com sucesso!");
+                return new ModelAndView("redirect:/entrega/view/listar?success=s1");
+            }
         } catch (NotFoundException e) {
             modelAndView.addObject("error", e.getMessage());
             modelAndView.addObject("municoes", municaoService.getAllMunicoes());
             return modelAndView;
         }
     }
+
+
 
 
     @GetMapping("/atualizar/{id}")
@@ -123,5 +126,5 @@ public class EntregaControllerView {
         view.addObject("entregas", pageEntregas);
         return view;
     }
-
+    
 }
